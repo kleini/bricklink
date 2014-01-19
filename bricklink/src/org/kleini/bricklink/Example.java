@@ -2,17 +2,19 @@
  * GPL v3
  */
 
-import org.openqa.selenium.By;
+package org.kleini.bricklink;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  * This class is a starter and extracts customer addresses.
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class CVSExport {
+public class Example {
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -24,15 +26,6 @@ public class CVSExport {
         try {
             driver.get(url);
 
-            WebElement loginLink = driver.findElement(By.linkText("Login"));
-            loginLink.click();
-
-            WebElement usernameInput = driver.findElement(By.id("frmUsername"));
-            usernameInput.sendKeys("login");
-            WebElement passwordInput = driver.findElement(By.id("frmPassword"));
-            passwordInput.sendKeys("password");
-            WebElement loginButton = driver.findElement(By.xpath("//input[@type='SUBMIT' and @value='Login to BrickLink']"));
-            loginButton.click();
     /*
             // enter something into the search field
             element.sendKeys("server");
@@ -64,9 +57,6 @@ public class CVSExport {
                 count++;
             }
     */
-            Thread.sleep(1000);
-            WebElement logoffLink = driver.findElement(By.linkText("Logoff"));
-            logoffLink.click();
         } finally {
             Thread.sleep(1000);
             driver.quit();
