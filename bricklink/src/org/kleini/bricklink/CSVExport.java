@@ -18,7 +18,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class CVSExport {
+public class CSVExport {
 
     public static void main(String[] args) throws Exception {
         Configuration configuration = new Configuration();
