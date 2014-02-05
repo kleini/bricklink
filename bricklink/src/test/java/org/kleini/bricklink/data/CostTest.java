@@ -29,11 +29,11 @@ public class CostTest {
         mapper = new ObjectMapper();
         cost = new Cost();
         cost.setCurrency(Currency.EUR);
-        cost.setSubtotal(new BigDecimal("6.4400"));
-        cost.setGrandTotal(new BigDecimal("9.4400"));
+        cost.setSubtotal(new BigDecimal("5.4321"));
+        cost.setGrandTotal(new BigDecimal("6.6666"));
         cost.setDisplayCurrency(Currency.EUR);
-        cost.setDisplaySubtotal(new BigDecimal("6.4400"));
-        cost.setDisplayGrandTotal(new BigDecimal("9.4400"));
+        cost.setDisplaySubtotal(new BigDecimal("5.4321"));
+        cost.setDisplayGrandTotal(new BigDecimal("6.6666"));
     }
 
     @Test
