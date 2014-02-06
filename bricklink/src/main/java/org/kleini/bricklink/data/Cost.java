@@ -18,46 +18,57 @@ public final class Cost {
      * The currency code of the transaction
      */
     private Currency currency;
+
     /**
      * The display currency code of the user
      */
     private Currency displayCurrency;
+
     /**
      * The total price for the order exclusive of shipping and other costs (This must equal the sum of all the items)
      */
     private BigDecimal subtotal;
+
     /**
      * The total price for the order inclusive of tax, shipping and other costs
      */
     private BigDecimal grandTotal;
+
     /**
      * The subtotal price in display currency of the user
      */
     private BigDecimal displaySubtotal;
+
     /**
      * The grand total price in display currency of the user
      */
     private BigDecimal displayGrandTotal;
+
     /**
      * Extra charge for this order (tax, packing, etc.)
      */
     private BigDecimal extraCharge1;
+
     /**
      * Extra charge for this order (tax, packing, etc.)
      */
     private BigDecimal extraCharge2;
+
     /**
      * Insurance cost
      */
     private BigDecimal insurance;
+
     /**
      * Shipping cost
      */
     private BigDecimal shipping;
+
     /**
      * Credit applied to this order
      */
     private BigDecimal credit;
+
     /**
      * Amount of coupon discount
      */

@@ -24,6 +24,10 @@ public class CostTest {
     private static ObjectMapper mapper;
     private static Cost cost;
 
+    public CostTest() {
+        super();
+    }
+
     @BeforeClass
     public static void setUpBeforeClass() {
         mapper = new ObjectMapper();
