@@ -4,16 +4,26 @@
 
 package org.kleini.bricklink;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.net.ssl.SSLContext;
+
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import org.apache.commons.io.IOUtils;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.kleini.bricklink.data.Order;
+import org.kleini.bricklink.data.Response;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class is a starter and should read a Brickstore file and assign prices to all parts listed there.
@@ -40,16 +50,18 @@ public class Pricing {
         try {
             HttpGet request = new HttpGet(BASE_URL + "/orders?direction=in");
             oAuthConsumer.sign(request);
-            CloseableHttpResponse response = client.execute(request);
+            CloseableHttpResponse httpResponse = client.execute(request);
             try {
-                System.out.println("Code: " + response.getStatusLine().getStatusCode() + ',' + response.getStatusLine().getReasonPhrase());
-                System.out.println(IOUtils.toString(response.getEntity().getContent()));
+                System.out.println("Code: " + httpResponse.getStatusLine().getStatusCode() + ',' + httpResponse.getStatusLine().getReasonPhrase());
+                InputStream stream = httpResponse.getEntity().getContent();
+                ObjectMapper mapper = new ObjectMapper();
+                Response<List<Order>> response = mapper.readValue(stream, new TypeReference<Response<ArrayList<Order>>>() { });
+                System.out.println(response);
             } finally {
-                response.close();
+                httpResponse.close();
             }
         } finally {
             client.close();
         }
     }
-
 }

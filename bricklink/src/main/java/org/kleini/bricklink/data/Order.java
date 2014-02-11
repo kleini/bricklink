@@ -50,6 +50,7 @@
 package org.kleini.bricklink.data;
 
 import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -57,7 +58,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class Order {
+public class Order implements Data {
 
     /**
      * Unique identifier for this order for internal use
