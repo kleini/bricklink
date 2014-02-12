@@ -56,6 +56,7 @@ package org.kleini.bricklink.data;
  */
 public enum Country {
 
-    DE;
+    DE,
+    FR;
 
 }
