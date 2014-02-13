@@ -1,4 +1,4 @@
-package org.kleini.bricklink;
+package org.kleini.bricklink.api;
 /*
  * GPL v3
  */

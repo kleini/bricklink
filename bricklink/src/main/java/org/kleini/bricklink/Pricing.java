@@ -7,21 +7,20 @@ package org.kleini.bricklink;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.net.ssl.SSLContext;
-
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.kleini.bricklink.api.Configuration;
+import org.kleini.bricklink.api.ConfigurationProperty;
+import org.kleini.bricklink.api.TrustAllStrategy;
 import org.kleini.bricklink.data.Order;
 import org.kleini.bricklink.data.Response;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -2,7 +2,7 @@
  * GPL v3
  */
 
-package org.kleini.bricklink;
+package org.kleini.bricklink.api;
 
 /**
  * List of possible property names in configuration file.
