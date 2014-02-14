@@ -49,6 +49,7 @@
 
 package org.kleini.bricklink.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.kleini.bricklink.data.Order;
 
@@ -59,12 +60,14 @@ import org.kleini.bricklink.data.Order;
  */
 public final class OrdersResponse extends Response {
 
-    public OrdersResponse() {
+    private org.kleini.bricklink.data.Response<ArrayList<Order>> response;
+
+    public OrdersResponse(org.kleini.bricklink.data.Response<ArrayList<Order>> response) {
         super();
+        this.response = response;
     }
 
     public List<Order> getOrders() {
-        // TODO Auto-generated method stub
-        return null;
+        return response.getData();
     }
 }

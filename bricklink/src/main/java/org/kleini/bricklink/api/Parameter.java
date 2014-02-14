@@ -49,41 +49,27 @@
 
 package org.kleini.bricklink.api;
 
-import java.io.IOException;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.util.EntityUtils;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
- * {@link Parser}
+ * {@link Parameter}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-abstract class Parser<T extends Response, U> {
+class Parameter {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final String name;
+    private final String value;
 
-    Parser() {
+    public Parameter(String name, String value) {
         super();
+        this.name = name;
+        this.value = value;
     }
 
-    final static String checkResponse(CloseableHttpResponse response) throws Exception {
-        if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
-            throw new Exception("Request failed. (" + response.getStatusLine().getReasonPhrase() + ")");
-        }
-        return EntityUtils.toString(response.getEntity());
+    final String getName() {
+        return name;
     }
 
-    final T parse(String body) throws JsonParseException, JsonMappingException, IOException {
-        org.kleini.bricklink.data.Response<U> response = mapper.readValue(body, getResponseType());
-        return createResponse(response);
+    final String getValue() {
+        return value;
     }
-
-    protected abstract TypeReference<org.kleini.bricklink.data.Response<U>> getResponseType();
-
-    protected abstract T createResponse(org.kleini.bricklink.data.Response<U> response);
 }

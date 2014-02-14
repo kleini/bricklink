@@ -58,7 +58,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class Order implements Data {
+public class Order {
 
     /**
      * Unique identifier for this order for internal use

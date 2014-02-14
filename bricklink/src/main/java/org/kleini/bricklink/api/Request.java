@@ -58,5 +58,7 @@ public interface Request<T extends Response> {
 
     String getPath();
 
-    Parser<? extends T> getParser();
+    Parameter[] getParameters();
+
+    Parser<? extends T, ?> getParser();
 }

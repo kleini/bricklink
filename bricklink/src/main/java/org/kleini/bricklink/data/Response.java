@@ -5,7 +5,6 @@
 package org.kleini.bricklink.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * {@link Response}

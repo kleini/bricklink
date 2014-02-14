@@ -12,20 +12,21 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 import javax.net.ssl.SSLContext;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
-import org.apache.http.client.ClientProtocolException;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 
 /**
  * {@link BrickLinkClient}
@@ -52,19 +53,45 @@ public final class BrickLinkClient {
         this(configuration.getProperty(CONSUMER_KEY), configuration.getProperty(CONSUMER_SECRET), configuration.getProperty(ACCESS_TOKEN), configuration.getProperty(ACCESS_SECRET));
     }
 
-    public <T extends Response> T execute(Request<T> request) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, ClientProtocolException, IOException {
+    public <T extends Response> T execute(Request<T> request) throws Exception {
         String url = BASE_URL + request.getPath();
-        HttpRequestBase httpRequest = new HttpGet(BASE_URL + "/orders?direction=in");
+        HttpRequestBase httpRequest = new HttpGet(addQueryParams2URL(url, getGETParameter(request)));
         consumer.sign(httpRequest);
         CloseableHttpResponse httpResponse = client.execute(httpRequest);
-        Parser parser = request.getParser();
-        String body = parser.checkResponse(httpResponse);
-        T response = parser.parse(body);
-        httpResponse.close();
+        final T response;
+        try {
+            Parser<? extends T, ?> parser = request.getParser();
+            String body = Parser.checkResponse(httpResponse);
+            response = parser.parse(body);
+        } finally {
+            httpResponse.close();
+        }
         return response;
     }
 
     public void close() throws IOException {
         client.close();
+    }
+
+    private static List<NameValuePair> getGETParameter(Request<?> request) {
+        List<NameValuePair> retval = new LinkedList<NameValuePair>();
+        for (Parameter param : request.getParameters()) {
+            retval.add(new BasicNameValuePair(param.getName(), param.getValue()));
+        }
+        return retval;
+    }
+
+    private static String addQueryParams2URL(String url, List<NameValuePair> params) {
+        if (0 == params.size()) {
+            return url;
+        }
+        StringBuilder retval = new StringBuilder(url);
+        if (-1 == retval.indexOf("?")) {
+            retval.append('?');
+        } else {
+            retval.append('&');
+        }
+        retval.append(URLEncodedUtils.format(params, "UTF-8"));
+        return url;
     }
 }

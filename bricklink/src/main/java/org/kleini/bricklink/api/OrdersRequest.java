@@ -66,6 +66,11 @@ public final class OrdersRequest implements Request<OrdersResponse> {
     }
 
     @Override
+    public Parameter[] getParameters() {
+        return new Parameter[] { new Parameter("direction", "in") };
+    }
+
+    @Override
     public OrdersParser getParser() {
         return new OrdersParser();
     }

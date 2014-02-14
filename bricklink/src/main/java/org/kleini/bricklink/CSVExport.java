@@ -29,6 +29,7 @@ public class CSVExport {
             OrdersRequest request = new OrdersRequest();
             OrdersResponse response = client.execute(request);
             List<Order> orders = response.getOrders();
+            System.out.println(orders);
         } finally {
             client.close();
         }
