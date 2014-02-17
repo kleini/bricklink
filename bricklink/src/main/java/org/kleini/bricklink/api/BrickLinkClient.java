@@ -92,6 +92,6 @@ public final class BrickLinkClient {
             retval.append('&');
         }
         retval.append(URLEncodedUtils.format(params, "UTF-8"));
-        return url;
+        return retval.toString();
     }
 }

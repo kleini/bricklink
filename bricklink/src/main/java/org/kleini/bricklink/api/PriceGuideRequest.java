@@ -37,7 +37,7 @@ public final class PriceGuideRequest implements Request<PriceGuideResponse> {
     public Parameter[] getParameters() {
         return new Parameter[] {
             new Parameter("color_id", colorID),
-            new Parameter("quide_type", "sold"),
+            new Parameter("guide_type", "sold"),
             new Parameter("new_or_used", newOrUsed.name()),
             new Parameter("currency_code", Currency.EUR.name())
         };
