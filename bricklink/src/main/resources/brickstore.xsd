@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="BrickStoreXML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Inventory"/>
+        <xs:element ref="GuiState"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Inventory">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="Item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Item">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ItemID"/>
+        <xs:element ref="ItemTypeID"/>
+        <xs:element ref="ColorID"/>
+        <xs:element ref="ItemName"/>
+        <xs:element ref="ItemTypeName"/>
+        <xs:element ref="ColorName"/>
+        <xs:element ref="CategoryID"/>
+        <xs:element ref="CategoryName"/>
+        <xs:element ref="Status"/>
+        <xs:element ref="Qty"/>
+        <xs:element ref="Price"/>
+        <xs:element ref="Condition"/>
+        <xs:element minOccurs="0" ref="Remarks"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="Bulk"/>
+          <xs:element ref="OrigPrice"/>
+        </xs:choice>
+        <xs:element ref="OrigQty"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ItemID" type="xs:NMTOKEN"/>
+  <xs:element name="ItemTypeID" type="xs:NCName"/>
+  <xs:element name="ColorID" type="xs:integer"/>
+  <xs:element name="ItemName" type="xs:string"/>
+  <xs:element name="ItemTypeName" type="xs:NCName"/>
+  <xs:element name="ColorName" type="xs:string"/>
+  <xs:element name="CategoryID" type="xs:integer"/>
+  <xs:element name="CategoryName" type="xs:string"/>
+  <xs:element name="Status" type="xs:NCName"/>
+  <xs:element name="Qty" type="xs:integer"/>
+  <xs:element name="Price" type="xs:decimal"/>
+  <xs:element name="Condition" type="xs:NCName"/>
+  <xs:element name="Remarks" type="xs:NCName"/>
+  <xs:element name="Bulk" type="xs:integer"/>
+  <xs:element name="OrigPrice" type="xs:decimal"/>
+  <xs:element name="OrigQty" type="xs:integer"/>
+  <xs:element name="GuiState">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ItemView"/>
+      </xs:sequence>
+      <xs:attribute name="Application" use="required" type="xs:NCName"/>
+      <xs:attribute name="Version" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ItemView">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ColumnOrder"/>
+        <xs:element ref="ColumnWidths"/>
+        <xs:element ref="ColumnWidthsHidden"/>
+        <xs:element ref="SortColumn"/>
+        <xs:element ref="SortDirection"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ColumnOrder" type="xs:string"/>
+  <xs:element name="ColumnWidths" type="xs:string"/>
+  <xs:element name="ColumnWidthsHidden" type="xs:string"/>
+  <xs:element name="SortColumn" type="xs:integer"/>
+  <xs:element name="SortDirection" type="xs:NCName"/>
+</xs:schema>

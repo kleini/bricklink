@@ -4,25 +4,12 @@
 
 package org.kleini.bricklink;
 
+import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import javax.net.ssl.SSLContext;
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.kleini.bricklink.api.Configuration;
-import org.kleini.bricklink.api.ConfigurationProperty;
-import org.kleini.bricklink.api.TrustAllStrategy;
-import org.kleini.bricklink.data.Order;
-import org.kleini.bricklink.data.Response;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import org.kleini.brickstore.data.BrickStoreXML;
 
 /**
  * This class is a starter and should read a Brickstore file and assign prices to all parts listed there.
@@ -31,36 +18,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class Pricing {
 
-    private static final String BASE_URL = "https://api.bricklink.com/api/store/v1";
-
     public Pricing() {
         super();
     }
 
     public static void main(String[] args) throws Exception {
-        Configuration configuration = new Configuration();
-
-        OAuthConsumer oAuthConsumer = new CommonsHttpOAuthConsumer(configuration.getProperty(ConfigurationProperty.CONSUMER_KEY), configuration.getProperty(ConfigurationProperty.CONSUMER_SECRET));
-        oAuthConsumer.setTokenWithSecret(configuration.getProperty(ConfigurationProperty.ACCESS_TOKEN), configuration.getProperty(ConfigurationProperty.ACCESS_SECRET));
-
-        SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustAllStrategy()).build();
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-        CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+        JAXBContext context = JAXBContext.newInstance("org.kleini.brickstore.data");
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        InputStream stream = Pricing.class.getClassLoader().getResourceAsStream("79109.bsx");
+        final BrickStoreXML brickStore;
         try {
-            HttpGet request = new HttpGet(BASE_URL + "/orders?direction=in");
-            oAuthConsumer.sign(request);
-            CloseableHttpResponse httpResponse = client.execute(request);
-            try {
-                System.out.println("Code: " + httpResponse.getStatusLine().getStatusCode() + ',' + httpResponse.getStatusLine().getReasonPhrase());
-                InputStream stream = httpResponse.getEntity().getContent();
-                ObjectMapper mapper = new ObjectMapper();
-                Response<List<Order>> response = mapper.readValue(stream, new TypeReference<Response<ArrayList<Order>>>() { });
-                System.out.println(response);
-            } finally {
-                httpResponse.close();
-            }
+            brickStore = (BrickStoreXML) unmarshaller.unmarshal(stream);
         } finally {
-            client.close();
+            stream.close();
         }
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty("jaxb.formatted.output", Boolean.TRUE);
+        marshaller.marshal(brickStore, new File("test.bsx"));
     }
 }
