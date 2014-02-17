@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * {@link Cost} represents the cost information of an order.
  *
- * @author <a href="mailto:marcus.klein@open-xchange.com">Marcus Klein</a>
+ * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 public final class Cost {
 

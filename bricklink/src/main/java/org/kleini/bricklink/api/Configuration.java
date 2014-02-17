@@ -1,9 +1,8 @@
-package org.kleini.bricklink.api;
 /*
  * GPL v3
  */
 
-
+package org.kleini.bricklink.api;
 
 import java.io.File;
 import java.io.FileInputStream;

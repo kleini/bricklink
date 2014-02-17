@@ -53,7 +53,7 @@ public final class BrickLinkClient {
         this(configuration.getProperty(CONSUMER_KEY), configuration.getProperty(CONSUMER_SECRET), configuration.getProperty(ACCESS_TOKEN), configuration.getProperty(ACCESS_SECRET));
     }
 
-    public <T extends Response> T execute(Request<T> request) throws Exception {
+    public <T extends Response<?>> T execute(Request<T> request) throws Exception {
         String url = BASE_URL + request.getPath();
         HttpRequestBase httpRequest = new HttpGet(addQueryParams2URL(url, getGETParameter(request)));
         consumer.sign(httpRequest);
