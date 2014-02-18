@@ -13,7 +13,7 @@ public abstract class Response<T> {
 
     private org.kleini.bricklink.data.Response<T> response;
 
-    public Response(org.kleini.bricklink.data.Response<T> response) {
+    protected Response(org.kleini.bricklink.data.Response<T> response) {
         super();
         this.response = response;
     }

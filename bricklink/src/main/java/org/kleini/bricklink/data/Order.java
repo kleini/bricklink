@@ -18,7 +18,7 @@ public class Order {
     /**
      * Unique identifier for this order for internal use
      */
-    private String id;
+    private int id;
 
     /**
      * The time the order was created
@@ -95,12 +95,12 @@ public class Order {
     }
 
     @JsonProperty("order_id")
-    public String getId() {
+    public int getId() {
         return id;
     }
 
     @JsonProperty("order_id")
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

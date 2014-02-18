@@ -11,6 +11,8 @@ package org.kleini.bricklink.api;
  */
 class Parameter {
 
+    static final Parameter[] EMPTY = new Parameter[0];
+
     private final String name;
     private final String value;
 

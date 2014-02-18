@@ -4,11 +4,10 @@
 
 package org.kleini.bricklink.api;
 
-import java.io.IOException;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
-import com.fasterxml.jackson.core.JsonParseException;
+import org.kleini.bricklink.data.Meta;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,13 +32,17 @@ abstract class Parser<T extends Response<?>, U> {
         return EntityUtils.toString(response.getEntity());
     }
 
-    final T parse(String body) throws JsonParseException, JsonMappingException, IOException {
+    final T parse(String body) throws Exception {
         final org.kleini.bricklink.data.Response<U> response;
         try {
             response = mapper.readValue(body, getResponseType());
         } catch (JsonMappingException e) {
             System.err.println("Body: " + body);
             throw e;
+        }
+        Meta meta = response.getMeta();
+        if (200 != meta.getCode()) {
+            throw new Exception(meta.getDescription());
         }
         return createResponse(response);
     }
