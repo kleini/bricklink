@@ -13,8 +13,10 @@ import java.util.List;
 import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.api.PriceGuideRequest;
+import org.kleini.bricklink.api.PriceGuideRequest.GuideType;
 import org.kleini.bricklink.api.PriceGuideResponse;
 import org.kleini.bricklink.data.Condition;
+import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceDetail;
 import org.kleini.bricklink.data.PriceGuide;
@@ -35,8 +37,8 @@ public class Pricing {
 
     public static void main(String[] args) throws Exception {
         BrickStoreDeSerializer deSerializer = new BrickStoreDeSerializer();
-        URL url = Pricing.class.getClassLoader().getResource("79109-1.bsx");
-        final BrickStoreXML brickStore = deSerializer.load(url);
+        File file = new File(args[0]);
+        final BrickStoreXML brickStore = deSerializer.load(file);
         Configuration configuration = new Configuration();
         BrickLinkClient client = new BrickLinkClient(configuration);
         try {
@@ -44,22 +46,34 @@ public class Pricing {
         } finally {
             client.close();
         }
-        deSerializer.save(brickStore, new File("test.bsx"));
+        deSerializer.save(brickStore, new File(file.getParentFile(), "output.bsx"));
     }
 
     private static void addMissingPrices(BrickStoreXML brickStore, BrickLinkClient client) throws Exception {
         List<Item> list = brickStore.getInventory().getItem();
         for (Item item : list) {
             System.out.println(item.getColorName() + ' ' + item.getItemName());
-            PriceGuideRequest request = new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), Condition.valueOf(item.getCondition()));
+            PriceGuideRequest request = new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()));
             PriceGuideResponse response = client.execute(request);
             PriceGuide guide = response.getPriceGuide();
             BigDecimal average = getAverage(guide.getAveragePrice(), guide.getQuantityAveragePrice());
+//            BigDecimal price = adjust2GermanSellers(average, item, client);
             if (item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
                 item.setPrice(average.setScale(2, RoundingMode.HALF_UP));
+            } else {
+                item.setComments(average.setScale(2, RoundingMode.HALF_UP).toString());
             }
             item.setRemarks(guide.getQuantityAveragePrice().toString() + "," + guide.getAveragePrice().toString());
         }
+    }
+
+    private static BigDecimal adjust2GermanSellers(BigDecimal startValue, Item item, BrickLinkClient client) throws Exception {
+        PriceGuideRequest request = new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), Country.DE);
+        PriceGuideResponse response = client.execute(request);
+        PriceGuide guide = response.getPriceGuide();
+        List<PriceDetail> list = guide.getDetail();
+        // PriceDetail contains no information if price includes VAT or if VAT is excluded. This information is now useless.
+        return startValue;
     }
 
     private static BigDecimal getAverage(BigDecimal... values) {
@@ -70,23 +84,5 @@ public class Pricing {
             sum = sum.add(value);
         }
         return sum.divide(new BigDecimal(values.length), scale, RoundingMode.HALF_UP);
-    }
-
-    private static BigDecimal calculateAverage(List<PriceDetail> details) {
-        BigDecimal sum = new BigDecimal(0);
-        for (PriceDetail detail : details) {
-            sum = sum.add(detail.getPrice());
-        }
-        return sum.divide(new BigDecimal(details.size()), 4, RoundingMode.HALF_UP);
-    }
-
-    private static BigDecimal calculateQuantityAverage(List<PriceDetail> details) {
-        BigDecimal sum = new BigDecimal(0);
-        int count = 0;
-        for (PriceDetail detail : details) {
-            sum = sum.add(detail.getPrice().multiply(new BigDecimal(detail.getQuantity())));
-            count += detail.getQuantity();
-        }
-        return sum.divide(new BigDecimal(count), 4, RoundingMode.HALF_UP);
     }
 }

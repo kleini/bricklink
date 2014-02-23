@@ -5,7 +5,6 @@
 package org.kleini.bricklink;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import javax.net.ssl.SSLContext;
 import oauth.signpost.OAuthConsumer;
@@ -40,7 +39,7 @@ public class OrderDetails {
         Configuration configuration = new Configuration();
 
         OAuthConsumer oAuthConsumer = new CommonsHttpOAuthConsumer(configuration.getProperty(ConfigurationProperty.CONSUMER_KEY), configuration.getProperty(ConfigurationProperty.CONSUMER_SECRET));
-        oAuthConsumer.setTokenWithSecret(configuration.getProperty(ConfigurationProperty.ACCESS_TOKEN), configuration.getProperty(ConfigurationProperty.ACCESS_SECRET));
+        oAuthConsumer.setTokenWithSecret(configuration.getProperty(ConfigurationProperty.TOKEN_VALUE), configuration.getProperty(ConfigurationProperty.TOKEN_SECRET));
 
         SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustAllStrategy()).build();
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);

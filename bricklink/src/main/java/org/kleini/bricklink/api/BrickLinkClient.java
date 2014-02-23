@@ -4,8 +4,8 @@
 
 package org.kleini.bricklink.api;
 
-import static org.kleini.bricklink.api.ConfigurationProperty.ACCESS_SECRET;
-import static org.kleini.bricklink.api.ConfigurationProperty.ACCESS_TOKEN;
+import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_SECRET;
+import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_VALUE;
 import static org.kleini.bricklink.api.ConfigurationProperty.CONSUMER_KEY;
 import static org.kleini.bricklink.api.ConfigurationProperty.CONSUMER_SECRET;
 import java.io.IOException;
@@ -40,17 +40,17 @@ public final class BrickLinkClient {
     private final OAuthConsumer consumer;
     private final CloseableHttpClient client;
 
-    public BrickLinkClient(String consumerKey, String consumerSecret, String token, String tokenSecret) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+    public BrickLinkClient(String consumerKey, String consumerSecret, String tokenValue, String tokenSecret) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         super();
         consumer = new CommonsHttpOAuthConsumer(consumerKey, consumerSecret);
-        consumer.setTokenWithSecret(token, tokenSecret);
+        consumer.setTokenWithSecret(tokenValue, tokenSecret);
         SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustAllStrategy()).build();
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
         client = HttpClients.custom().setSSLSocketFactory(sslsf).build();
     }
 
     public BrickLinkClient(Configuration configuration) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
-        this(configuration.getProperty(CONSUMER_KEY), configuration.getProperty(CONSUMER_SECRET), configuration.getProperty(ACCESS_TOKEN), configuration.getProperty(ACCESS_SECRET));
+        this(configuration.getProperty(CONSUMER_KEY), configuration.getProperty(CONSUMER_SECRET), configuration.getProperty(TOKEN_VALUE), configuration.getProperty(TOKEN_SECRET));
     }
 
     public <T extends Response<?>> T execute(Request<T> request) throws Exception {

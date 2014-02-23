@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "quantity",
     "price",
     "condition",
+    "comments",
     "remarks",
     "bulk",
     "originalPrice",
@@ -89,6 +90,11 @@ public class Item {
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NCName")
     protected String condition;
+
+    @XmlElement(name = "Comments")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlSchemaType(name = "NCName")
+    protected String comments;
 
     @XmlElement(name = "Remarks")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
@@ -202,6 +208,14 @@ public class Item {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public String getRemarks() {

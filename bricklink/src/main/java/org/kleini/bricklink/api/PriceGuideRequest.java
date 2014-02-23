@@ -4,9 +4,13 @@
 
 package org.kleini.bricklink.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.kleini.bricklink.data.Condition;
+import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.Currency;
 import org.kleini.bricklink.data.ItemType;
-import org.kleini.bricklink.data.Condition;
 
 /**
  * {@link PriceGuideRequest}
@@ -18,14 +22,22 @@ public final class PriceGuideRequest implements Request<PriceGuideResponse> {
     private final ItemType type;
     private final String itemID;
     private final int colorID;
+    private final GuideType guideType;
     private final Condition newOrUsed;
+    private final Country country;
 
-    public PriceGuideRequest(ItemType type, String itemID, int colorID, Condition newOrUsed) {
+    public PriceGuideRequest(ItemType type, String itemID, int colorID, GuideType guideType, Condition newOrUsed, Country country) {
         super();
         this.type = type;
         this.itemID = itemID;
         this.colorID = colorID;
+        this.guideType = guideType;
         this.newOrUsed = newOrUsed;
+        this.country = country;
+    }
+
+    public PriceGuideRequest(ItemType type, String itemID, int colorID, GuideType guideType, Condition newOrUsed) {
+        this(type, itemID, colorID, guideType, newOrUsed, null);
     }
 
     @Override
@@ -35,16 +47,31 @@ public final class PriceGuideRequest implements Request<PriceGuideResponse> {
 
     @Override
     public Parameter[] getParameters() {
-        return new Parameter[] {
-            new Parameter("color_id", colorID),
-            new Parameter("guide_type", "sold"),
-            new Parameter("new_or_used", newOrUsed.name()),
-            new Parameter("currency_code", Currency.EUR.name())
-        };
+        List<Parameter> retval = new ArrayList<Parameter>();
+        retval.add(new Parameter("color_id", colorID));
+        retval.add(new Parameter("guide_type", guideType.getParamValue()));
+        retval.add(new Parameter("new_or_used", newOrUsed.name()));
+        retval.add(new Parameter("currency_code", Currency.EUR.name()));
+        if (null != country) {
+            retval.add(new Parameter("country_code", country.name()));
+        }
+        return retval.toArray(new Parameter[retval.size()]);
     }
 
     @Override
     public PriceGuideParser getParser() {
         return new PriceGuideParser();
+    }
+
+    public enum GuideType {
+        SOLD("sold"),
+        STOCK("stock");
+        private final String paramValue;
+        GuideType(String paramValue) {
+            this.paramValue = paramValue;
+        }
+        public String getParamValue() {
+            return paramValue;
+        }
     }
 }
