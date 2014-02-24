@@ -21,10 +21,14 @@ public enum ItemType {
     UNSORTED_LOT("U"),
     ORIGINAL_BOX("O");
 
-    private String id;
+    private final String id;
 
     private ItemType(String id) {
         this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public static ItemType byID(String id) throws Exception {

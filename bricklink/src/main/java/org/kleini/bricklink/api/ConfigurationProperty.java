@@ -11,6 +11,8 @@ package org.kleini.bricklink.api;
  */
 public enum ConfigurationProperty {
 
+    LOGIN("org.kleini.bricklink.login"),
+    PASSWORD("org.kleini.bricklink.password"),
     CONSUMER_KEY("org.kleini.bricklink.consumerKey"),
     CONSUMER_SECRET("org.kleini.bricklink.consumerSecret"),
     TOKEN_VALUE("org.kleini.bricklink.tokenValue"),

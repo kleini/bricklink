@@ -6,10 +6,10 @@ package org.kleini.bricklink.api;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.Currency;
+import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
 
 /**
@@ -61,17 +61,5 @@ public final class PriceGuideRequest implements Request<PriceGuideResponse> {
     @Override
     public PriceGuideParser getParser() {
         return new PriceGuideParser();
-    }
-
-    public enum GuideType {
-        SOLD("sold"),
-        STOCK("stock");
-        private final String paramValue;
-        GuideType(String paramValue) {
-            this.paramValue = paramValue;
-        }
-        public String getParamValue() {
-            return paramValue;
-        }
     }
 }
