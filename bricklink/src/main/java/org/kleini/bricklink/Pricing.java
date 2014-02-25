@@ -8,10 +8,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.Configuration;
-import org.kleini.bricklink.api.PriceGuideRequest;
-import org.kleini.bricklink.api.PriceGuideResponse;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.GuideType;
@@ -19,6 +16,7 @@ import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceDetail;
 import org.kleini.bricklink.data.PriceGuide;
 import org.kleini.bricklink.selenium.BrickLinkSelenium;
+import org.kleini.bricklink.tools.PriceGuideTools;
 import org.kleini.brickstore.BrickStoreDeSerializer;
 import org.kleini.brickstore.data.BrickStoreXML;
 import org.kleini.brickstore.data.Item;
@@ -39,49 +37,53 @@ public class Pricing {
         File file = new File(args[0]);
         final BrickStoreXML brickStore = deSerializer.load(file);
         Configuration configuration = new Configuration();
-        BrickLinkClient client = new BrickLinkClient(configuration);
         BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         try {
-            addMissingPrices(brickStore, client, selenium);
+            addMissingPrices(brickStore, selenium);
         } finally {
             selenium.close();
-            client.close();
         }
         deSerializer.save(brickStore, new File(file.getParentFile(), "output.bsx"));
     }
 
-    private static void addMissingPrices(BrickStoreXML brickStore, BrickLinkClient client, BrickLinkSelenium selenium) throws Exception {
+    private static void addMissingPrices(BrickStoreXML brickStore, BrickLinkSelenium selenium) throws Exception {
         List<Item> list = brickStore.getInventory().getItem();
         for (Item item : list) {
-            System.out.println(item.getColorName() + ' ' + item.getItemName());
-            PriceGuide guide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()));
-            BigDecimal average = getAverage(guide.getAveragePrice(), guide.getQuantityAveragePrice());
-//            BigDecimal price = adjust2GermanSellers(average, item, client);
-            if (item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-                item.setPrice(average.setScale(2, RoundingMode.HALF_UP));
-            } else {
-                item.setComments(average.setScale(2, RoundingMode.HALF_UP).toString());
-            }
-            item.setRemarks(guide.getQuantityAveragePrice().toString() + "," + guide.getAveragePrice().toString());
+            determinePrice(item, selenium);
         }
     }
 
-    private static BigDecimal adjust2GermanSellers(BigDecimal startValue, Item item, BrickLinkClient client) throws Exception {
-        PriceGuideRequest request = new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), Country.DE);
-        PriceGuideResponse response = client.execute(request);
-        PriceGuide guide = response.getPriceGuide();
-        List<PriceDetail> list = guide.getDetail();
-        // PriceDetail contains no information if price includes VAT or if VAT is excluded. This information is now useless.
-        return startValue;
-    }
-
-    private static BigDecimal getAverage(BigDecimal... values) {
-        BigDecimal sum = new BigDecimal(0);
-        int scale = 0;
-        for (BigDecimal value : values) {
-            scale = Math.max(scale, value.scale());
-            sum = sum.add(value);
+    private static void determinePrice(Item item, BrickLinkSelenium selenium) throws Exception {
+        System.out.println(item.getColorName() + ' ' + item.getItemName());
+        PriceGuide guide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()));
+        BigDecimal averageSold = guide.getQuantityAveragePrice();
+        StringBuilder remarks = new StringBuilder();
+        remarks.append(averageSold.toString());
+        remarks.append(',');
+        BigDecimal price = averageSold.setScale(2, RoundingMode.HALF_UP);
+        PriceGuide guideDE = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()));
+        List<PriceDetail> offersDE = PriceGuideTools.extract(guideDE.getDetail(), Country.DE);
+        boolean apply = false;
+        if (offersDE.size() <= 5) {
+            remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
+            remarks.append(',');
+            remarks.append(offersDE.size());
+            apply = true;
+        } else {
+            PriceDetail lowDetail = offersDE.get(2);
+            PriceDetail highDetail = offersDE.get(Math.min(offersDE.size() - 1, 9));
+            apply = lowDetail.getPrice().compareTo(price) == -1 && highDetail.getPrice().compareTo(price) == 1;
+            remarks.append(lowDetail.getPrice());
+            remarks.append(',');
+            remarks.append(highDetail.getPrice());
+            remarks.append(',');
+            remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
         }
-        return sum.divide(new BigDecimal(values.length), scale, RoundingMode.HALF_UP);
+        if (apply && item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+            item.setPrice(price);
+        } else {
+            item.setComments(price.toString());
+        }
+        item.setRemarks(remarks.toString());
     }
 }

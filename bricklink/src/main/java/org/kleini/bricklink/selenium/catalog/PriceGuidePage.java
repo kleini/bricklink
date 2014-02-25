@@ -7,7 +7,9 @@ package org.kleini.bricklink.selenium.catalog;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.kleini.bricklink.data.Condition;
+import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceDetail;
@@ -63,7 +65,7 @@ public final class PriceGuidePage {
         for (WebElement element : list) {
             List<WebElement> columnList = element.findElements(By.xpath("td"));
             if (3 == columnList.size()) {
-                parsePriceDetail(retval, columnList);
+                parsePriceDetail(retval, columnList, guideType);
             } else if (2 == columnList.size()) {
                 parsePriceGuide(retval, columnList);
             }
@@ -71,7 +73,7 @@ public final class PriceGuidePage {
         return retval;
     }
 
-    private static void parsePriceDetail(PriceGuide retval, List<WebElement> list) throws Exception {
+    private static void parsePriceDetail(PriceGuide retval, List<WebElement> list, GuideType guideType) throws Exception {
         String countText = list.get(1).getText();
         if ("Qty".equals(countText)) {
             return;
@@ -83,6 +85,12 @@ public final class PriceGuidePage {
             detail.setPrice(parseBigDecimal(priceText));
         } catch (NumberFormatException e) {
             throw new Exception("Can not parse \"" + countText + "\" or \"" + priceText + "\".", e);
+        }
+        if (GuideType.STOCK == guideType) {
+            WebElement countryFlag = list.get(0).findElement(By.xpath(".//img[contains(@src, 'flagsS')]"));
+            String flagURL = countryFlag.getAttribute("src");
+            String countryCode = flagURL.substring(flagURL.lastIndexOf('/') + 1, flagURL.lastIndexOf('.')).toUpperCase(Locale.US);
+            detail.setSellerCountry(Country.valueOf(countryCode));
         }
         List<PriceDetail> details = retval.getDetail();
         if (null == details) {
