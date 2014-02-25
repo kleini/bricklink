@@ -40,7 +40,7 @@ public final class PriceGuidePage {
         priceGuideTab.click();
     }
 
-    public PriceGuide getPriceGuide(ItemType itemType, String itemID, int colorID, GuideType guideType, Condition condition) throws Exception {
+    public PriceGuide getPriceGuide(ItemType itemType, String itemID, int colorID, GuideType guideType, Condition condition, boolean details) throws Exception {
         // Fill all required input fields.
         WebElement itemTypeSelect = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../..//select[@name='itemType']"));
         itemTypeSelect.findElement(By.xpath("option[@value='" + itemType.getId() + "']")).click();
@@ -59,12 +59,12 @@ public final class PriceGuidePage {
         WebElement button = driver.findElement(By.xpath("//input[@value='View Price Guide Info']"));
         button.click();
         // Go to next page and fetch values
-        WebElement myColumn = driver.findElement(By.xpath("//td[@width='25%'][" + calculateColumn(guideType, condition) + ']'));
-        List<WebElement> list = myColumn.findElements(By.xpath(".//tr[@align='RIGHT']"));
+        WebElement myColumn = driver.findElement(By.cssSelector("td[width=\"25%\"]:nth-of-type(" + calculateColumn(guideType, condition) + ')'));
+        List<WebElement> list = myColumn.findElements(By.cssSelector("tr[align=\"RIGHT\"]"));
         PriceGuide retval = new PriceGuide();
         for (WebElement element : list) {
-            List<WebElement> columnList = element.findElements(By.xpath("td"));
-            if (3 == columnList.size()) {
+            List<WebElement> columnList = element.findElements(By.cssSelector("td"));
+            if (3 == columnList.size() && details) {
                 parsePriceDetail(retval, columnList, guideType);
             } else if (2 == columnList.size()) {
                 parsePriceGuide(retval, columnList);
@@ -87,7 +87,7 @@ public final class PriceGuidePage {
             throw new Exception("Can not parse \"" + countText + "\" or \"" + priceText + "\".", e);
         }
         if (GuideType.STOCK == guideType) {
-            WebElement countryFlag = list.get(0).findElement(By.xpath(".//img[contains(@src, 'flagsS')]"));
+            WebElement countryFlag = list.get(0).findElement(By.cssSelector(" img[src*=\"flagsS\"]"));
             String flagURL = countryFlag.getAttribute("src");
             String countryCode = flagURL.substring(flagURL.lastIndexOf('/') + 1, flagURL.lastIndexOf('.')).toUpperCase(Locale.US);
             detail.setSellerCountry(Country.valueOf(countryCode));

@@ -49,19 +49,21 @@ public class Pricing {
     private static void addMissingPrices(BrickStoreXML brickStore, BrickLinkSelenium selenium) throws Exception {
         List<Item> list = brickStore.getInventory().getItem();
         for (Item item : list) {
+            long start = System.currentTimeMillis();
             determinePrice(item, selenium);
+            System.out.println("" + ((System.currentTimeMillis() - start)/1000));
         }
     }
 
     private static void determinePrice(Item item, BrickLinkSelenium selenium) throws Exception {
-        System.out.println(item.getColorName() + ' ' + item.getItemName());
-        PriceGuide guide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()));
+        System.out.print(item.getColorName() + ' ' + item.getItemName());
+        PriceGuide guide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), false);
         BigDecimal averageSold = guide.getQuantityAveragePrice();
         StringBuilder remarks = new StringBuilder();
         remarks.append(averageSold.toString());
         remarks.append(',');
         BigDecimal price = averageSold.setScale(2, RoundingMode.HALF_UP);
-        PriceGuide guideDE = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()));
+        PriceGuide guideDE = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
         List<PriceDetail> offersDE = PriceGuideTools.extract(guideDE.getDetail(), Country.DE);
         boolean apply = false;
         if (offersDE.size() <= 5) {
@@ -85,5 +87,6 @@ public class Pricing {
             item.setComments(price.toString());
         }
         item.setRemarks(remarks.toString());
+        System.out.println(' ' + price.toString() + ' ' + remarks.toString());
     }
 }
