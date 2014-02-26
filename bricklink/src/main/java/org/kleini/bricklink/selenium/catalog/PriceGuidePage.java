@@ -59,26 +59,29 @@ public final class PriceGuidePage {
         WebElement button = driver.findElement(By.xpath("//input[@value='View Price Guide Info']"));
         button.click();
         // Go to next page and fetch values
-        WebElement myColumn = driver.findElement(By.cssSelector("td[width=\"25%\"]:nth-of-type(" + calculateColumn(guideType, condition) + ')'));
-        List<WebElement> list = myColumn.findElements(By.cssSelector("tr[align=\"RIGHT\"]"));
+        WebElement myColumn = driver.findElement(By.xpath("//td[@width='25%'][position()=" + calculateColumn(guideType, condition) + ']'));
         PriceGuide retval = new PriceGuide();
-        for (WebElement element : list) {
-            List<WebElement> columnList = element.findElements(By.cssSelector("td"));
-            if (3 == columnList.size() && details) {
-                parsePriceDetail(retval, columnList, guideType);
-            } else if (2 == columnList.size()) {
-                parsePriceGuide(retval, columnList);
-            }
+        if (details) {
+            List<WebElement> priceDetailColumns = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=3]/td"));
+            parsePriceDetail(retval, priceDetailColumns, guideType);
         }
+        List<WebElement> priceDetailColumns = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=2]/td"));
+        parsePriceGuide(retval, priceDetailColumns);
         return retval;
     }
 
     private static void parsePriceDetail(PriceGuide retval, List<WebElement> list, GuideType guideType) throws Exception {
-        String countText = list.get(1).getText();
+        for (int i = 0; i < list.size(); i+=3) {
+            parsePriceDetail(retval, guideType, list.get(i), list.get(i + 1), list.get(i + 2));
+        }
+    }
+
+    private static void parsePriceDetail(PriceGuide retval, GuideType guideType, WebElement... list) throws Exception {
+        String countText = list[1].getText();
         if ("Qty".equals(countText)) {
             return;
         }
-        String priceText = list.get(2).getText();
+        String priceText = list[2].getText();
         PriceDetail detail = new PriceDetail();
         try {
             detail.setQuantity(Integer.parseInt(countText));
@@ -87,7 +90,7 @@ public final class PriceGuidePage {
             throw new Exception("Can not parse \"" + countText + "\" or \"" + priceText + "\".", e);
         }
         if (GuideType.STOCK == guideType) {
-            WebElement countryFlag = list.get(0).findElement(By.cssSelector(" img[src*=\"flagsS\"]"));
+            WebElement countryFlag = list[0].findElement(By.cssSelector(" img[src*=\"flagsS\"]"));
             String flagURL = countryFlag.getAttribute("src");
             String countryCode = flagURL.substring(flagURL.lastIndexOf('/') + 1, flagURL.lastIndexOf('.')).toUpperCase(Locale.US);
             detail.setSellerCountry(Country.valueOf(countryCode));
@@ -101,8 +104,14 @@ public final class PriceGuidePage {
     }
 
     private static void parsePriceGuide(PriceGuide guide, List<WebElement> list) throws Exception {
-        String type = list.get(0).getText(); 
-        String value = list.get(1).getText(); // "EUR 0.0743"
+        for (int i = 0; i < list.size(); i+=2) {
+            parsePriceGuide(guide, list.get(i), list.get(i+1));
+        }
+    }
+
+    private static void parsePriceGuide(PriceGuide guide, WebElement... list) throws Exception {
+        String type = list[0].getText();
+        String value = list[1].getText(); // "EUR 0.0743"
         try {
             if (type.startsWith("Times Sold:")) {
                 guide.setUnits(Integer.parseInt(value));
