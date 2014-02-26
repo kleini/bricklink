@@ -62,36 +62,34 @@ public final class PriceGuidePage {
         WebElement myColumn = driver.findElement(By.xpath("//td[@width='25%'][position()=" + calculateColumn(guideType, condition) + ']'));
         PriceGuide retval = new PriceGuide();
         if (details) {
-            List<WebElement> priceDetailColumns = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=3]/td"));
-            parsePriceDetail(retval, priceDetailColumns, guideType);
+            List<WebElement> priceDetailColumns = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=3 and position()>1]/td"));
+            if (GuideType.STOCK == guideType) {
+                List<WebElement> countryFlags = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=3 and position()>1]/td/img[contains(@src, 'flagsS')]"));
+                for (int i = 0; i < priceDetailColumns.size(); i+=3) {
+                    parsePriceDetail(retval, priceDetailColumns.get(i + 1).getText(), priceDetailColumns.get(i + 2).getText(), countryFlags.get(i/3).getAttribute("src"));
+                }
+            } else {
+                for (int i = 0; i < priceDetailColumns.size(); i+=3) {
+                    parsePriceDetail(retval, priceDetailColumns.get(i + 1).getText(), priceDetailColumns.get(i + 2).getText(), null);
+                }
+            }
         }
         List<WebElement> priceDetailColumns = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=2]/td"));
-        parsePriceGuide(retval, priceDetailColumns);
+        for (int i = 0; i < priceDetailColumns.size(); i+=2) {
+            parsePriceGuide(retval, priceDetailColumns.get(i).getText(), priceDetailColumns.get(i+1).getText());
+        }
         return retval;
     }
 
-    private static void parsePriceDetail(PriceGuide retval, List<WebElement> list, GuideType guideType) throws Exception {
-        for (int i = 0; i < list.size(); i+=3) {
-            parsePriceDetail(retval, guideType, list.get(i), list.get(i + 1), list.get(i + 2));
-        }
-    }
-
-    private static void parsePriceDetail(PriceGuide retval, GuideType guideType, WebElement... list) throws Exception {
-        String countText = list[1].getText();
-        if ("Qty".equals(countText)) {
-            return;
-        }
-        String priceText = list[2].getText();
+    private static void parsePriceDetail(PriceGuide retval, String quantity, String price, String flagURL) throws Exception {
         PriceDetail detail = new PriceDetail();
         try {
-            detail.setQuantity(Integer.parseInt(countText));
-            detail.setPrice(parseBigDecimal(priceText));
+            detail.setQuantity(Integer.parseInt(quantity));
+            detail.setPrice(parseBigDecimal(price));
         } catch (NumberFormatException e) {
-            throw new Exception("Can not parse \"" + countText + "\" or \"" + priceText + "\".", e);
+            throw new Exception("Can not parse \"" + quantity + "\" or \"" + price + "\".", e);
         }
-        if (GuideType.STOCK == guideType) {
-            WebElement countryFlag = list[0].findElement(By.cssSelector(" img[src*=\"flagsS\"]"));
-            String flagURL = countryFlag.getAttribute("src");
+        if (null != flagURL) {
             String countryCode = flagURL.substring(flagURL.lastIndexOf('/') + 1, flagURL.lastIndexOf('.')).toUpperCase(Locale.US);
             detail.setSellerCountry(Country.valueOf(countryCode));
         }
@@ -103,15 +101,10 @@ public final class PriceGuidePage {
         details.add(detail);
     }
 
-    private static void parsePriceGuide(PriceGuide guide, List<WebElement> list) throws Exception {
-        for (int i = 0; i < list.size(); i+=2) {
-            parsePriceGuide(guide, list.get(i), list.get(i+1));
-        }
-    }
-
-    private static void parsePriceGuide(PriceGuide guide, WebElement... list) throws Exception {
-        String type = list[0].getText();
-        String value = list[1].getText(); // "EUR 0.0743"
+    /**
+     * @param value "EUR 0.0743"
+     */
+    private static void parsePriceGuide(PriceGuide guide, String type, String value) throws Exception {
         try {
             if (type.startsWith("Times Sold:")) {
                 guide.setUnits(Integer.parseInt(value));

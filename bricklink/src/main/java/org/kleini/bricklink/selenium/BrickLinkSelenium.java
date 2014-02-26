@@ -6,7 +6,6 @@ package org.kleini.bricklink.selenium;
 
 import static org.kleini.bricklink.api.ConfigurationProperty.LOGIN;
 import static org.kleini.bricklink.api.ConfigurationProperty.PASSWORD;
-
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.GuideType;
@@ -15,6 +14,7 @@ import org.kleini.bricklink.data.PriceGuide;
 import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 /**
  * {@link BrickLinkSelenium}
@@ -31,8 +31,8 @@ public final class BrickLinkSelenium {
 
     public BrickLinkSelenium(String login, String password) throws Exception {
         super();
-        driver = new FirefoxDriver();
-//        driver = new PhantomJSDriver();
+//        driver = new FirefoxDriver();
+        driver = new PhantomJSDriver();
 //        driver = new ChromeDriver();
         driver.get(URL);
         loginPage = new LoginPage(driver);
