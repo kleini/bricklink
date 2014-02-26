@@ -67,23 +67,41 @@ public class Pricing {
         List<PriceDetail> offersDE = PriceGuideTools.extract(guideDE.getDetail(), Country.DE);
         boolean apply = false;
         if (offersDE.size() <= 5) {
-            remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
-            remarks.append(',');
-            remarks.append(offersDE.size());
-            apply = true;
-        } else {
-            PriceDetail lowDetail = offersDE.get(2);
-            PriceDetail highDetail = offersDE.get(Math.min(offersDE.size() - 1, 9));
-            apply = lowDetail.getPrice().compareTo(price) == -1 && highDetail.getPrice().compareTo(price) == 1;
+            PriceDetail lowDetail = offersDE.get(0);
+            PriceDetail highDetail = offersDE.get(offersDE.size() - 1);
             remarks.append(lowDetail.getPrice());
             remarks.append(',');
             remarks.append(highDetail.getPrice());
             remarks.append(',');
             remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
+            remarks.append(',');
+            remarks.append(offersDE.size());
+            apply = true;
+        } else {
+            BigDecimal lowPrice = offersDE.get(2).getPrice();
+            BigDecimal highPrice = offersDE.get(Math.min(offersDE.size() - 1, 9)).getPrice();
+            remarks.append(lowPrice);
+            remarks.append(',');
+            remarks.append(highPrice);
+            remarks.append(',');
+            int myPos = PriceGuideTools.getMyPosition(item.getQty(), price, offersDE);
+            remarks.append(myPos + 1);
+            if (myPos < 2 || myPos > 9) {
+                if (myPos < 2) {
+                    price = lowPrice.setScale(2, RoundingMode.UP);
+                }
+                if (myPos > 9) {
+                    price = highPrice.setScale(2, RoundingMode.DOWN);
+                }
+                myPos = PriceGuideTools.getMyPosition(item.getQty(), price, offersDE);
+                remarks.append(',');
+                remarks.append(myPos + 1);
+            }
+            apply = myPos >= 2 && myPos <= 9;
         }
         if (apply && item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
             item.setPrice(price);
-        } else {
+        } else if (item.getPrice().compareTo(price) != 0) {
             item.setComments(price.toString());
         }
         item.setRemarks(remarks.toString());
