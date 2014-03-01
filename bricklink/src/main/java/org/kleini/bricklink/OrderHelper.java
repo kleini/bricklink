@@ -24,6 +24,9 @@ public final class OrderHelper {
 
     public boolean isNotBilled(Order order) throws Exception {
         String remarks = order.getRemarks();
+        if (null == remarks) {
+            return true;
+        }
         Matcher matcher = commentPattern.matcher(remarks);
         final boolean retval;
         if (matcher.matches()) {
