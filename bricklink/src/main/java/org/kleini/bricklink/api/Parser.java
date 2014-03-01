@@ -42,7 +42,7 @@ abstract class Parser<T extends Response<?>, U> {
         }
         Meta meta = response.getMeta();
         if (200 != meta.getCode()) {
-            throw new Exception(meta.getDescription());
+            throw new Exception(meta.getMessage() + ";" + meta.getDescription());
         }
         return createResponse(response);
     }
