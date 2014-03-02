@@ -26,6 +26,10 @@ class Parameter {
         this(name, Integer.toString(value));
     }
 
+    public Parameter(String name, char value) {
+        this(name, new String(new char[] { value }));
+    }
+
     final String getName() {
         return name;
     }

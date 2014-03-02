@@ -14,14 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class Item {
 
     /**
-     * Item's identification number in BL catalog
+     * Item's identification number in BrickLink catalog
      */
     private String identifier;
+
+    /**
+     * The name of this item
+     */
+    private String name;
 
     /**
      * The type of the item
      */
     private ItemType type;
+
+    /**
+     * The main category of the item
+     */
+    private Category category;
 
     public Item() {
         super();
@@ -37,6 +47,16 @@ public final class Item {
         this.identifier = identifier;
     }
 
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @JsonProperty("type")
     public ItemType getType() {
         return type;
@@ -45,5 +65,18 @@ public final class Item {
     @JsonProperty("type")
     public void setType(ItemType type) {
         this.type = type;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @JsonProperty("categoryID")
+    public void setCategoryById(int identifier) throws Exception {
+        this.category = Category.byId(identifier);
     }
 }

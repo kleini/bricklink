@@ -11,24 +11,29 @@ package org.kleini.bricklink.data;
  */
 public enum ItemType {
 
-    MINIFIG("M"),
-    PART("P"),
-    SET("S"),
-    BOOK("B"),
-    GEAR("G"),
-    CATALOG("C"),
-    INSTRUCTION("I"),
-    UNSORTED_LOT("U"),
-    ORIGINAL_BOX("O");
+    MINIFIG("M", "minifig"),
+    PART("P", "part"),
+    SET("S", "set"),
+    BOOK("B", "book"),
+    GEAR("G", "gear"),
+    CATALOG("C", "catalog"),
+    INSTRUCTION("I", "instruction"),
+    UNSORTED_LOT("U", "unsorted_lot"),
+    ORIGINAL_BOX("O", "original_box");
 
-    private final String id;
+    private final String id, longId;
 
-    private ItemType(String id) {
+    private ItemType(String id, String longId) {
         this.id = id;
+        this.longId = longId;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getLongId() {
+        return longId;
     }
 
     public static ItemType byID(String id) throws Exception {

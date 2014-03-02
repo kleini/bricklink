@@ -75,6 +75,9 @@ public class Item {
     @XmlElement(name = "CategoryName", required = true)
     protected String categoryName;
 
+    /**
+     * TODO replace with according enumeration
+     */
     @XmlElement(name = "Status", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NCName")
