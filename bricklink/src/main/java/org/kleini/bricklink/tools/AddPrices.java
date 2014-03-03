@@ -39,14 +39,17 @@ public final class AddPrices {
 
     private static void determinePrice(Item item, BrickLinkSelenium selenium) throws Exception {
         System.out.print(item.getColorName() + ' ' + item.getItemName());
-        PriceGuide guide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), false);
-        BigDecimal averageSold = guide.getQuantityAveragePrice();
+        PriceGuide soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), false);
+        BigDecimal averageSold = soldGuide.getQuantityAveragePrice();
         StringBuilder remarks = new StringBuilder();
         remarks.append(averageSold.toString());
         remarks.append(',');
         BigDecimal price = averageSold.setScale(2, RoundingMode.HALF_UP);
-        PriceGuide guideDE = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
-        List<PriceDetail> offersDE = PriceGuideTools.extract(guideDE.getDetail(), Country.DE);
+        PriceGuide offersGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
+        List<PriceDetail> offersDE = PriceGuideTools.extract(offersGuide.getDetail(), Country.DE);
+        if (offersDE.isEmpty()) {
+            offersDE = offersGuide.getDetail();
+        }
         boolean apply = false;
         if (offersDE.size() <= 5) {
             PriceDetail lowDetail = offersDE.get(0);
@@ -56,11 +59,11 @@ public final class AddPrices {
             remarks.append(highDetail.getPrice());
             remarks.append(',');
             remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
-            remarks.append(',');
+            remarks.append(" of ");
             remarks.append(offersDE.size());
             apply = true;
         } else {
-            BigDecimal lowPrice = offersDE.get(2).getPrice();
+            BigDecimal lowPrice = offersDE.get(3).getPrice();
             BigDecimal highPrice = offersDE.get(Math.min(offersDE.size() - 1, 9)).getPrice();
             remarks.append(lowPrice);
             remarks.append(',');
@@ -68,8 +71,8 @@ public final class AddPrices {
             remarks.append(',');
             int myPos = PriceGuideTools.getMyPosition(item.getQty(), price, offersDE);
             remarks.append(myPos + 1);
-            if (myPos < 2 || myPos > 9) {
-                if (myPos < 2) {
+            if (myPos < 3 || myPos > 9) {
+                if (myPos < 3) {
                     price = lowPrice.setScale(2, RoundingMode.UP);
                 }
                 if (myPos > 9) {
@@ -79,7 +82,7 @@ public final class AddPrices {
                 remarks.append(',');
                 remarks.append(myPos + 1);
             }
-            apply = myPos >= 2 && myPos <= 9;
+            apply = myPos >= 3 && myPos <= 9;
         }
         if (apply && item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
             item.setPrice(price);
