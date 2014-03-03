@@ -39,7 +39,8 @@ public final class InventoriesRequest implements Request<InventoriesResponse> {
     @Override
     public Parameter[] getParameters() {
         return new Parameter[] {
-            new Parameter("item_type", type.getLongId()),
+            // API description is wrong. The value must not be "part". It must be "P".
+            new Parameter("item_type", type.getId()),
             new Parameter("status", status.getIdentifier()),
             new Parameter("category_id", category.getIdentifier()),
             new Parameter("color_id", color.getIdentifier())
