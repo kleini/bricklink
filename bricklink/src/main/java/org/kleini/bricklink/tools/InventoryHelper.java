@@ -37,12 +37,13 @@ public final class InventoryHelper {
         List<Inventory> list = response.getInventories();
         Inventory inventory = findMatchingItem(list, item);
         if (null != inventory) {
+            System.out.println(item.getColorName() + ' ' + item.getItemName() + " already in shop.");
             item.setPrice(inventory.getPrice());
             item.setStatus("X");
         }
     }
 
-    private Inventory findMatchingItem(List<Inventory> list, Item item) {
+    private static Inventory findMatchingItem(List<Inventory> list, Item item) {
         for (Inventory inventory : list) {
             if (inventory.getItem().getIdentifier().equals(item.getItemID()) && inventory.getCondition().equals(Condition.valueOf(item.getCondition()))) {
                 return inventory;
