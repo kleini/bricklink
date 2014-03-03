@@ -31,8 +31,8 @@ public final class BrickLinkSelenium {
 
     public BrickLinkSelenium(String login, String password) throws Exception {
         super();
-//        driver = new FirefoxDriver();
-        driver = new PhantomJSDriver();
+        driver = new FirefoxDriver();
+//        driver = new PhantomJSDriver();
 //        driver = new ChromeDriver();
         driver.get(URL);
         loginPage = new LoginPage(driver);
@@ -45,6 +45,7 @@ public final class BrickLinkSelenium {
 
     public void close() {
         loginPage.logout();
+        driver.quit();
     }
 
     public PriceGuide getPriceGuide(ItemType itemType, String itemID, int colorID, GuideType sold, Condition condition, boolean details) throws Exception {
