@@ -63,7 +63,7 @@ public final class PriceGuidePage {
         WebElement button = driver.findElement(By.xpath("//input[@value='View Price Guide Info']"));
         button.click();
         // Go to next page and fetch values
-        WebElement myColumn = driver.findElement(By.xpath("//td[@width='25%'][position()=" + calculateColumn(guideType, condition) + ']'));
+        WebElement myColumn = driver.findElement(By.cssSelector("td[width=\"25%\"]:nth-of-type(" + calculateColumn(guideType, condition) + ")"));
         if (driver instanceof JavascriptExecutor) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             // Inject jQuery

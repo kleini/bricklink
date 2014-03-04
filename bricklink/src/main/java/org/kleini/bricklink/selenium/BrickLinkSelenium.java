@@ -31,8 +31,8 @@ public final class BrickLinkSelenium {
 
     public BrickLinkSelenium(String login, String password) throws Exception {
         super();
-        driver = new FirefoxDriver();
-//        driver = new PhantomJSDriver();
+//        driver = new FirefoxDriver();
+        driver = new PhantomJSDriver();
 //        driver = new ChromeDriver();
         driver.get(URL);
         loginPage = new LoginPage(driver);

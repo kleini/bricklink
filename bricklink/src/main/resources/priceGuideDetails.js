@@ -1,7 +1,8 @@
 function getData (column) {
     var rows = $(column).find('tr[align="right"]'),
-        list = [],
-        priceGuide = new Object();
+        priceGuide = {
+            price_detail: []
+        };
 
     $.each(rows, function (index, row) {
         if (0 === index) {
@@ -9,51 +10,43 @@ function getData (column) {
         }
         var childs = $(row).children();
         if (3 == childs.length) {
-            var seller_country = $($(childs[0]).find('img')[1]).attr('src'),
+            var seller_country = $($(childs[0]).find('img[src*="flagsS"]')).attr('src'),
                 quantity = parseInt($(childs[1]).text(), 10),
-                unit_price = parseFloat($(childs[2]).text().replace('~EUR', ''), 10);
+                unit_price = parseFloat($(childs[2]).text().replace('~', '').replace('EUR', ''), 10);
+            var priceDetail = {
+                qunatity: quantity,
+                unit_price: unit_price,
+            };
+            priceGuide.price_detail.push(priceDetail);
             if (seller_country) {
-                seller_country = seller_country.split('/')[3].split('.')[0];
-                list.push({
-                    qunatity: quantity,
-                    unit_price: unit_price,
-                    seller_country_code: seller_country
-                });
-            } else {
-                list.push({
-                    qunatity: quantity,
-                    unit_price: unit_price,
-                });
+                priceDetail.seller_country_code = seller_country.split('/')[3].split('.')[0];
             }
         }
         if (2 == childs.length) {
-            var name = $(childs[0]).text();
-            var value = $(childs[1]).text();
-            console.log(name + "," + value);
-            if ("Times Sold: " == name || "Total Lots: " == name) {
+            var name = $(childs[0]).text(),
+                value = $(childs[1]).text().replace('~', '').replace('EUR', '');
+            if (name.indexOf('Times Sold') !== -1 || name.indexOf('Total Lots') !== -1) {
                 priceGuide.unit_quantity = parseInt(value, 10);
             }
-            if (name == 'Total Qty: ') {
+            if (name.indexOf('Total Qty', 0) !== -1) {
                 priceGuide.total_quantity = parseInt(value, 10);
             }
-            if ("Min Price: " == name) {
-                priceGuide.min_price = parseFloat(value.replace('~EUR', ''), 10);
+            if (name.indexOf('Min Price') !== -1) {
+                priceGuide.min_price = parseFloat(value, 10);
             }
-            if ("Avg Price: " == name) {
-                priceGuide.avg_price = parseFloat(value.replace('~EUR', ''), 10);
+            if (name.indexOf('Avg Price') !== -1 && name.indexOf('Qty') === -1) {
+                priceGuide.avg_price = parseFloat(value, 10);
             }
-            if ("Qty Avg Price: " == name) {
-                priceGuide.qty_avg_price = parseFloat(value.replace('~EUR', ''), 10);
+            if (name.indexOf('Qty Avg Price') !== -1) {
+                priceGuide.qty_avg_price = parseFloat(value, 10);
             }
-            if ("Max Price: " == name) {
-                priceGuide.max_price = parseFloat(value.replace('~EUR', ''), 10);
+            if (name.indexOf('Max Price') !== -1) {
+                priceGuide.max_price = parseFloat(value, 10);
             }
         }
     });
-    priceGuide.price_detail = list;
 
-    console.log(JSON.stringify(priceGuide, 0, undefined));
-    return priceGuide;
+    return JSON.stringify(priceGuide, 2, undefined);
 }
 
-return JSON.stringify(getData($('td[width="25%"]:nth-of-type(3)')), 2, undefined);
+return getData(arguments[0]);
