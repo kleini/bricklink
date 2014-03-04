@@ -9,7 +9,7 @@ function getData (column) {
             return;
         }
         var childs = $(row).children();
-        if (3 == childs.length) {
+        if (3 === childs.length) {
             var seller_country = $($(childs[0]).find('img[src*="flagsS"]')).attr('src'),
                 quantity = parseInt($(childs[1]).text(), 10),
                 unit_price = parseFloat($(childs[2]).text().replace('~', '').replace('EUR', ''), 10);
@@ -22,7 +22,7 @@ function getData (column) {
                 priceDetail.seller_country_code = seller_country.split('/')[3].split('.')[0];
             }
         }
-        if (2 == childs.length) {
+        if (2 === childs.length) {
             var name = $(childs[0]).text(),
                 value = $(childs[1]).text().replace('~', '').replace('EUR', '');
             if (name.indexOf('Times Sold') !== -1 || name.indexOf('Total Lots') !== -1) {
