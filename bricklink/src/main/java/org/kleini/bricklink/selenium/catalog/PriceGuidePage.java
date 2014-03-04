@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import org.apache.commons.io.IOUtils;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.GuideType;
@@ -15,8 +16,11 @@ import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceDetail;
 import org.kleini.bricklink.data.PriceGuide;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * {@link PriceGuidePage}
@@ -60,11 +64,31 @@ public final class PriceGuidePage {
         button.click();
         // Go to next page and fetch values
         WebElement myColumn = driver.findElement(By.xpath("//td[@width='25%'][position()=" + calculateColumn(guideType, condition) + ']'));
+        if (driver instanceof JavascriptExecutor) {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            // Inject jQuery
+            String jqueryText = IOUtils.toString(PriceGuidePage.class.getClassLoader().getResourceAsStream("jquery-2.1.0.min.js"), "ASCII");
+            js.executeScript(jqueryText);
+            // Run my script
+            String priceGuideText = IOUtils.toString(PriceGuidePage.class.getClassLoader().getResourceAsStream("priceGuideDetails.js"), "ASCII");
+            String json = (String) js.executeScript(priceGuideText, myColumn);
+            return new ObjectMapper().readValue(json, new TypeReference<PriceGuide>() {
+                // nothing
+            });
+        }
+        return readSeleniumOnly(myColumn, guideType, details);
+    }
+
+    private static PriceGuide readSeleniumOnly(WebElement column, GuideType guideType, boolean details) throws Exception {
         PriceGuide retval = new PriceGuide();
+        List<WebElement> priceDetailColumns = column.findElements(By.xpath(".//tr[count(td)=2]/td"));
+        for (int i = 0; i < priceDetailColumns.size(); i+=2) {
+            parsePriceGuide(retval, priceDetailColumns.get(i).getText(), priceDetailColumns.get(i+1).getText());
+        }
         if (details) {
-            List<WebElement> priceDetailColumns = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=3 and position()>1]/td"));
+            priceDetailColumns = column.findElements(By.xpath(".//tr[count(td)=3 and position()>1]/td"));
             if (GuideType.STOCK == guideType) {
-                List<WebElement> countryFlags = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=3 and position()>1]/td/img[contains(@src, 'flagsS')]"));
+                List<WebElement> countryFlags = column.findElements(By.xpath(".//tr[count(td)=3 and position()>1]/td/img[contains(@src, 'flagsS')]"));
                 for (int i = 0; i < priceDetailColumns.size(); i+=3) {
                     parsePriceDetail(retval, priceDetailColumns.get(i + 1).getText(), priceDetailColumns.get(i + 2).getText(), countryFlags.get(i/3).getAttribute("src"));
                 }
@@ -73,10 +97,6 @@ public final class PriceGuidePage {
                     parsePriceDetail(retval, priceDetailColumns.get(i + 1).getText(), priceDetailColumns.get(i + 2).getText(), null);
                 }
             }
-        }
-        List<WebElement> priceDetailColumns = myColumn.findElements(By.xpath(".//tr[@align='RIGHT' and count(td)=2]/td"));
-        for (int i = 0; i < priceDetailColumns.size(); i+=2) {
-            parsePriceGuide(retval, priceDetailColumns.get(i).getText(), priceDetailColumns.get(i+1).getText());
         }
         return retval;
     }
