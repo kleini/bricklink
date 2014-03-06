@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,6 +25,11 @@ public class Order {
      * The time the order was created
      */
     private Date ordered;
+
+    /**
+     * The time the order status was last modified
+     */
+    private Date statusChanged;
 
     /**
      * The username of the seller in BL
@@ -61,6 +67,16 @@ public class Order {
     private boolean invoiced;
 
     /**
+     * Indicates whether the order is filed
+     */
+    private boolean filed;
+
+    /**
+     * Indicates whether "Thank You, Drive Thru!" email has been sent
+     */
+    private boolean driveThruSent;
+
+    /**
      * User remarks for this order
      */
     private String remarks;
@@ -76,6 +92,13 @@ public class Order {
     private int unique;
 
     /**
+     * The total weight of the items ordered
+     * - It applies the seller's custom weight when present to override the catalog weight
+     * - 0 if the order includes at least one item without any weight information or incomplete set
+     */
+    private BigDecimal weight;
+
+    /**
      * Information related to the payment of this order
      */
     private Payment payment;
@@ -89,6 +112,11 @@ public class Order {
      * Cost information for this order
      */
     private Cost cost;
+
+    /**
+     * Cost information for this order in DISPLAY currency
+     */
+    private Cost displayCost;
 
     public Order() {
         super();
@@ -112,6 +140,16 @@ public class Order {
     @JsonProperty("date_ordered")
     public void setOrdered(Date ordered) {
         this.ordered = ordered;
+    }
+
+    @JsonProperty("date_status_changed")
+    public Date getStatusChanged() {
+        return statusChanged;
+    }
+
+    @JsonProperty("date_status_changed")
+    public void setStatusChanged(Date statusChanged) {
+        this.statusChanged = statusChanged;
     }
 
     @JsonProperty("seller_name")
@@ -174,6 +212,26 @@ public class Order {
         this.status = status;
     }
 
+    @JsonProperty("is_filed")
+    public boolean isFiled() {
+        return filed;
+    }
+
+    @JsonProperty("is_filed")
+    public void setFiled(boolean filed) {
+        this.filed = filed;
+    }
+
+    @JsonProperty("drive_thru_sent")
+    public boolean isDriveThruSent() {
+        return driveThruSent;
+    }
+
+    @JsonProperty("drive_thru_sent")
+    public void setDriveThruSent(boolean driveThruSent) {
+        this.driveThruSent = driveThruSent;
+    }
+
     @JsonProperty("is_invoiced")
     public boolean isInvoiced() {
         return invoiced;
@@ -219,6 +277,16 @@ public class Order {
         return payment;
     }
 
+    @JsonProperty("total_weight")
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    @JsonProperty("total_weight")
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
+
     @JsonProperty("payment")
     public void setPayment(Payment payment) {
         this.payment = payment;
@@ -242,5 +310,15 @@ public class Order {
     @JsonProperty("cost")
     public void setCost(Cost cost) {
         this.cost = cost;
+    }
+
+    @JsonProperty("disp_cost")
+    public Cost getDisplayCost() {
+        return displayCost;
+    }
+
+    @JsonProperty("disp_cost")
+    public void setDisplayCost(Cost displayCost) {
+        this.displayCost = displayCost;
     }
 }

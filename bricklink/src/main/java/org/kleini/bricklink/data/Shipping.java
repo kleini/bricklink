@@ -20,6 +20,11 @@ public class Shipping {
     private String method;
 
     /**
+     * Shipping method ID
+     */
+    private String identifier;
+
+    /**
      * Tracking numbers for the shipping
      */
     private String trackingNumber;
@@ -53,6 +58,16 @@ public class Shipping {
     @JsonProperty("method")
     public void setMethod(String method) {
         this.method = method;
+    }
+
+    @JsonProperty("method_id")
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    @JsonProperty("method_id")
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     @JsonProperty("tracking_no")
