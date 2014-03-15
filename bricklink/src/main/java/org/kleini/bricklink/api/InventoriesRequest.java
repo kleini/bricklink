@@ -40,7 +40,7 @@ public final class InventoriesRequest implements Request<InventoriesResponse> {
     public Parameter[] getParameters() {
         return new Parameter[] {
             // API description is wrong. The value must not be "part". It must be "P".
-            new Parameter("item_type", type.getId()),
+            new Parameter("item_type", type.getLongId()),
             new Parameter("status", status.getIdentifier()),
             new Parameter("category_id", category.getIdentifier()),
             new Parameter("color_id", color.getIdentifier())
