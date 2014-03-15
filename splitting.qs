@@ -1,7 +1,7 @@
 function load ( )
 {
 	var res = new Array;
-	res.name = "Marcus";
+	res.name = "Splitting";
 	return res;
 }
 
@@ -245,7 +245,8 @@ function listItem ( page, ps, item, odd )
 	page. drawPixmap ( ps. x, y, xs( ps. w, 15 ), h, item. picture );
 
 	page. drawText ( ps. x + xs( ps. w,  15 ), y, xs( ps. w, 10 ), h, page.AlignLeft    | page.AlignVCenter, item. status. include ? "Neu" : item. status. exclude ? "Vorh." : item. status. extra ? "Extra" : "???" );
-	page. drawText ( ps. x + xs( ps. w,  25 ), y, xs( ps. w, 85 ), h, page.AlignLeft    | page.AlignVCenter, item. color. name + " " + item. name + " [" + item. id + "]" );
+	page. drawText ( ps. x + xs( ps. w,  25 ), y, xs( ps. w, 80 ), h, page.AlignLeft    | page.AlignVCenter, item. color. name + " " + item. name + " [" + item. id + "]" );
+        page. drawText ( ps. x + xs( ps. w, 105 ), y, xs( ps. w,  5 ), h, page.AlignRight   | page.AlignVCenter, item. condition. used ? "U" : "N" );
 	page. drawText ( ps. x + xs( ps. w, 110 ), y, xs( ps. w, 10 ), h, page.AlignHCenter | page.AlignVCenter, item. quantity );
 	page. drawText ( ps. x + xs( ps. w, 120 ), y, xs( ps. w, 40 ), h, page.AlignLeft    | page.AlignVCenter, item. category. name );
 	page. drawText ( ps. x + xs( ps. w, 150 ), y, xs( ps. w, 20 ), h, page.AlignRight   | page.AlignVCenter, item. itemType. name );
