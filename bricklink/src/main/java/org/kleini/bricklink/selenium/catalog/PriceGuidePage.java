@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.io.IOUtils;
+import org.kleini.bricklink.data.Color;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.GuideType;
@@ -72,9 +73,13 @@ public final class PriceGuidePage {
             // Run my script
             String priceGuideText = IOUtils.toString(PriceGuidePage.class.getClassLoader().getResourceAsStream("priceGuideDetails.js"), "ASCII");
             String json = (String) js.executeScript(priceGuideText, myColumn);
-            return new ObjectMapper().readValue(json, new TypeReference<PriceGuide>() {
+            PriceGuide retval = new ObjectMapper().readValue(json, new TypeReference<PriceGuide>() {
                 // nothing
             });
+            if (null == retval.getQuantityAveragePrice()) {
+                throw new Exception("Part " + itemID + " in color " + Color.byId(colorID).getName() + " does not exist.");
+            }
+            return retval;
         }
         return readSeleniumOnly(myColumn, guideType, details);
     }
