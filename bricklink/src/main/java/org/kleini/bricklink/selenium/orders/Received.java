@@ -2,15 +2,14 @@
  * GPL v3
  */
 
-package org.kleini.bricklink.pages.orders;
+package org.kleini.bricklink.selenium.orders;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.kleini.bricklink.pages.members.Address;
+import org.kleini.bricklink.selenium.members.Address;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Navigation;
