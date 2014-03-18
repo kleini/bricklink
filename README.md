@@ -48,7 +48,6 @@ Marcus Klein (<himself@kleini.org>)
 Copyright and License
 ---------------------
 
-```text
 Copyright 2014 Marcus Klein
 
 Licensed under the GNU General Public License, Version 3.0 (the "License");
@@ -62,4 +61,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-```
+
