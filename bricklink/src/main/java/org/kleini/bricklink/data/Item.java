@@ -79,4 +79,9 @@ public final class Item {
     public void setCategoryById(int identifier) throws Exception {
         this.category = Category.byId(identifier);
     }
+
+    @Override
+    public String toString() {
+        return name + '(' + identifier + ')';
+    }
 }

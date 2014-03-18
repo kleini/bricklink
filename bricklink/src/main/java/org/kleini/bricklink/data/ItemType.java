@@ -4,6 +4,8 @@
 
 package org.kleini.bricklink.data;
 
+import java.util.Locale;
+
 /**
  * {@link ItemType}
  *
@@ -11,21 +13,20 @@ package org.kleini.bricklink.data;
  */
 public enum ItemType {
 
-    MINIFIG("M", "minifig"),
-    PART("P", "part"),
-    SET("S", "set"),
-    BOOK("B", "book"),
-    GEAR("G", "gear"),
-    CATALOG("C", "catalog"),
-    INSTRUCTION("I", "instruction"),
-    UNSORTED_LOT("U", "unsorted_lot"),
-    ORIGINAL_BOX("O", "original_box");
+    MINIFIG("M"),
+    PART("P"),
+    SET("S"),
+    BOOK("B"),
+    GEAR("G"),
+    CATALOG("C"),
+    INSTRUCTION("I"),
+    UNSORTED_LOT("U"),
+    ORIGINAL_BOX("O");
 
-    private final String id, longId;
+    private final String id;
 
-    private ItemType(String id, String longId) {
+    private ItemType(String id) {
         this.id = id;
-        this.longId = longId;
     }
 
     public String getId() {
@@ -33,7 +34,7 @@ public enum ItemType {
     }
 
     public String getLongId() {
-        return longId;
+        return name().toLowerCase(Locale.US);
     }
 
     public static ItemType byID(String id) throws Exception {

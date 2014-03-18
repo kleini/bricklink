@@ -252,4 +252,27 @@ public class Item {
     public void setOrigQty(int originalQuantity) {
         this.originalQuantity = originalQuantity;
     }
+
+    @Override
+    public Item clone() {
+        Item retval = new Item();
+        retval.bulk = bulk;
+        retval.categoryID = categoryID;
+        retval.categoryName = categoryName;
+        retval.colorID = colorID;
+        retval.colorName = colorName;
+        retval.comments = comments;
+        retval.condition = condition;
+        retval.itemID = itemID;
+        retval.itemName = itemName;
+        retval.itemTypeID = itemTypeID;
+        retval.itemTypeName = itemTypeName;
+        retval.originalPrice = originalPrice;
+        retval.originalQuantity = originalQuantity;
+        retval.price = price;
+        retval.quantity = quantity;
+        retval.remarks = remarks;
+        retval.status = status;
+        return retval;
+    }
 }

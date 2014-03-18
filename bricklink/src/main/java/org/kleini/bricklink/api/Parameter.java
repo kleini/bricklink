@@ -30,6 +30,10 @@ class Parameter {
         this(name, new String(new char[] { value }));
     }
 
+    public Parameter(String name, boolean value) {
+        this(name, Boolean.toString(value));
+    }
+
     final String getName() {
         return name;
     }

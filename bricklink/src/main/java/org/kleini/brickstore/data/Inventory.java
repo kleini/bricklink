@@ -48,4 +48,8 @@ public class Inventory {
         }
         return item;
     }
+
+    public void setItem(List<Item> item) {
+        this.item = item;
+    }
 }

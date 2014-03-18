@@ -11,6 +11,7 @@ package org.kleini.bricklink.data;
  */
 public enum Color {
 
+    NOT_APPLICABLE(0, "(Not Applicable)"),
     WHITE(1, "White"),
     VERY_LIGHT_GRAY(49, "Very Light Gray"),
     VERY_LIGHT_BLUISH_GRAY(99, "Very Light Bluish Gray"),
