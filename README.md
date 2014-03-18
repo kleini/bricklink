@@ -30,7 +30,8 @@ Usage
 ### Part out a set
 Part out a set can be very helpful with very new sets. Sometimes the inventory of these sets did not make their way yet into the BrickStore
 database. If you want to part out such a set or if you want to use the BrickLink inventory of a set instead of the BrickStore ones, you can
-use the following command to create a part out of a set:
+use the following command to create a part out of a set. The arguments are the set number "71006-1" in this example and the multiplier how
+much sets you want to part out.
 
     cd bricklink
     mvn exec:java -Dexec.mainClass="org.kleini.bricklink.PartOut" -DconfigurationFile=src/main/resources/bricklink.properties -Dexec.args="71006-1 10"
