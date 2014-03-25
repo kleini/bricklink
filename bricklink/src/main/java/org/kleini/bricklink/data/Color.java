@@ -191,4 +191,9 @@ public enum Color {
         }
         throw new Exception("Unknown color identifier " + identifier + '.');
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
