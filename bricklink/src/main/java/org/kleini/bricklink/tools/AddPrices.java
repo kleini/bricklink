@@ -6,6 +6,7 @@ package org.kleini.bricklink.tools;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collections;
 import java.util.List;
 
 import org.kleini.bricklink.data.Condition;
@@ -32,26 +33,34 @@ public final class AddPrices {
     }
 
     public void addMissing(Item item) throws Exception {
-        long start = System.currentTimeMillis();
         determinePrice(item, selenium);
-        System.out.println("Time: " + ((System.currentTimeMillis() - start)/1000));
     }
 
     private static void determinePrice(Item item, BrickLinkSelenium selenium) throws Exception {
-        System.out.print(item.getColorName() + ' ' + item.getItemName());
+        System.out.print(item.getCondition() + ' ' + item.getColorName() + ' ' + item.getItemName());
         PriceGuide soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), false);
         BigDecimal averageSold = soldGuide.getQuantityAveragePrice();
         StringBuilder remarks = new StringBuilder();
         remarks.append(averageSold.toString());
         remarks.append(',');
         BigDecimal price = averageSold.setScale(2, RoundingMode.HALF_UP);
-        PriceGuide offersGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
-        List<PriceDetail> offersDE = PriceGuideTools.extract(offersGuide.getDetail(), Country.DE);
-        if (offersDE.isEmpty()) {
-            offersDE = offersGuide.getDetail();
+        List<PriceDetail> offersDE;
+        try {
+            PriceGuide offersGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
+            offersDE = PriceGuideTools.extract(offersGuide.getDetail(), Country.DE);
+            if (offersDE.isEmpty()) {
+                offersDE = offersGuide.getDetail();
+            }
+        } catch (Exception e) {
+            offersDE = Collections.emptyList();
         }
         boolean apply = false;
-        if (offersDE.size() <= 5) {
+        if (offersDE.isEmpty()) {
+            remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
+            remarks.append(" of ");
+            remarks.append(offersDE.size());
+            apply = true;
+        } else if (offersDE.size() <= 5) {
             PriceDetail lowDetail = offersDE.get(0);
             PriceDetail highDetail = offersDE.get(offersDE.size() - 1);
             remarks.append(lowDetail.getPrice());
