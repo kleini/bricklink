@@ -14,4 +14,14 @@ public enum Condition {
     N,
     U;
 
+    @Override
+    public String toString() {
+        switch (this) {
+        case N:
+            return "New";
+        case U:
+            return "Used";
+        }
+        return super.toString();
+    }
 }
