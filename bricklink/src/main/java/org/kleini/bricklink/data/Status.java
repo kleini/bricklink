@@ -17,6 +17,7 @@ public enum Status {
     READY,
     PAID,
     PACKED,
+    PURGED,
     SHIPPED,
     RECEIVED,
     COMPLETED,

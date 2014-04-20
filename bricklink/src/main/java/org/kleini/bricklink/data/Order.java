@@ -52,6 +52,11 @@ public class Order {
     private String email;
 
     /**
+     * Total count of all orders placed by the buyer in the seller's store. Includes the order just placed and also purged orders
+     */
+    private int orderCount;
+
+    /**
      * Indicates whether the buyer requests insurance for this order
      */
     private boolean insuranceRequested;
@@ -190,6 +195,16 @@ public class Order {
     @JsonProperty("buyer_email")
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonProperty("buyer_order_count")
+    public int getOrderCount() {
+        return orderCount;
+    }
+
+    @JsonProperty("buyer_order_count")
+    public void setOrderCount(int orderCount) {
+        this.orderCount = orderCount;
     }
 
     @JsonProperty("require_insurance")
