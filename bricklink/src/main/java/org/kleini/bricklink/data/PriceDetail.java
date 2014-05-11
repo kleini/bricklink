@@ -6,6 +6,7 @@ package org.kleini.bricklink.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -107,5 +108,50 @@ public final class PriceDetail {
     @JsonProperty("date_ordered")
     public void setOrdered(Date ordered) {
         this.ordered = ordered;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((buyerCountry == null) ? 0 : buyerCountry.hashCode());
+        result = prime * result + ((ordered == null) ? 0 : ordered.hashCode());
+        result = prime * result + ((price == null) ? 0 : price.hashCode());
+        result = prime * result + quantity;
+        result = prime * result
+                + ((sellerCountry == null) ? 0 : sellerCountry.hashCode());
+        result = prime * result + (shippingAvailable ? 1231 : 1237);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PriceDetail other = (PriceDetail) obj;
+//        if (buyerCountry != other.buyerCountry)
+//            return false;
+//        if (ordered == null) {
+//            if (other.ordered != null)
+//                return false;
+//        } else if (!ordered.equals(other.ordered))
+//            return false;
+        if (price == null) {
+            if (other.price != null)
+                return false;
+        } else if (0 != price.compareTo(other.price))
+            return false;
+        if (quantity != other.quantity)
+            return false;
+//        if (sellerCountry != other.sellerCountry)
+//            return false;
+//        if (shippingAvailable != other.shippingAvailable)
+//            return false;
+        return true;
     }
 }

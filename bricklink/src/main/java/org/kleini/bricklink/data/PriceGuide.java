@@ -6,6 +6,7 @@ package org.kleini.bricklink.data;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -166,5 +167,80 @@ public final class PriceGuide {
     @JsonProperty("price_detail")
     public void setDetail(List<PriceDetail> detail) {
         this.detail = detail;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((averagePrice == null) ? 0 : averagePrice.hashCode());
+        result = prime * result
+                + ((currency == null) ? 0 : currency.hashCode());
+        result = prime * result + ((detail == null) ? 0 : detail.hashCode());
+        result = prime * result + ((item == null) ? 0 : item.hashCode());
+        result = prime * result
+                + ((maxPrice == null) ? 0 : maxPrice.hashCode());
+        result = prime * result
+                + ((minPrice == null) ? 0 : minPrice.hashCode());
+        result = prime * result
+                + ((newOrUsed == null) ? 0 : newOrUsed.hashCode());
+        result = prime * result + quantity;
+        result = prime
+                * result
+                + ((quantityAveragePrice == null) ? 0 : quantityAveragePrice
+                        .hashCode());
+        result = prime * result + units;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        PriceGuide other = (PriceGuide) obj;
+        if (averagePrice == null) {
+            if (other.averagePrice != null)
+                return false;
+        } else if (0 != averagePrice.compareTo(other.averagePrice))
+            return false;
+        if (currency != other.currency)
+            return false;
+        if (detail == null) {
+            if (other.detail != null)
+                return false;
+        } else if (!detail.equals(other.detail))
+            return false;
+//        if (item == null) {
+//            if (other.item != null)
+//                return false;
+//        } else if (!item.equals(other.item))
+//            return false;
+        if (maxPrice == null) {
+            if (other.maxPrice != null)
+                return false;
+        } else if (0 != maxPrice.compareTo(other.maxPrice))
+            return false;
+        if (minPrice == null) {
+            if (other.minPrice != null)
+                return false;
+        } else if (0 != minPrice.compareTo(other.minPrice))
+            return false;
+//        if (newOrUsed != other.newOrUsed)
+//            return false;
+        if (quantity != other.quantity)
+            return false;
+        if (quantityAveragePrice == null) {
+            if (other.quantityAveragePrice != null)
+                return false;
+        } else if (0 != quantityAveragePrice.compareTo(other.quantityAveragePrice))
+            return false;
+        if (units != other.units)
+            return false;
+        return true;
     }
 }

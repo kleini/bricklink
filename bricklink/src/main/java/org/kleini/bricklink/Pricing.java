@@ -34,7 +34,7 @@ public class Pricing {
         BrickLinkClient client = new BrickLinkClient(configuration);
         BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         InventoryHelper inventoryHelper = new InventoryHelper(client);
-        AddPrices prices = new AddPrices(selenium);
+        AddPrices prices = new AddPrices(client, selenium);
         try {
             for (Item item : brickStore.getInventory().getItem()) {
                 inventoryHelper.markHavingItems(item);

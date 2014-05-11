@@ -55,6 +55,7 @@ public final class PriceGuideRequest implements Request<PriceGuideResponse> {
         if (null != country) {
             retval.add(new Parameter("country_code", country.name()));
         }
+        retval.add(new Parameter("vat", "Y")); // Vat option must be Y, N, or O
         return retval.toArray(new Parameter[retval.size()]);
     }
 

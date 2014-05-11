@@ -8,10 +8,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import org.apache.commons.io.IOUtils;
 import org.kleini.bricklink.data.Color;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Country;
+import org.kleini.bricklink.data.Currency;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceDetail;
@@ -20,6 +22,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -76,6 +79,7 @@ public final class PriceGuidePage {
             PriceGuide retval = new ObjectMapper().readValue(json, new TypeReference<PriceGuide>() {
                 // nothing
             });
+            retval.setCurrency(Currency.EUR); // TODO Read that from the web page
             if (null == retval.getQuantityAveragePrice()) {
                 throw new Exception("Part " + itemID + " in color " + Color.byId(colorID).getName() + " does not exist.");
             }
@@ -86,6 +90,7 @@ public final class PriceGuidePage {
 
     private static PriceGuide readSeleniumOnly(WebElement column, GuideType guideType, boolean details) throws Exception {
         PriceGuide retval = new PriceGuide();
+        retval.setCurrency(Currency.EUR); // TODO Read that from the web page
         List<WebElement> priceDetailColumns = column.findElements(By.xpath(".//tr[count(td)=2]/td"));
         for (int i = 0; i < priceDetailColumns.size(); i+=2) {
             parsePriceGuide(retval, priceDetailColumns.get(i).getText(), priceDetailColumns.get(i+1).getText());
