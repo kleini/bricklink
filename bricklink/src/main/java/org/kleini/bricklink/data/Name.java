@@ -18,6 +18,18 @@ public class Name {
      */
     private String full;
 
+    /**
+     * The given name (first name) of this person.
+     * It is provided only if a buyer updated his/her address and name as a normalized form.
+     */
+    private String first;
+
+    /**
+     * The family name (last name) of this person.
+     * It is provided only if a buyer updated his/her address and name as a normalized form.
+     */
+    private String last;
+
     public Name() {
         super();
     }
@@ -30,5 +42,25 @@ public class Name {
     @JsonProperty("full")
     public void setFull(String full) {
         this.full = full;
+    }
+
+    @JsonProperty("first")
+    public String getFirst() {
+        return first;
+    }
+
+    @JsonProperty("first")
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
+    @JsonProperty("last")
+    public String getLast() {
+        return last;
+    }
+
+    @JsonProperty("last")
+    public void setLast(String last) {
+        this.last = last;
     }
 }
