@@ -36,8 +36,11 @@ public final class InventoryHelper {
         InventoriesResponse response = client.execute(request);
         List<Inventory> list = response.getInventories();
         Inventory inventory = findMatchingItem(list, item);
-        if (null != inventory) {
-            System.out.println(Condition.valueOf(item.getCondition()).toString() + ' ' + item.getColorName() + ' ' + item.getItemName() + " already in shop.");
+        if (null == inventory) {
+            if ("X".equals(item.getStatus())) {
+                item.setStatus("I");
+            }
+        } else {
             item.setPrice(inventory.getPrice());
             item.setStatus("X");
         }
