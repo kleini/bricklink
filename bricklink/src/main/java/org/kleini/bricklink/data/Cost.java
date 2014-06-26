@@ -74,6 +74,16 @@ public final class Cost {
      */
     private BigDecimal coupon;
 
+    /**
+     * VAT percentage applied to this order
+     */
+    private BigDecimal vatRate;
+
+    /**
+     * Total amount of VAT included in the grand_total price
+     */
+    private BigDecimal vatAmount;
+
     public Cost() {
         super();
     }
@@ -196,6 +206,26 @@ public final class Cost {
     @JsonProperty("coupon")
     public void setCoupon(BigDecimal coupon) {
         this.coupon = coupon;
+    }
+
+    @JsonProperty("vat_rate")
+    public BigDecimal getVatRate() {
+        return vatRate;
+    }
+
+    @JsonProperty("vat_rate")
+    public void setVatRate(BigDecimal vatRate) {
+        this.vatRate = vatRate;
+    }
+
+    @JsonProperty("vat_amount")
+    public BigDecimal getVatAmount() {
+        return vatAmount;
+    }
+
+    @JsonProperty("vat_amount")
+    public void setVatAmount(BigDecimal vatAmount) {
+        this.vatAmount = vatAmount;
     }
 
     @Override
