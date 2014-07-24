@@ -56,7 +56,7 @@ public class CSVExport {
                     Name name = address.getName();
                     String email = order.getEmail();
                     List<String> parts = new ArrayList<String>();
-                    parts.add(order.getBuyer());
+                    parts.add("http://www.bricklink.com/memberInfo.asp?u=" + order.getBuyer());
                     String fullName = name.getFull();
                     int lastNamePos = fullName.lastIndexOf(' ');
                     parts.add(fullName.substring(0, lastNamePos));
@@ -67,6 +67,8 @@ public class CSVExport {
                         parts.add(addressPart);
                     }
                     parts.add(address.getCountry().name());
+                    parts.add("Herr");
+                    parts.add("Sehr geehrter Herr");
                     output.add(parts.toArray(new String[parts.size()]));
                 } else {
                     break;
@@ -75,6 +77,7 @@ public class CSVExport {
         } finally {
             client.close();
         }
+        Collections.reverse(output);
         FileOutputStream fis = null;
         OutputStreamWriter osw = null;
         CSVWriter csvw = null;
