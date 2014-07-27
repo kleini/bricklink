@@ -66,7 +66,11 @@ public class CSVExport {
                     for (String addressPart : fullAddress) {
                         parts.add(addressPart);
                     }
-                    parts.add(address.getCountry().name());
+                    if (null == address.getCountry()) {
+                        parts.add("Unknown country");
+                    } else {
+                        parts.add(address.getCountry().name());
+                    }
                     parts.add("Herr");
                     parts.add("Sehr geehrter Herr");
                     output.add(parts.toArray(new String[parts.size()]));
