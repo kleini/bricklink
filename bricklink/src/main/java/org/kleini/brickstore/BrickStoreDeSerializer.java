@@ -6,10 +6,13 @@ package org.kleini.brickstore;
 
 import java.io.File;
 import java.net.URL;
+
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
 import org.kleini.brickstore.data.BrickStoreXML;
 
 /**
@@ -37,11 +40,11 @@ public final class BrickStoreDeSerializer {
     }
 
     public BrickStoreXML load(File file) throws JAXBException {
-        return (BrickStoreXML) getUnmarshaller().unmarshal(file);
+        return ((JAXBElement<BrickStoreXML>) getUnmarshaller().unmarshal(file)).getValue();
     }
 
     public BrickStoreXML load(URL url) throws JAXBException {
-        return (BrickStoreXML) getUnmarshaller().unmarshal(url);
+        return ((JAXBElement<BrickStoreXML>) getUnmarshaller().unmarshal(url)).getValue();
     }
 
     public void save(BrickStoreXML brickStore, File file) throws JAXBException {

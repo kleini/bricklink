@@ -81,11 +81,18 @@ public class ObjectFactory {
         return new GuiState();
     }
 
-    /**
-     * Create an instance of {@link BrickStoreXML }
-     */
-    public BrickStoreXML createBrickStoreXML() {
-        return new BrickStoreXML();
+//    public BrickStoreXML createBrickStoreXML() {
+//        return new BrickStoreXML();
+//    }
+//
+    @XmlElementDecl(namespace = "", name="BrickStoreXML")
+    public JAXBElement<BrickStoreXML> createBrickStoreXML(BrickStoreXML brickStoreXML) {
+        return new JAXBElement<BrickStoreXML>(new QName("", "BrickStoreXML"), BrickStoreXML.class, brickStoreXML);
+    }
+
+    @XmlElementDecl(namespace = "", name="BrickStockXML")
+    public JAXBElement<BrickStoreXML> createBrickStockXML(BrickStoreXML brickStoreXML) {
+        return new JAXBElement<BrickStoreXML>(new QName("", "BrickStockXML"), BrickStoreXML.class, brickStoreXML);
     }
 
     /**
