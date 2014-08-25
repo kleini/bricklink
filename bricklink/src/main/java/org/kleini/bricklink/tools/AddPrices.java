@@ -134,7 +134,7 @@ public final class AddPrices {
                 remarks.append(',');
                 remarks.append(myPos + 1);
             }
-            apply = myPos >= 3 && myPos <= 9;
+            apply = (myPos >= 3 && myPos <= 9) || lowPrice.setScale(2, RoundingMode.UP).equals(highPrice.setScale(2, RoundingMode.DOWN));
         }
         if (apply && item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
             item.setPrice(price);
