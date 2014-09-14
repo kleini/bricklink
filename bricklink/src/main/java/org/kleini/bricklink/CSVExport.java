@@ -42,13 +42,7 @@ public class CSVExport {
         try {
             OrdersRequest request = new OrdersRequest();
             OrdersResponse response = client.execute(request);
-            List<Order> orders = response.getOrders();
-            Collections.sort(orders, Collections.reverseOrder(new Comparator<Order>() {
-                @Override
-                public int compare(Order o1, Order o2) {
-                    return Integer.valueOf(o1.getId()).compareTo(Integer.valueOf(o2.getId()));
-                }
-            }));
+            List<Order> orders = OrderHelper.sortByOrderId(response.getOrders());
             for (Order tmp : orders) {
                 Order order = client.execute(new OrderRequest(tmp.getId())).getOrder();
                 if (helper.isNotBilled(order)) {

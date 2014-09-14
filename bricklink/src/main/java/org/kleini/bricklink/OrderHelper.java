@@ -4,9 +4,15 @@
 
 package org.kleini.bricklink;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.kleini.bricklink.data.Order;
+import org.kleini.bricklink.data.Status;
 
 /**
  * Helper methods for orders.
@@ -38,6 +44,22 @@ public final class OrderHelper {
         } else {
             throw new Exception("Order remarks regular expression does not match on \"" + remarks + "\".");
         }
+        return retval;
+    }
+
+    public boolean inPaidStatus(Order order) {
+        // maybe extend this by check of remarks if packed date is available.
+        return Status.PAID == order.getStatus();
+    }
+
+    public static List<Order> sortByOrderId(List<Order> orders) {
+        List<Order> retval = new ArrayList<Order>(orders);
+        Collections.sort(retval, Collections.reverseOrder(new Comparator<Order>() {
+            @Override
+            public int compare(Order o1, Order o2) {
+                return Integer.valueOf(o1.getId()).compareTo(Integer.valueOf(o2.getId()));
+            }
+        }));
         return retval;
     }
 }
