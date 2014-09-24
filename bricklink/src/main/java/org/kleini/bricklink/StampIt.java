@@ -6,7 +6,6 @@ package org.kleini.bricklink;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,8 @@ import org.kleini.bricklink.api.OrdersRequest;
 import org.kleini.bricklink.api.OrdersResponse;
 import org.kleini.bricklink.data.Cost;
 import org.kleini.bricklink.data.Order;
-import org.kleini.efiliale.Stamp;
+import org.kleini.efiliale.EFilialeSelenium;
+import org.kleini.efiliale.data.Stamp;
 
 /**
  * Fetch all orders in status paid and use Selenium on www.efiliale.de to create necessary stamps.
@@ -48,11 +48,18 @@ public class StampIt {
         } finally {
             client.close();
         }
-        Map<Stamp,Order> stampMap = new EnumMap<Stamp, Order>(Stamp.class);
+        Map<Stamp, Order> stampMap = new EnumMap<Stamp, Order>(Stamp.class);
         for (Order tmp : toStamp) {
             Cost cost = tmp.getCost();
             stampMap.put(Stamp.byValue(cost.getShipping(), cost.getInsurance()), tmp);
         }
-        
+        System.out.println(stampMap.toString());
+        EFilialeSelenium selenium = new EFilialeSelenium("", "");
+        try {
+            selenium.process(stampMap);
+            System.out.println("Wait");
+        } finally {
+            selenium.close();
+        }
     }
 }
