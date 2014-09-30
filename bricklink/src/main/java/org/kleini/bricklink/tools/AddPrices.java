@@ -60,88 +60,52 @@ public final class AddPrices {
         }
     }
 
-    private static BigDecimal determinePrice(Item item, BrickLinkSelenium selenium) throws Exception {
-        PriceGuide soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), false);
-        List<PriceDetail> offersDE;
-        try {
-            PriceGuide offersGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
-            offersDE = PriceGuideTools.extract(offersGuide.getDetail(), Country.DE);
-            if (offersDE.isEmpty()) {
-                offersDE = offersGuide.getDetail();
-            }
-        } catch (Exception e) {
-            offersDE = Collections.emptyList();
-        }
-        return determinePrice(item, soldGuide, offersDE);
-    }
-
     private static BigDecimal determinePrice(Item item, BrickLinkClient client) throws Exception {
         PriceGuide soldGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()))).getPriceGuide();
-        List<PriceDetail> offersDE;
+        PriceGuide offersGuide;
         try {
-            PriceGuide offersGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), Country.DE)).getPriceGuide();
-            offersDE = offersGuide.getDetail();
-            if (offersDE.isEmpty()) {
-                offersGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()))).getPriceGuide();
-                offersDE = offersGuide.getDetail();
-            }
+            offersGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()))).getPriceGuide();
         } catch (Exception e) {
-            offersDE = Collections.emptyList();
+            offersGuide = null;
         }
-        return determinePrice(item, soldGuide, offersDE);
+        PriceGuide offersDEGuide;
+        try {
+            offersDEGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), Country.DE)).getPriceGuide();
+        } catch (Exception e) {
+            offersDEGuide = null;
+        }
+        return determinePrice(item, soldGuide, offersGuide, offersDEGuide);
     }
 
-    private static BigDecimal determinePrice(Item item, PriceGuide soldGuide, List<PriceDetail> offersDE) throws Exception {
+    private static BigDecimal determinePrice(Item item, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide) throws Exception {
         BigDecimal averageSold = soldGuide.getQuantityAveragePrice();
         BigDecimal price = averageSold.setScale(2, RoundingMode.HALF_UP);
         StringBuilder remarks = new StringBuilder();
         remarks.append(averageSold.toString());
         remarks.append(',');
         boolean apply = false;
-        if (offersDE.isEmpty()) {
-            remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
-            remarks.append(" of ");
-            remarks.append(offersDE.size());
-            apply = true;
-        } else if (offersDE.size() <= 5) {
-            PriceDetail lowDetail = offersDE.get(0);
-            PriceDetail highDetail = offersDE.get(offersDE.size() - 1);
-            remarks.append(lowDetail.getPrice());
-            remarks.append(',');
-            remarks.append(highDetail.getPrice());
-            remarks.append(',');
-            remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offersDE) + 1);
-            remarks.append(" of ");
-            remarks.append(offersDE.size());
-            apply = true;
-        } else {
-            BigDecimal lowPrice = offersDE.get(3).getPrice();
-            BigDecimal highPrice = offersDE.get(Math.min(offersDE.size() - 1, 9)).getPrice();
-            remarks.append(lowPrice);
-            remarks.append(',');
-            remarks.append(highPrice);
-            remarks.append(',');
-            int myPos = PriceGuideTools.getMyPosition(item.getQty(), price, offersDE);
-            remarks.append(myPos + 1);
-            if (myPos < 3 || myPos > 9) {
-                if (myPos < 3) {
-                    price = lowPrice.setScale(2, RoundingMode.UP);
-                }
-                if (myPos > 9) {
-                    price = highPrice.setScale(2, RoundingMode.DOWN);
-                }
-                myPos = PriceGuideTools.getMyPosition(item.getQty(), price, offersDE);
-                remarks.append(',');
-                remarks.append(myPos + 1);
+        for (Determiner determiner : new Determiner[] { new NoOffers(), new MoreSoldThanOffered(), new FewOffers(), new MyDEPosition() }) {
+            BigDecimal retval = determiner.determine(item, soldGuide, offersGuide, offersDEGuide, remarks);
+            if (null != retval) {
+                price = retval;
+                apply = true;
+                break;
             }
-            apply = (myPos >= 3 && myPos <= 9) || lowPrice.setScale(2, RoundingMode.UP).equals(highPrice.setScale(2, RoundingMode.DOWN));
         }
+        apply(item, price, apply);
+        item.setRemarks(remarks.toString());
+        return price;
+    }
+
+    static BigDecimal round(BigDecimal decimal) {
+        return decimal.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    static void apply(Item item, BigDecimal price, boolean apply) {
         if (apply && item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
             item.setPrice(price);
         } else if (item.getPrice().compareTo(price) != 0) {
             item.setComments(price.toString());
         }
-        item.setRemarks(remarks.toString());
-        return price;
     }
 }
