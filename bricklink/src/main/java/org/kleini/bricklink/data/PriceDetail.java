@@ -7,6 +7,7 @@ package org.kleini.bricklink.data;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
+@JsonIgnoreProperties({"qunatity"})
 public final class PriceDetail {
 
     /**
@@ -50,12 +52,12 @@ public final class PriceDetail {
         super();
     }
 
-    @JsonProperty("qunatity")
+    @JsonProperty("quantity")
     public int getQuantity() {
         return quantity;
     }
 
-    @JsonProperty("qunatity")
+    @JsonProperty("quantity")
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }

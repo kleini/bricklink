@@ -14,7 +14,7 @@ function getData (column) {
                 quantity = parseInt($(childs[1]).text(), 10),
                 unit_price = parseFloat($(childs[2]).text().replace('~', '').replace('EUR', ''), 10);
             var priceDetail = {
-                qunatity: quantity,
+                quantity: quantity,
                 unit_price: unit_price,
             };
             priceGuide.price_detail.push(priceDetail);
