@@ -23,10 +23,10 @@ public class NoOffers implements Determiner {
     }
 
     @Override
-    public BigDecimal determine(Item item, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) {
+    public BigDecimal determine(Item item, Item having, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) {
         if (offersGuide.getDetail().isEmpty()) {
             remarks.append("no offers");
-            return round(soldGuide.getQuantityAveragePrice());
+            return round(soldGuide.getQuantityAveragePrice()).subtract(new BigDecimal("0.01"));
         }
         return null;
     }

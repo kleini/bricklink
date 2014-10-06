@@ -25,7 +25,7 @@ public class FewOffers implements Determiner {
     }
 
     @Override
-    public BigDecimal determine(Item item, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) throws Exception {
+    public BigDecimal determine(Item item, Item having, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) throws Exception {
         List<PriceDetail> offers = offersDEGuide.getDetail();
         if (offers.isEmpty()) {
             offers = offersGuide.getDetail();
@@ -40,7 +40,7 @@ public class FewOffers implements Determiner {
             BigDecimal price = round(soldGuide.getQuantityAveragePrice());
             remarks.append(PriceGuideTools.getMyPosition(item.getQty(), price, offers) + 1);
             remarks.append(" of ");
-            remarks.append(offers.size());
+            remarks.append(offers.size() + 1);
             return price;
         }
         return null;

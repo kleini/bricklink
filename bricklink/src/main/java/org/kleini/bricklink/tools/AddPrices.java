@@ -6,8 +6,6 @@ package org.kleini.bricklink.tools;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Collections;
-import java.util.List;
 
 import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.PriceGuideRequest;
@@ -15,7 +13,6 @@ import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
-import org.kleini.bricklink.data.PriceDetail;
 import org.kleini.bricklink.data.PriceGuide;
 import org.kleini.bricklink.selenium.BrickLinkSelenium;
 import org.kleini.brickstore.data.Item;
@@ -28,22 +25,20 @@ import org.kleini.brickstore.data.Item;
 public final class AddPrices {
 
     private BrickLinkClient client;
-    private final BrickLinkSelenium selenium;
 
-    public AddPrices(BrickLinkClient client, BrickLinkSelenium selenium) {
+    public AddPrices(BrickLinkClient client) {
         super();
         this.client = client;
-        this.selenium = selenium;
     }
 
-    public void addMissing(Item item) throws Exception {
+    public void addMissing(Item item, Item having) throws Exception {
 //        System.out.print("Compare: ");
 //        compare(item, selenium, client);
 //        System.out.println();
         System.out.print(Condition.valueOf(item.getCondition()).toString() + ' ' + item.getColorName() + ' ' + item.getItemName());
 //        BigDecimal price = determinePrice(item, selenium);
 //        System.out.print(' ' + price.toString() + ' ' + item.getRemarks());
-        BigDecimal price = determinePrice(item, client);
+        BigDecimal price = determinePrice(item, having, client);
         System.out.println(' ' + price.toString() + ' ' + item.getRemarks());
     }
 
@@ -60,7 +55,7 @@ public final class AddPrices {
         }
     }
 
-    private static BigDecimal determinePrice(Item item, BrickLinkClient client) throws Exception {
+    private static BigDecimal determinePrice(Item item, Item having, BrickLinkClient client) throws Exception {
         PriceGuide soldGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()))).getPriceGuide();
         PriceGuide offersGuide;
         try {
@@ -74,18 +69,18 @@ public final class AddPrices {
         } catch (Exception e) {
             offersDEGuide = null;
         }
-        return determinePrice(item, soldGuide, offersGuide, offersDEGuide);
+        return determinePrice(item, having, soldGuide, offersGuide, offersDEGuide);
     }
 
-    private static BigDecimal determinePrice(Item item, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide) throws Exception {
+    private static BigDecimal determinePrice(Item item, Item having, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide) throws Exception {
         BigDecimal averageSold = soldGuide.getQuantityAveragePrice();
         BigDecimal price = averageSold.setScale(2, RoundingMode.HALF_UP);
         StringBuilder remarks = new StringBuilder();
         remarks.append(averageSold.toString());
         remarks.append(',');
         boolean apply = false;
-        for (Determiner determiner : new Determiner[] { new NoOffers(), new MoreSoldThanOffered(), new FewOffers(), new MyDEPosition() }) {
-            BigDecimal retval = determiner.determine(item, soldGuide, offersGuide, offersDEGuide, remarks);
+        for (Determiner determiner : new Determiner[] { new NoOffers(), new OnlyOneOffer(), new MoreSoldThanOffered(), new FewOffers(), new MyDEPosition() }) {
+            BigDecimal retval = determiner.determine(item, having, soldGuide, offersGuide, offersDEGuide, remarks);
             if (null != retval) {
                 price = retval;
                 apply = true;

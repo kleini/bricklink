@@ -16,6 +16,6 @@ import org.kleini.brickstore.data.Item;
  */
 interface Determiner {
 
-    BigDecimal determine(Item item, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) throws Exception;
+    BigDecimal determine(Item item, Item having, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) throws Exception;
 
 }

@@ -31,11 +31,12 @@ public final class InventoryHelper {
         this.client = client;
     }
 
-    public void markHavingItems(Item item) throws Exception {
+    public Item markHavingItems(Item item) throws Exception {
         InventoriesRequest request = new InventoriesRequest(ItemType.byID(item.getItemTypeID()), Status.AVAILABLE, Category.byId(item.getCategoryID()), Color.byId(item.getColorID()));
         InventoriesResponse response = client.execute(request);
         List<Inventory> list = response.getInventories();
         Inventory inventory = findMatchingItem(list, item);
+        Item retval = null;
         if (null == inventory) {
             if ("X".equals(item.getStatus())) {
                 item.setStatus("I");
@@ -43,7 +44,11 @@ public final class InventoryHelper {
         } else {
             item.setPrice(inventory.getPrice());
             item.setStatus("X");
+            retval = new Item();
+            retval.setQty(inventory.getQuantity());
+            retval.setPrice(inventory.getPrice());
         }
+        return retval;
     }
 
     private static Inventory findMatchingItem(List<Inventory> list, Item item) {

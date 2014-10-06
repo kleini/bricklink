@@ -8,7 +8,6 @@ import java.io.File;
 
 import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.Configuration;
-import org.kleini.bricklink.selenium.BrickLinkSelenium;
 import org.kleini.bricklink.tools.AddPrices;
 import org.kleini.bricklink.tools.InventoryHelper;
 import org.kleini.brickstore.BrickStoreDeSerializer;
@@ -32,16 +31,14 @@ public class Pricing {
         final BrickStoreXML brickStore = deSerializer.load(file);
         Configuration configuration = new Configuration();
         BrickLinkClient client = new BrickLinkClient(configuration);
-        BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         InventoryHelper inventoryHelper = new InventoryHelper(client);
-        AddPrices prices = new AddPrices(client, selenium);
+        AddPrices prices = new AddPrices(client);
         try {
             for (Item item : brickStore.getInventory().getItem()) {
-                inventoryHelper.markHavingItems(item);
-                prices.addMissing(item);
+                Item having = inventoryHelper.markHavingItems(item);
+                prices.addMissing(item, having);
             }
         } finally {
-            selenium.close();
             client.close();
         }
         deSerializer.save(brickStore, new File(file.getParentFile(), "output.bsx"));

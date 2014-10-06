@@ -24,18 +24,19 @@ public class MyDEPosition implements Determiner {
     }
 
     @Override
-    public BigDecimal determine(Item item, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) throws Exception {
+    public BigDecimal determine(Item item, Item having, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) throws Exception {
         List<PriceDetail> offers = offersDEGuide.getDetail();
         if (offers.isEmpty()) {
             offers = offersGuide.getDetail();
         }
-        BigDecimal lowPrice = offers.get(3).getPrice();
+        BigDecimal lowPrice = minimum(item, having, offers);
         BigDecimal highPrice = offers.get(Math.min(offers.size() - 1, 9)).getPrice();
         remarks.append(lowPrice);
         remarks.append(',');
         remarks.append(highPrice);
         remarks.append(',');
-        BigDecimal price = AddPrices.round(soldGuide.getQuantityAveragePrice());
+        BigDecimal quantityAveragePrice = AddPrices.round(soldGuide.getQuantityAveragePrice());
+        BigDecimal price = quantityAveragePrice;
         int myPos = PriceGuideTools.getMyPosition(item.getQty(), price, offers);
         remarks.append(myPos + 1);
         if (myPos < 3 || myPos > 9) {
@@ -53,5 +54,26 @@ public class MyDEPosition implements Determiner {
             return price;
         }
         return null;
+    }
+
+    private BigDecimal minimum(Item item, Item having, List<PriceDetail> offers) {
+        BigDecimal retval = offers.get(3).getPrice();
+        for (int i = 0; i <= 3; i++) {
+            PriceDetail detail = offers.get(i);
+            retval = detail.getPrice();
+            if (sumQuantity(item, having) < detail.getQuantity()) {
+                // TODO apply
+                break;
+            }
+        }
+        return retval;
+    }
+
+    private int sumQuantity(Item item, Item having) {
+        int retval = item.getQty();
+        if (null != having) {
+            retval += having.getQty();
+        }
+        return retval;
     }
 }

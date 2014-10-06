@@ -5,9 +5,11 @@
 package org.kleini.bricklink.api;
 
 import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.kleini.bricklink.data.Meta;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,8 +28,9 @@ abstract class Parser<T extends Response<?>, U> {
     }
 
     final static String checkResponse(CloseableHttpResponse response) throws Exception {
-        if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode()) {
-            throw new Exception("Request failed. (" + response.getStatusLine().getReasonPhrase() + ")");
+        StatusLine status = response.getStatusLine();
+        if (HttpStatus.SC_OK != status.getStatusCode()) {
+            throw new Exception("Request failed. (" + status.getStatusCode() + ", " + status.getReasonPhrase() + ")");
         }
         return EntityUtils.toString(response.getEntity());
     }
