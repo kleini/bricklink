@@ -24,7 +24,7 @@ public class MoreSoldThanOffered implements Determiner {
 
     @Override
     public BigDecimal determine(Item item, Item having, PriceGuide soldGuide, PriceGuide offersGuide, PriceGuide offersDEGuide, StringBuilder remarks) throws Exception {
-        if (soldGuide.getQuantity() > offersGuide.getQuantity() && soldGuide.getUnits() > offersGuide.getUnits()) {
+        if (soldGuide.getQuantity() > offersGuide.getQuantity() && soldGuide.getUnits() > offersGuide.getUnits() && offersGuide.getDetail().size() < 5) {
             remarks.append("more sold than offered");
             return round(offersGuide.getDetail().get(0).getPrice()).subtract(new BigDecimal("0.01"));
         }
