@@ -25,10 +25,12 @@ import org.kleini.brickstore.data.Item;
 public final class AddPrices {
 
     private BrickLinkClient client;
+    private BrickLinkSelenium selenium;
 
-    public AddPrices(BrickLinkClient client) {
+    public AddPrices(BrickLinkClient client, BrickLinkSelenium selenium) {
         super();
         this.client = client;
+        this.selenium = selenium;
     }
 
     public void addMissing(Item item, Item having) throws Exception {
@@ -38,7 +40,7 @@ public final class AddPrices {
         System.out.print(Condition.valueOf(item.getCondition()).toString() + ' ' + item.getColorName() + ' ' + item.getItemName());
 //        BigDecimal price = determinePrice(item, selenium);
 //        System.out.print(' ' + price.toString() + ' ' + item.getRemarks());
-        BigDecimal price = determinePrice(item, having, client);
+        BigDecimal price = determinePrice(item, having, client, selenium);
         System.out.println(' ' + price.toString() + ' ' + item.getRemarks());
     }
 
@@ -55,8 +57,14 @@ public final class AddPrices {
         }
     }
 
-    private static BigDecimal determinePrice(Item item, Item having, BrickLinkClient client) throws Exception {
-        PriceGuide soldGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()))).getPriceGuide();
+    private static BigDecimal determinePrice(Item item, Item having, BrickLinkClient client, BrickLinkSelenium selenium) throws Exception {
+        PriceGuide soldGuide;
+        try {
+            soldGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()))).getPriceGuide();
+        } catch (Exception e) {
+            e.printStackTrace();
+            soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), true);
+        }
         PriceGuide offersGuide;
         try {
             offersGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()))).getPriceGuide();
