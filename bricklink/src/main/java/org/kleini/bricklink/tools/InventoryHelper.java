@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.tools;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.kleini.bricklink.api.BrickLinkClient;
@@ -42,7 +43,11 @@ public final class InventoryHelper {
                 item.setStatus("I");
             }
         } else {
-            item.setPrice(inventory.getPrice());
+            if (item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
+                item.setPrice(inventory.getPrice());
+            } else {
+                item.setComments(inventory.getPrice().toString());
+            }
             item.setStatus("X");
             retval = new Item();
             retval.setQty(inventory.getQuantity());
