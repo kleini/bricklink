@@ -9,10 +9,11 @@ function getData (column) {
             return;
         }
         var childs = $(row).children();
-        if (3 === childs.length) {
+        if ((4 === childs.length) || (3 === childs.length)) {
             var seller_country = $($(childs[0]).find('img[src*="flagsS"]')).attr('src'),
+                seller_store = $($(childs[0]).find('img[title*="Store:"]')).attr('title'),
                 quantity = parseInt($(childs[1]).text(), 10),
-                unit_price = parseFloat($(childs[2]).text().replace('~', '').replace('EUR', ''), 10);
+                unit_price = parseFloat($(childs[childs.length-1]).text().replace('~', '').replace('EUR', ''), 10);
             var priceDetail = {
                 quantity: quantity,
                 unit_price: unit_price,
@@ -20,6 +21,9 @@ function getData (column) {
             priceGuide.price_detail.push(priceDetail);
             if (seller_country) {
                 priceDetail.seller_country_code = seller_country.split('/')[3].split('.')[0];
+            }
+            if (seller_store) {
+                priceDetail.store_name = seller_store.split(':')[1].trim();
             }
         }
         if (2 === childs.length) {

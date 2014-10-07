@@ -58,19 +58,8 @@ public final class AddPrices {
     }
 
     private static BigDecimal determinePrice(Item item, Item having, BrickLinkClient client, BrickLinkSelenium selenium) throws Exception {
-        PriceGuide soldGuide;
-        try {
-            soldGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()))).getPriceGuide();
-        } catch (Exception e) {
-            e.printStackTrace();
-            soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), true);
-        }
-        PriceGuide offersGuide;
-        try {
-            offersGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()))).getPriceGuide();
-        } catch (Exception e) {
-            offersGuide = null;
-        }
+        PriceGuide soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), true);
+        PriceGuide offersGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
         PriceGuide offersDEGuide;
         try {
             offersDEGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), Country.DE)).getPriceGuide();
@@ -87,7 +76,7 @@ public final class AddPrices {
         remarks.append(averageSold.toString());
         remarks.append(',');
         boolean apply = false;
-        for (Determiner determiner : new Determiner[] { new NoOffers(), new OnlyOneOffer(), new MoreSoldThanOffered(), new FewOffers(), new MyDEPosition() }) {
+        for (Determiner determiner : new Determiner[] { new KnownStore(), new NoOffers(), new OnlyOneOffer(), new MoreSoldThanOffered(), new FewOffers(), new MyDEPosition() }) {
             BigDecimal retval = determiner.determine(item, having, soldGuide, offersGuide, offersDEGuide, remarks);
             if (null != retval) {
                 price = retval;

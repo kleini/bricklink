@@ -38,6 +38,8 @@ public final class PriceDetail {
      */
     private Country sellerCountry;
 
+    private String store;
+
     /**
      * The country code of the buyer's location
      */
@@ -90,6 +92,16 @@ public final class PriceDetail {
     @JsonProperty("seller_country_code")
     public void setSellerCountry(Country sellerCountry) {
         this.sellerCountry = sellerCountry;
+    }
+
+    @JsonProperty("store_name")
+    public String getStore() {
+        return store;
+    }
+
+    @JsonProperty("store_name")
+    public void setStore(String store) {
+        this.store = store;
     }
 
     @JsonProperty("buyer_country_code")
