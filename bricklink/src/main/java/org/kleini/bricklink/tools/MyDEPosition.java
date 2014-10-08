@@ -13,7 +13,7 @@ import org.kleini.bricklink.data.PriceGuide;
 import org.kleini.brickstore.data.Item;
 
 /**
- * 
+ *
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
@@ -50,13 +50,13 @@ public class MyDEPosition implements Determiner {
             remarks.append(',');
             remarks.append(myPos + 1);
         }
-        if ((myPos >= 3 && myPos <= 9) || lowPrice.setScale(2, RoundingMode.UP).equals(highPrice.setScale(2, RoundingMode.DOWN))) {
+        if ((price.compareTo(lowPrice) >= 0 && price.compareTo(highPrice) <= 0) || lowPrice.setScale(2, RoundingMode.UP).equals(highPrice.setScale(2, RoundingMode.DOWN))) {
             return price;
         }
         return null;
     }
 
-    private BigDecimal minimum(Item item, Item having, List<PriceDetail> offers) {
+    private static BigDecimal minimum(Item item, Item having, List<PriceDetail> offers) {
         BigDecimal retval = offers.get(3).getPrice();
         for (int i = 0; i <= 3; i++) {
             PriceDetail detail = offers.get(i);
@@ -69,7 +69,7 @@ public class MyDEPosition implements Determiner {
         return retval;
     }
 
-    private int sumQuantity(Item item, Item having) {
+    private static int sumQuantity(Item item, Item having) {
         int retval = item.getQty();
         if (null != having) {
             retval += having.getQty();
