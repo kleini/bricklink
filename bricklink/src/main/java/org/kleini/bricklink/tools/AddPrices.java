@@ -95,7 +95,7 @@ public final class AddPrices {
 
     static void apply(Item item, BigDecimal price, boolean apply) {
         if (apply && item.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-            item.setPrice(price);
+            item.setPrice(round(price));
         } else if (item.getPrice().compareTo(price) != 0) {
             item.setComments(price.toString());
         }
