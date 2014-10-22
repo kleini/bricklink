@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-@JsonIgnoreProperties({"color_name"})
+@JsonIgnoreProperties({"color_name","my_cost"})
 public final class Inventory {
 
     /**
