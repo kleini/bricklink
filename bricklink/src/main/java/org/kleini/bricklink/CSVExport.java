@@ -53,6 +53,9 @@ public class CSVExport {
                     parts.add("http://www.bricklink.com/memberInfo.asp?u=" + order.getBuyer());
                     String fullName = name.getFull();
                     int lastNamePos = fullName.lastIndexOf(' ');
+                    if (-1 == lastNamePos) {
+                        lastNamePos = fullName.lastIndexOf('.');
+                    }
                     parts.add(fullName.substring(0, lastNamePos));
                     parts.add(fullName.substring(lastNamePos + 1));
                     parts.add(email);
