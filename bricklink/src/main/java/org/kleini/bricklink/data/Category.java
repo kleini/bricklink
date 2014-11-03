@@ -392,7 +392,8 @@ public enum Category {
     THE_LEGO_MOVIE(804, "The Lego Movie"),
     THE_SIMPSONS(807, "The Simpsons"),
     MIXELS(808, "Mixels"),
-    JUNIORS(809, "Juniors");
+    JUNIORS(809, "Juniors"),
+    TILE_ROUND_DECORATED(812, "Tile, Round, Decorated");
 
     private final int identifier;
 
