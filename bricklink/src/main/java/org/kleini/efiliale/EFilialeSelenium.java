@@ -59,7 +59,7 @@ public class EFilialeSelenium {
         LetterPage letterPage = new LetterPage(driver);
         letterPage.process(letterMap);
         // TODO parcels
-        WebElement toShoppingCartLink = driver.findElement(By.xpath("//span[text()='zur Kasse']"));
+        WebElement toShoppingCartLink = driver.findElement(By.xpath("//span[text()='Warenkorb']"));
         toShoppingCartLink.click();
         // //input[@type='text' and @maxlength='50'] for order ids
     }

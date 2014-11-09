@@ -5,6 +5,8 @@
 package org.kleini.efiliale;
 
 import java.util.EnumMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,6 +19,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * 
@@ -53,7 +57,8 @@ public class LetterPage {
             useStampButton.click();
             notFirst = true;
         }
-        WebElement addToShoppingCartButton = driver.findElement(By.xpath("//a[text()='In den Warenkorb']"));
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement addToShoppingCartButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='In den Warenkorb']")));
         addToShoppingCartButton.click();
         WebElement startPageLink = driver.findElement(By.xpath("//span[text()='zur Startseite']"));
         startPageLink.click();
@@ -98,16 +103,64 @@ public class LetterPage {
         } while (null == addressFeldRadio);
         addressFeldRadio.click();
         WebElement addressFeldArea = driver.findElement(By.id("to-adressfeld"));
-        Address address = order.getShipping().getAddress();
-        addressFeldArea.sendKeys(address.getName().getFull());
-        addressFeldArea.sendKeys("\n");
-        addressFeldArea.sendKeys(address.getFull());
-        if (Country.DE != address.getCountry()) {
-            addressFeldArea.sendKeys("\n");
-            addressFeldArea.sendKeys(address.getCountry().getName());
-        }
+        addressFeldArea.sendKeys(createAddressFieldText(order.getShipping().getAddress()));
         WebElement proceedButton = driver.findElement(By.xpath("//input[@type='submit' and @value[contains(.,'Adresse') and contains(.,'bernehmen')]]"));
         proceedButton.click();
+    }
+
+    private String createAddressFieldText(Address address) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(address.getName().getFull());
+        sb.append('\n');
+        int addressLines = Country.DE == address.getCountry() ? 4 : 3;
+        sb.append(shortenAddress(address.getFull(), addressLines));
+        if (Country.DE != address.getCountry()) {
+            sb.append('\n');
+            sb.append(address.getCountry().getName().toUpperCase());
+        }
+        return sb.toString();
+    }
+
+    private String shortenAddress(String fullAddress, int addressLines) {
+        List<String> lines = new LinkedList<String>();
+        for (String line : fullAddress.split("\r?\n")) {
+            lines.add(line);
+        }
+        while (lines.size() > addressLines) {
+            int shortestPos = findShortest(lines);
+            if (shortestPos +1 == lines.size() || (shortestPos > 0 && lines.get(shortestPos - 1).length() <= lines.get(shortestPos + 1).length())) {
+                lines.set(shortestPos - 1, lines.get(shortestPos - 1) + ", " + lines.get(shortestPos));
+            } else if (shortestPos == 0 || (shortestPos < lines.size() - 1 && lines.get(shortestPos + 1).length() <= lines.get(shortestPos - 1).length())) {
+                lines.set(shortestPos + 1, lines.get(shortestPos) + ", " + lines.get(shortestPos + 1));
+            }
+            lines.remove(shortestPos);
+        }
+        return String.join("\n", lines);
+    }
+
+    private String[] combine(String[] lines, int shortestPos, int prevNext) {
+        String[] retval = new String[lines.length - 1];
+        System.arraycopy(lines, 0, retval, 0, shortestPos);
+        if (-1 == prevNext) {
+            retval[shortestPos + prevNext] += ", " + lines[shortestPos];
+        } else {
+            retval[shortestPos] = lines[shortestPos] + ", " + lines[shortestPos + prevNext];
+        }
+        System.arraycopy(lines, shortestPos + 1, retval, shortestPos, lines.length - shortestPos - 1);
+        // TODO Auto-generated method stub
+        return retval;
+    }
+
+    private int findShortest(List<String> lines) {
+        int pos = -1;
+        int length = Integer.MAX_VALUE;
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).length() < length) {
+                pos = i;
+                length = lines.get(i).length();
+            }
+        }
+        return pos;
     }
 
     private static final Map<Domestic, By> domesticTab = new EnumMap<Domestic, By>(Domestic.class);
