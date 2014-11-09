@@ -37,8 +37,12 @@ public class Pricing {
         AddPrices prices = new AddPrices(client, selenium);
         try {
             for (Item item : brickStore.getInventory().getItem()) {
-                Item having = inventoryHelper.markHavingItems(item);
-                prices.addMissing(item, having);
+                try {
+                    Item having = inventoryHelper.markHavingItems(item);
+                    prices.addMissing(item, having);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } finally {
             selenium.close();
