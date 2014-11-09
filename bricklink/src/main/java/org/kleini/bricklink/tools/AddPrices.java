@@ -16,6 +16,7 @@ import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceGuide;
 import org.kleini.bricklink.selenium.BrickLinkSelenium;
 import org.kleini.brickstore.data.Item;
+import org.openqa.selenium.NoSuchElementException;
 
 /**
  * {@link AddPrices}
@@ -58,8 +59,18 @@ public final class AddPrices {
     }
 
     private static BigDecimal determinePrice(Item item, Item having, BrickLinkClient client, BrickLinkSelenium selenium) throws Exception {
-        PriceGuide soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), true);
-        PriceGuide offersGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
+        PriceGuide soldGuide;
+        try {
+            soldGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()), true);
+        } catch (NoSuchElementException e) {
+            soldGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.SOLD, Condition.valueOf(item.getCondition()))).getPriceGuide();
+        }
+        PriceGuide offersGuide;
+        try {
+            offersGuide = selenium.getPriceGuide(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), true);
+        } catch (NoSuchElementException e) {
+            offersGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()))).getPriceGuide();
+        }
         PriceGuide offersDEGuide;
         try {
             offersDEGuide = client.execute(new PriceGuideRequest(ItemType.byID(item.getItemTypeID()), item.getItemID(), item.getColorID(), GuideType.STOCK, Condition.valueOf(item.getCondition()), Country.DE)).getPriceGuide();
