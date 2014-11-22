@@ -75,7 +75,7 @@ public final class Item {
         this.category = category;
     }
 
-    @JsonProperty("categoryID")
+    @JsonProperty("category_id")
     public void setCategoryById(int identifier) throws Exception {
         this.category = Category.byId(identifier);
     }
