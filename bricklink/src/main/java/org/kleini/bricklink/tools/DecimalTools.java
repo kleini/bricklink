@@ -27,4 +27,8 @@ public final class DecimalTools {
         }
         return sum.divide(new BigDecimal(values.length), scale, RoundingMode.HALF_UP);
     }
+
+    public static BigDecimal round(BigDecimal decimal) {
+        return decimal.setScale(2, RoundingMode.HALF_UP);
+    }
 }

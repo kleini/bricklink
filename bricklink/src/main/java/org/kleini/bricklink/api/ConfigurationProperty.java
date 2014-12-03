@@ -16,8 +16,7 @@ public enum ConfigurationProperty {
     CONSUMER_KEY("org.kleini.bricklink.consumerKey"),
     CONSUMER_SECRET("org.kleini.bricklink.consumerSecret"),
     TOKEN_VALUE("org.kleini.bricklink.tokenValue"),
-    TOKEN_SECRET("org.kleini.bricklink.tokenSecret"),
-    COMMENT_REGEX("org.kleini.bricklink.commentRegex");
+    TOKEN_SECRET("org.kleini.bricklink.tokenSecret");
 
     private final String propertyName;
 

@@ -39,4 +39,8 @@ public final class Configuration {
     public String getProperty(ConfigurationProperty property) {
         return properties.getProperty(property.getPropertyName());
     }
+
+    public String getProperty(String name) {
+        return properties.getProperty(name);
+    }
 }
