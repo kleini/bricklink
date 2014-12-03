@@ -52,7 +52,7 @@ public class OrderDetails {
                 System.out.println("Code: " + httpResponse.getStatusLine().getStatusCode() + ',' + httpResponse.getStatusLine().getReasonPhrase());
                 InputStream stream = httpResponse.getEntity().getContent();
                 ObjectMapper mapper = new ObjectMapper();
-                Response<List<org.kleini.bricklink.data.Order>> response = mapper.readValue(stream, new TypeReference<Response<org.kleini.bricklink.data.Order>>() { });
+                Response<List<org.kleini.bricklink.data.Order>> response = mapper.readValue(stream, new TypeReference<Response<org.kleini.bricklink.data.Order>>() { /* anonymous subclass */ });
                 System.out.println(response);
             } finally {
                 httpResponse.close();

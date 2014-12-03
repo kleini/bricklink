@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import org.kleini.bricklink.selenium.members.Address;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -48,7 +47,7 @@ public class Received {
             Matcher matcher = pattern.matcher(name);
             final Integer orderId;
             if (matcher.matches()) {
-                orderId = Integer.parseInt(matcher.group(1));
+                orderId = Integer.valueOf(matcher.group(1));
             } else {
                 throw new Exception("Can not parse commentField input name \"" + name + "\".");
             }

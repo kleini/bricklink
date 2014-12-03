@@ -26,7 +26,7 @@ public class Address {
 
     public org.kleini.bricklink.data.Address getAddress() {
         org.kleini.bricklink.data.Address retval = new org.kleini.bricklink.data.Address();
-        String url = driver.getCurrentUrl();
+//        String url = driver.getCurrentUrl();
 //        retval.setName(url.substring(url.lastIndexOf('=') + 1));
         WebElement nameElement = driver.findElement(By.xpath("(//tr/td/font/b[text()='Name:']/../../../td/font)[2]"));
         Name name = new Name();
@@ -36,9 +36,9 @@ public class Address {
         retval.setFull(addressElement.getText());
         WebElement countryElement = driver.findElement(By.xpath("(//tr/td/font/b[text()='Country:']/../../../td/font)[2]"));
         retval.setCountry(Country.valueOf(countryElement.getText()));
-        WebElement emailElement = driver.findElement(By.xpath("(//tr/td/font/b[text()='E-mail:']/../../../td/font)[2]"));
+//        WebElement emailElement = driver.findElement(By.xpath("(//tr/td/font/b[text()='E-mail:']/../../../td/font)[2]"));
 //        retval.setEmail(emailElement.getText());
-        WebElement lastLoggedInElement = driver.findElement(By.xpath("(//tr/td/font/b[text()='Last Logged In:']/../../../td/font)[2]"));
+//        WebElement lastLoggedInElement = driver.findElement(By.xpath("(//tr/td/font/b[text()='Last Logged In:']/../../../td/font)[2]"));
 //      TODO parse date:  retval.setLastLoggedIn(lastLoggedInElement.getText());
         return retval;
     }
