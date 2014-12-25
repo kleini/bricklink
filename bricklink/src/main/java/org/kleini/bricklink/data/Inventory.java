@@ -89,6 +89,12 @@ public final class Inventory {
     private String stockRoomId;
 
     /**
+     * Sale value to adjust item price.
+     * Must be less than 100. 20 for 20% sale.
+     */
+    private int saleRate;
+
+    /**
      * The time this lot is created
      */
     private Date created;
@@ -241,6 +247,16 @@ public final class Inventory {
     @JsonProperty("stock_room_id")
     public void setStockRoomId(String stockRoomId) {
         this.stockRoomId = stockRoomId;
+    }
+
+    @JsonProperty("sale_rate")
+    public int getSaleRate() {
+        return saleRate;
+    }
+
+    @JsonProperty("sale_rate")
+    public void setSaleRate(int saleRate) {
+        this.saleRate = saleRate;
     }
 
     @JsonProperty("date_created")
