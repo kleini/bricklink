@@ -34,7 +34,7 @@ public class LoginPage {
         usernameInput.sendKeys(login);
         WebElement passwordInput = driver.findElement(By.id("frmPassword"));
         passwordInput.sendKeys(password);
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type='SUBMIT' and @value='Login to BrickLink']"));
+        WebElement loginButton = driver.findElement(By.xpath("//button[@type='SUBMIT' and @value='Log in']"));
         loginButton.click();
         // Fail if the Logoff link does not appear.
         try {
