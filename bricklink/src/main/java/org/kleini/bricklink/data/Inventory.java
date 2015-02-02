@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-@JsonIgnoreProperties({"color_name","my_cost","tier_quantity1","tier_quantity2","tier_quantity3","tier_price1","tier_price2","tier_price3"})
+@JsonIgnoreProperties({"color_name","tier_quantity1","tier_quantity2","tier_quantity3","tier_price1","tier_price2","tier_price3"})
 public final class Inventory {
 
     /**
@@ -43,7 +43,7 @@ public final class Inventory {
     private Condition condition;
 
     /**
-     * Indicates whether the set is complete or incomplete 
+     * Indicates whether the set is complete or incomplete
      * (This value is valid only for SET type)
      */
     private Completeness completeness;
@@ -98,6 +98,11 @@ public final class Inventory {
      * The time this lot is created
      */
     private Date created;
+
+    /**
+     * My Cost value to tracking the cost of item.
+     */
+    private BigDecimal cost;
 
     public Inventory() {
         super();
@@ -267,5 +272,15 @@ public final class Inventory {
     @JsonProperty("date_created")
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    @JsonProperty("my_cost")
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    @JsonProperty("my_cost")
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
     }
 }
