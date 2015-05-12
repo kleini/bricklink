@@ -336,4 +336,9 @@ public class Order {
     public void setDisplayCost(Cost displayCost) {
         this.displayCost = displayCost;
     }
+
+    @Override
+    public String toString() {
+        return "Order " + id;
+    }
 }
