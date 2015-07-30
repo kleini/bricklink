@@ -6,6 +6,7 @@ package org.kleini.bricklink.data;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * {@link Payment}
@@ -17,7 +18,7 @@ public class Payment {
     /**
      * The payment method for this order
      */
-    private String method;
+    private Method method;
 
     /**
      * Currency code of the payment
@@ -39,12 +40,13 @@ public class Payment {
     }
 
     @JsonProperty("method")
-    public String getMethod() {
+    @JsonDeserialize(using = MethodDeserializer.class)
+    public Method getMethod() {
         return method;
     }
 
     @JsonProperty("method")
-    public void setMethod(String method) {
+    public void setMethod(Method method) {
         this.method = method;
     }
 
