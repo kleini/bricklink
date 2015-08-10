@@ -25,16 +25,16 @@ public class LoginPage {
     }
 
     private void open() {
-        WebElement loginLink = driver.findElement(By.linkText("Login"));
+        WebElement loginLink = driver.findElement(By.linkText("Log in or Register"));
         loginLink.click();
     }
 
     public void login(String login, String password) throws Exception {
         WebElement usernameInput = driver.findElement(By.id("frmUsername"));
         usernameInput.sendKeys(login);
-        WebElement passwordInput = driver.findElement(By.id("frmPassword"));
+        WebElement passwordInput = driver.findElement(By.id("frmPasswordTopNav"));
         passwordInput.sendKeys(password);
-        WebElement loginButton = driver.findElement(By.xpath("//button[@type='SUBMIT' and @value='Log in']"));
+        WebElement loginButton = driver.findElement(By.xpath("//input[@type='button' and @value='Log in to BrickLink']"));
         loginButton.click();
         // Fail if the Logoff link does not appear.
         try {
@@ -45,7 +45,7 @@ public class LoginPage {
     }
 
     public void logout() {
-        WebElement logoffLink = driver.findElement(By.linkText("Logoff"));
-        logoffLink.click();
+        driver.findElement(By.linkText("kleini")).click();
+        driver.findElement(By.linkText("Logoff")).click();
     }
 }
