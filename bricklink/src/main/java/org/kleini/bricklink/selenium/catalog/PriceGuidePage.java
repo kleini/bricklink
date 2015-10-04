@@ -42,7 +42,7 @@ public final class PriceGuidePage {
     }
 
     private void open() {
-        WebElement catalogTab = driver.findElement(By.linkText(" Catalog "));
+        WebElement catalogTab = driver.findElement(By.linkText("Catalog"));
         catalogTab.click();
         WebElement priceGuideTab = driver.findElement(By.linkText("Price Guide"));
         priceGuideTab.click();
@@ -50,11 +50,11 @@ public final class PriceGuidePage {
 
     public PriceGuide getPriceGuide(ItemType itemType, String itemID, int colorID, GuideType guideType, Condition condition, boolean details) throws Exception {
         // Fill all required input fields.
-        WebElement itemTypeSelect = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../..//select[@name='itemType']"));
+        WebElement itemTypeSelect = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../../..//select[@name='itemType']"));
         itemTypeSelect.findElement(By.xpath("option[@value='" + itemType.getId() + "']")).click();
-        WebElement itemIDInput = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../..//input[@name='itemNo']"));
+        WebElement itemIDInput = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../../..//input[@name='itemNo']"));
         itemIDInput.sendKeys(itemID);
-        WebElement colorIdSelect = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../..//select[@name='colorID']"));
+        WebElement colorIdSelect = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../../..//select[@name='colorID']"));
         colorIdSelect.findElement(By.xpath(".//option[@value='" + Integer.toString(colorID) + "']")).click();
         WebElement sortBySelect = driver.findElement(By.xpath("//select[@name='v']"));
         sortBySelect.findElement(By.xpath("option[@value='P']")).click();
