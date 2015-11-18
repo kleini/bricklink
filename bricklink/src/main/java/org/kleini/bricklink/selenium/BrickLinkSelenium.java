@@ -6,20 +6,14 @@ package org.kleini.bricklink.selenium;
 
 import static org.kleini.bricklink.api.ConfigurationProperty.LOGIN;
 import static org.kleini.bricklink.api.ConfigurationProperty.PASSWORD;
-
-import java.util.List;
-import java.util.Set;
-
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceGuide;
 import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
@@ -38,12 +32,17 @@ public final class BrickLinkSelenium {
 
     public BrickLinkSelenium(String login, String password) throws Exception {
         super();
-        driver = new FirefoxDriver();
-//        driver = new PhantomJSDriver();
-//        driver = new ChromeDriver();
+        String browser = System.getProperty("browser");
+        if ("firefox".equals(browser)) {
+            driver = new FirefoxDriver();
+        } else if ("chrome".equals(browser)) {
+            driver = new ChromeDriver();
+        } else {
+            driver = new PhantomJSDriver();
+        }
         driver.get(URL);
-        loginPage = new LoginPage(driver);
-        loginPage.login(login, password);
+        loginPage = new LoginPage(driver, login);
+        loginPage.login(password);
     }
 
     public BrickLinkSelenium(Configuration configuration) throws Exception {
@@ -59,20 +58,7 @@ public final class BrickLinkSelenium {
         return new PriceGuidePage(driver).getPriceGuide(itemType, itemID, colorID, sold, condition, details);
     }
 
-    public void openPriceGuideTab(String itemId, int colorId) throws Exception {
-//        driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "t");
-//        String newTab = driver.getWindowHandles().iterator().next();
-//        driver.switchTo().window(newTab);
-//        driver.get("https://www.bricklink.com/catalogPG.asp?P=" + itemId + "&colorID=" + colorId);
-        if (driver instanceof JavascriptExecutor) {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-//            js.executeScript("window.open('https://www.bricklink.com/catalogPG.asp?P=" + itemId + "&colorID=" + colorId + "','_blank');");
-            js.executeScript("keyDown(Keys.CONTROL).keyDown('t').keyUp('t').keyUp(Keys.CONTROL);");
-            String newTab = driver.getWindowHandles().iterator().next();
-            driver.switchTo().window(newTab);
-            driver.get("https://www.bricklink.com/catalogPG.asp?P=" + itemId + "&colorID=" + colorId);
-        } else {
-            throw new Exception("Can not execute JavaScript.");
-        }
+    public WebDriver getDriver() {
+        return driver;
     }
 }

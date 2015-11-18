@@ -17,10 +17,12 @@ import org.openqa.selenium.WebElement;
 public class LoginPage {
 
     private final WebDriver driver;
+    private final String login;
 
-    public LoginPage(WebDriver driver) {
+    public LoginPage(WebDriver driver, String login) {
         super();
         this.driver = driver;
+        this.login = login;
         open();
     }
 
@@ -29,7 +31,7 @@ public class LoginPage {
         loginLink.click();
     }
 
-    public void login(String login, String password) throws Exception {
+    public void login(String password) throws Exception {
         WebElement usernameInput = driver.findElement(By.id("frmUsername"));
         usernameInput.sendKeys(login);
         WebElement passwordInput = driver.findElement(By.id("frmPasswordTopNav"));
@@ -45,7 +47,7 @@ public class LoginPage {
     }
 
     public void logout() {
-        driver.findElement(By.linkText("kleini")).click();
+        driver.findElement(By.linkText(login)).click();
         driver.findElement(By.linkText("Logoff")).click();
     }
 }
