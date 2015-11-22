@@ -30,6 +30,7 @@ public final class PriceGuideTabs {
     }
 
     public static void main(String[] args) throws Exception {
+        int numTabs = Integer.parseInt(System.getProperty("numTabs", "10"));
         BrickStoreDeSerializer deSerializer = new BrickStoreDeSerializer();
         File file = new File(args[0]);
         final BrickStoreXML brickStore = deSerializer.load(file);
@@ -47,7 +48,7 @@ public final class PriceGuideTabs {
                 actions.click(link);
                 actions.keyUp(Keys.CONTROL);
                 actions.perform();
-                if (0 == (++count % 10)) {
+                if (0 == (++count % numTabs)) {
                     do {
                         Thread.sleep(10000);
                         try {
