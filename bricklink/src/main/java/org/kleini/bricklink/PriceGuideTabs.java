@@ -41,7 +41,11 @@ public final class PriceGuideTabs {
         try {
             int count = 0;
             for (Item item : brickStore.getInventory().getItem()) {
-                driver.get("https://alpha.bricklink.com/pages/clone/catalogitem.page?P=" + item.getItemID() + "&idColor=" + item.getColorID());
+                String url = "https://www.bricklink.com/catalogItem.asp?" + item.getItemTypeID() + '=' + item.getItemID();
+                if (0 != item.getColorID()) {
+                    url += "&idColor=" + item.getColorID();
+                }
+                driver.get(url);
                 WebElement link = driver.findElement(By.id("_idShowPriceGuideLink"));
                 Actions actions = new Actions(driver);
                 actions.keyDown(Keys.CONTROL);
