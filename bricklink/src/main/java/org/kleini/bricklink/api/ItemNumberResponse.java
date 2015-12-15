@@ -1,0 +1,25 @@
+/*
+ * GPLv3
+ */
+
+package org.kleini.bricklink.api;
+
+import java.util.List;
+
+import org.kleini.bricklink.data.ItemMapping;
+
+/**
+ * {@link ItemNumberResponse}
+ *
+ * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
+ */
+public class ItemNumberResponse extends Response<List<ItemMapping>> {
+
+    public ItemNumberResponse(org.kleini.bricklink.data.Response<List<ItemMapping>> response) {
+        super(response);
+    }
+
+    public List<ItemMapping> getItemMapping() {
+        return getResponse().getData();
+    }
+}
