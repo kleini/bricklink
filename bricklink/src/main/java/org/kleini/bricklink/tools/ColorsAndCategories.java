@@ -4,8 +4,11 @@
 
 package org.kleini.bricklink.tools;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+
 import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.CategoriesRequest;
 import org.kleini.bricklink.api.Category;
@@ -35,6 +38,12 @@ public final class ColorsAndCategories {
         } finally {
             client.close();
         }
+        Collections.sort(colors, new Comparator<Color>() {
+            @Override
+            public int compare(Color o1, Color o2) {
+                return o1.getIdentifier() == o2.getIdentifier() ? 0 : o1.getIdentifier() > o2.getIdentifier() ? 1 : -1;
+            }
+        });
         for (Color color : colors) {
             String constant = color.getName();
             constant = constant.replace(",", "");
@@ -43,6 +52,13 @@ public final class ColorsAndCategories {
             constant = constant.toUpperCase(Locale.ENGLISH);
             System.out.println("    " + constant + '(' + color.getIdentifier() + ", \"" + color.getName() + "\"),");
         }
+        Collections.sort(categories, new Comparator<Category>() {
+            @Override
+            public int compare(Category o1, Category o2) {
+                return o1.getIdentifier() == o2.getIdentifier() ? 0 : o1.getIdentifier() > o2.getIdentifier() ? 1 : -1;
+            }
+        });
+        // TODO eliminate duplicates, years, #40; (, /, #41; ), .
         for (Category category : categories) {
             String constant = category.getName();
             constant = constant.replace(",", "");
