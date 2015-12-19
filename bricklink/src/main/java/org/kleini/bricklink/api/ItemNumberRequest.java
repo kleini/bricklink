@@ -5,7 +5,7 @@
 package org.kleini.bricklink.api;
 
 /**
- * {@link ItemNumberRequest}
+ * {@link ItemNumberRequest} can be used to resolve a LEGO article number to the according BrickLink part, type and color.
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
@@ -32,5 +32,4 @@ public class ItemNumberRequest implements Request<ItemNumberResponse> {
     public ItemNumberParser getParser() {
         return new ItemNumberParser();
     }
-
 }

@@ -7,20 +7,35 @@ package org.kleini.bricklink.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * {@link ItemMapping}
+ * {@link ItemMapping} represents a mapping between BrickLink items and LEGO article numbers.
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 public class ItemMapping {
 
+    /**
+     * An object representation of the item.
+     */
     private Item item;
 
+    /**
+     * An object representation of the item.
+     */
     private String identifier;
 
+    /**
+     * The type of the item. Will mostly be a {@link ItemType#PART}.
+     */
     private ItemType type;
 
+    /**
+     * Color of the item.
+     */
     private Color color;
 
+    /**
+     * Element ID of the item in specific color.
+     */
     private String elementId;
 
     public ItemMapping() {

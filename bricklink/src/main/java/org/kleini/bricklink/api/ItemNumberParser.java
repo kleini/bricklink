@@ -12,7 +12,7 @@ import org.kleini.bricklink.data.Response;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
- * {@link ItemNumberParser}
+ * {@link ItemNumberParser} JSON parser for the {@link ItemNumberRequest}.
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
