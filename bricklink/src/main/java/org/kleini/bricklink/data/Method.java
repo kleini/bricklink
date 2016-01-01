@@ -14,7 +14,8 @@ public enum Method {
     BANK_TRANSFER("Bank Transfer"),
     CASH_NO_COD("Cash (no COD)"),
     IBAN("IBAN"),
-    PAYPAL("PayPal");
+    PAYPAL("PayPal"),
+    PAYPAL_ONSITE("PayPal (Onsite)");
 
     private final String value;
 
