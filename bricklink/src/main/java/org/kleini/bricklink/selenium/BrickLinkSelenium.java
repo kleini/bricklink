@@ -11,7 +11,9 @@ import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceGuide;
+import org.kleini.bricklink.selenium.catalog.PartOutPage;
 import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
+import org.kleini.bricklink.selenium.data.PartOutData;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -60,5 +62,9 @@ public final class BrickLinkSelenium {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public PartOutData getPartOutValue(ItemType type, String itemId) throws Exception {
+        return new PartOutPage(driver).getPartOutValue(type, itemId);
     }
 }

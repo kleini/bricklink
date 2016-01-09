@@ -1,0 +1,53 @@
+/*
+ * GPL v3
+ */
+
+package org.kleini.bricklink.selenium.catalog;
+
+import java.math.BigDecimal;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.kleini.bricklink.data.ItemType;
+import org.kleini.bricklink.selenium.data.PartOutData;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+/**
+ * Read the part out value of sets.
+ *
+ * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
+ */
+public class PartOutPage {
+
+    private final WebDriver driver;
+
+    public PartOutPage(WebDriver driver) {
+        super();
+        this.driver = driver;
+    }
+
+    public PartOutData getPartOutValue(ItemType type, String itemId) throws Exception {
+        // TODO Fix hard coded itemSeq once something appears that has not sequence number 1
+        driver.get("https://www.bricklink.com/catalogPOV.asp?itemType=" + type.getId() + "&itemNo=" + itemId + "&itemSeq=1&itemQty=1&breakType=M&itemCondition=N");
+        try {
+            WebElement errorMessage = driver.findElement(By.cssSelector("td[bgcolor='#FF0000'] center"));
+            if (errorMessage.getText().contains("There was a problem processing your request")) {
+                System.err.println("Can not get website with part out value for item " + itemId + " as " + type + ".");
+            }
+        } catch (NoSuchElementException e) {
+            // Error not found. Whew!
+        }
+        WebElement p = driver.findElement(By.xpath("//font[contains(text(),'Average of last 6 months Sales')]/.."));
+        WebElement value = p.findElement(By.xpath("//b[contains(text(),'EUR')]"));
+        String text = value.getText();
+        Pattern pattern = Pattern.compile("EUR ([\\d\\.]+)");
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            return new PartOutData(new BigDecimal(matcher.group(1)));
+        }
+        throw new Exception("Can not extract part out value for item " + itemId + " as " + type + ".");
+    }
+}
