@@ -11,6 +11,7 @@ import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceGuide;
+import org.kleini.bricklink.selenium.catalog.NoSuchPartException;
 import org.kleini.bricklink.selenium.catalog.PartOutPage;
 import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
 import org.kleini.bricklink.selenium.data.PartOutData;
@@ -64,7 +65,16 @@ public final class BrickLinkSelenium {
         return driver;
     }
 
-    public PartOutData getPartOutValue(ItemType type, String itemId) throws Exception {
-        return new PartOutPage(driver).getPartOutValue(type, itemId);
+    public PartOutData getPartOutValue(ItemType[] types, String itemId) throws Exception {
+        PartOutPage page = new PartOutPage(driver);
+        for (ItemType type : types) {
+            try {
+                PartOutData data = page.getPartOutValue(type, itemId);
+                return data;
+            } catch (NoSuchPartException e) {
+                // Try with next ItemType again
+            }
+        }
+        throw new NoSuchPartException("Can not get part out value for " + itemId);
     }
 }

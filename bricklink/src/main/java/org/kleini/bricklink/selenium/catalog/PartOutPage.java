@@ -29,13 +29,13 @@ public class PartOutPage {
         this.driver = driver;
     }
 
-    public PartOutData getPartOutValue(ItemType type, String itemId) throws Exception {
+    public PartOutData getPartOutValue(ItemType type, String itemId) throws NoSuchPartException, Exception {
         // TODO Fix hard coded itemSeq once something appears that has not sequence number 1
         driver.get("https://www.bricklink.com/catalogPOV.asp?itemType=" + type.getId() + "&itemNo=" + itemId + "&itemSeq=1&itemQty=1&breakType=M&itemCondition=N");
         try {
             WebElement errorMessage = driver.findElement(By.cssSelector("td[bgcolor='#FF0000'] center"));
             if (errorMessage.getText().contains("There was a problem processing your request")) {
-                System.err.println("Can not get website with part out value for item " + itemId + " as " + type + ".");
+                throw new NoSuchPartException("Can not get website with part out value for item " + itemId + " as " + type + ".");
             }
         } catch (NoSuchElementException e) {
             // Error not found. Whew!

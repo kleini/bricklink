@@ -16,6 +16,7 @@ import java.util.List;
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.selenium.BrickLinkSelenium;
+import org.kleini.bricklink.selenium.catalog.NoSuchPartException;
 import org.kleini.bricklink.selenium.data.PartOutData;
 
 import au.com.bytecode.opencsv.CSVParser;
@@ -46,20 +47,27 @@ public class DetermineSetValues {
         Configuration configuration = new Configuration();
         BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         List<String[]> output = new ArrayList<String[]>();
+        List<String[]> noPrice = new ArrayList<String[]>();
         try {
             for (String[] values : lines) {
                 String itemId = values[0];
                 BigDecimal value = BigDecimal.ZERO;
                 try {
-                    PartOutData data = selenium.getPartOutValue(ItemType.SET, itemId);
+                    PartOutData data = selenium.getPartOutValue(new ItemType[] { ItemType.SET, ItemType.GEAR }, itemId);
                     value = data.getValue();
+                } catch (NoSuchPartException e) {
+                    System.err.println("Can not get part out value for set/gear " + itemId + '.');
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                String[] extended = new String[values.length + 1];
-                System.arraycopy(values, 0, extended, 0, values.length);
-                extended[values.length] = value.toString();
-                output.add(extended);
+                if (BigDecimal.ZERO.compareTo(value) == 0) {
+                    noPrice.add(values);
+                } else {
+                    String[] extended = new String[values.length + 1];
+                    System.arraycopy(values, 0, extended, 0, values.length);
+                    extended[values.length] = value.toString();
+                    output.add(extended);
+                }
             }
         } finally {
             selenium.close();
@@ -70,6 +78,13 @@ public class DetermineSetValues {
             CSVWriter csvw = new CSVWriter(osw, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER, "\r\n");
         ) {
             csvw.writeAll(output);
+        }
+        try (
+            FileOutputStream fos = new FileOutputStream(new File(args[2]));
+            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+            CSVWriter csvw = new CSVWriter(osw, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER, "\r\n");
+        ) {
+            csvw.writeAll(noPrice);
         }
     }
 }
