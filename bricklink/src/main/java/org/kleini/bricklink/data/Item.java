@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
+@JsonIgnoreProperties({"thumbnail_url", "weight", "dim_x", "dim_y", "dim_z", "year_released", "description", "is_obsolete", "alternate_no"})
 public final class Item {
 
     /**
@@ -27,6 +29,11 @@ public final class Item {
      * The type of the item
      */
     private ItemType type;
+
+    /**
+     * Image link for this item
+     */
+    private String imageUrl;
 
     /**
      * The main category of the item
@@ -65,6 +72,16 @@ public final class Item {
     @JsonProperty("type")
     public void setType(ItemType type) {
         this.type = type;
+    }
+
+    @JsonProperty("image_url")
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    @JsonProperty("image_url")
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Category getCategory() {

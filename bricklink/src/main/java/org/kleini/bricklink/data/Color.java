@@ -196,6 +196,15 @@ public enum Color {
         throw new Exception("Unknown color identifier " + identifier + '.');
     }
 
+    public static Color byName(String name) throws Exception {
+        for (Color color : values()) {
+            if (color.getName().equals(name)) {
+                return color;
+            }
+        }
+        throw new Exception("Unknown color name " + name + '.');
+    }
+
     @Override
     public String toString() {
         return name;

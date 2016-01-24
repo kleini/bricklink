@@ -9,13 +9,13 @@ import org.kleini.bricklink.data.Response;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
- * {@link CategoriesParser}
+ * {@link CategoryListParser}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class CategoriesParser extends Parser<CategoriesResponse, List<Category>> {
+public final class CategoryListParser extends Parser<CategoryListResponse, List<Category>> {
 
-    public CategoriesParser() {
+    public CategoryListParser() {
         super();
     }
 
@@ -27,7 +27,7 @@ public final class CategoriesParser extends Parser<CategoriesResponse, List<Cate
     }
 
     @Override
-    protected CategoriesResponse createResponse(Response<List<Category>> response) {
-        return new CategoriesResponse(response);
+    protected CategoryListResponse createResponse(Response<List<Category>> response) {
+        return new CategoryListResponse(response);
     }
 }

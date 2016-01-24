@@ -5,13 +5,13 @@
 package org.kleini.bricklink.api;
 
 /**
- * {@link CategoriesRequest}
+ * {@link CategoryListRequest}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class CategoriesRequest implements Request<CategoriesResponse> {
+public final class CategoryListRequest implements Request<CategoryListResponse> {
 
-    public CategoriesRequest() {
+    public CategoryListRequest() {
         super();
     }
 
@@ -26,7 +26,7 @@ public final class CategoriesRequest implements Request<CategoriesResponse> {
     }
 
     @Override
-    public CategoriesParser getParser() {
-        return new CategoriesParser();
+    public CategoryListParser getParser() {
+        return new CategoryListParser();
     }
 }

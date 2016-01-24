@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.kleini.bricklink.api.BrickLinkClient;
-import org.kleini.bricklink.api.CategoriesRequest;
+import org.kleini.bricklink.api.CategoryListRequest;
 import org.kleini.bricklink.api.Category;
 import org.kleini.bricklink.api.Color;
 import org.kleini.bricklink.api.ColorsRequest;
@@ -34,7 +34,7 @@ public final class ColorsAndCategories {
         final List<Category> categories;
         try {
             colors = client.execute(new ColorsRequest()).getColors();
-            categories = client.execute(new CategoriesRequest()).getCategories();
+            categories = client.execute(new CategoryListRequest()).getCategories();
         } finally {
             client.close();
         }

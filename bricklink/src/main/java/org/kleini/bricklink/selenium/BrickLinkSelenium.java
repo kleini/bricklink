@@ -6,11 +6,17 @@ package org.kleini.bricklink.selenium;
 
 import static org.kleini.bricklink.api.ConfigurationProperty.LOGIN;
 import static org.kleini.bricklink.api.ConfigurationProperty.PASSWORD;
+
+import java.util.List;
+
 import org.kleini.bricklink.api.Configuration;
+import org.kleini.bricklink.data.Category;
+import org.kleini.bricklink.data.Color;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceGuide;
+import org.kleini.bricklink.selenium.catalog.CategoryListPage;
 import org.kleini.bricklink.selenium.catalog.NoSuchPartException;
 import org.kleini.bricklink.selenium.catalog.PartOutPage;
 import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
@@ -19,6 +25,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  * {@link BrickLinkSelenium}
@@ -41,7 +49,9 @@ public final class BrickLinkSelenium {
         } else if ("chrome".equals(browser)) {
             driver = new ChromeDriver();
         } else {
-            driver = new PhantomJSDriver();
+            DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
+            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, "--logLevel=DEBUG");
+            driver = new PhantomJSDriver(capabilities);
         }
         driver.get(URL);
         loginPage = new LoginPage(driver, login);
@@ -76,5 +86,13 @@ public final class BrickLinkSelenium {
             }
         }
         throw new NoSuchPartException("Can not get part out value for " + itemId);
+    }
+
+    public List<String> getCategoryParts(Category category) throws Exception {
+        return new CategoryListPage(driver).getPartList(category);
+    }
+
+    public Color guessColor(ItemType type, String itemId) throws Exception {
+        return new CatalogItemPage(driver).guessColor(type, itemId);
     }
 }
