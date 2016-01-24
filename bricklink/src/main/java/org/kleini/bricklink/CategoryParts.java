@@ -43,12 +43,9 @@ public final class CategoryParts {
         }
         Category category = Category.byId(Integer.parseInt(args[0]));
         Configuration configuration = new Configuration();
-        BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         List<String> parts;
-        try {
+        try (BrickLinkSelenium selenium = new BrickLinkSelenium(configuration)) {
             parts = selenium.getCategoryParts(category);
-        } finally {
-            selenium.close();
         }
         List<Item> items = new LinkedList<Item>();
         for (String part : parts) {
@@ -61,8 +58,7 @@ public final class CategoryParts {
             item.setCondition(Condition.N.name());
             items.add(item);
         }
-        BrickLinkClient client = new BrickLinkClient(configuration);
-        try {
+        try (BrickLinkClient client = new BrickLinkClient(configuration)) {
             for (Item item : items) {
                 ItemResponse response1 = client.execute(new ItemRequest(ItemType.PART, item.getItemID()));
                 item.setItemName(response1.getItem().getName());
@@ -80,24 +76,21 @@ public final class CategoryParts {
                     item.setColorName(Color.NOT_APPLICABLE.getName());
                 }
             }
-        } finally {
-            client.close();
         }
-        selenium = new BrickLinkSelenium(configuration);
-        try {
+        try (BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);) {
             for (Item item : items) {
                 if (item.getColorID() == Color.NOT_APPLICABLE.getIdentifier()) {
-                    Color color = selenium.guessColor(ItemType.PART, item.getItemID());
+                    Color color = selenium.guessColor(ItemType.PART,
+                            item.getItemID());
                     if (Color.NOT_APPLICABLE.equals(color)) {
-                        System.out.println("Guessing color for part " + item.getItemID() + " failed.");
+                        System.out.println("Guessing color for part "
+                                + item.getItemID() + " failed.");
                     } else {
                         item.setColorID(color.getIdentifier());
                         item.setColorName(color.getName());
                     }
                 }
             }
-        } finally {
-            selenium.close();
         }
         BrickStoreXML brickStore = new BrickStoreXML();
         Inventory inventory = new Inventory();

@@ -8,15 +8,20 @@ import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_SECRET;
 import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_VALUE;
 import static org.kleini.bricklink.api.ConfigurationProperty.CONSUMER_KEY;
 import static org.kleini.bricklink.api.ConfigurationProperty.CONSUMER_SECRET;
+
+import java.io.Closeable;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.net.ssl.SSLContext;
+
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -33,7 +38,7 @@ import org.apache.http.message.BasicNameValuePair;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class BrickLinkClient {
+public final class BrickLinkClient implements Closeable {
 
     private static final String BASE_URL = "https://api.bricklink.com/api/store/v1/";
 

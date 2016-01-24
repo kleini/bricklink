@@ -45,10 +45,11 @@ public class DetermineSetValues {
             lines = reader.readAll();
         }
         Configuration configuration = new Configuration();
-        BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         List<String[]> output = new ArrayList<String[]>();
         List<String[]> noPrice = new ArrayList<String[]>();
-        try {
+        try (
+            BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
+        ) {
             for (String[] values : lines) {
                 String itemId = values[0];
                 BigDecimal value = BigDecimal.ZERO;
@@ -69,8 +70,6 @@ public class DetermineSetValues {
                     output.add(extended);
                 }
             }
-        } finally {
-            selenium.close();
         }
         try (
             FileOutputStream fos = new FileOutputStream(new File(args[1]));

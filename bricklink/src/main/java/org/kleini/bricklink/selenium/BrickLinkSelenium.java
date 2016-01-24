@@ -7,6 +7,7 @@ package org.kleini.bricklink.selenium;
 import static org.kleini.bricklink.api.ConfigurationProperty.LOGIN;
 import static org.kleini.bricklink.api.ConfigurationProperty.PASSWORD;
 
+import java.io.Closeable;
 import java.util.List;
 
 import org.kleini.bricklink.api.Configuration;
@@ -33,7 +34,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class BrickLinkSelenium {
+public final class BrickLinkSelenium implements Closeable {
 
     private static final String URL = "https://www.bricklink.com";
 
