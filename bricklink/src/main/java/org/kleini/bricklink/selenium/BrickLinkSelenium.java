@@ -8,7 +8,12 @@ import static org.kleini.bricklink.api.ConfigurationProperty.LOGIN;
 import static org.kleini.bricklink.api.ConfigurationProperty.PASSWORD;
 
 import java.io.Closeable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.Category;
@@ -22,7 +27,9 @@ import org.kleini.bricklink.selenium.catalog.NoSuchPartException;
 import org.kleini.bricklink.selenium.catalog.PartOutPage;
 import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
 import org.kleini.bricklink.selenium.data.PartOutData;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -95,5 +102,24 @@ public final class BrickLinkSelenium implements Closeable {
 
     public Color guessColor(ItemType type, String itemId) throws Exception {
         return new CatalogItemPage(driver).guessColor(type, itemId);
+    }
+
+    private static final Pattern pattern = Pattern.compile("inventoried this \\w+ on (\\w{3} \\d{1,2}, \\d{4})");
+
+    public Date getInventoryCreateDate(ItemType type, String itemId) {
+        driver.get(URL + "/catalogItemInv.asp?" + type.getId() + "=" + itemId + (ItemType.GEAR.equals(type) ? "" : "-1"));
+        Date retval = null;
+        try {
+            WebElement element = driver.findElement(By.xpath("//font[text()[contains(.,'inventoried')]]"));
+            Matcher matcher = pattern.matcher(element.getText());
+            if (matcher.find()) {
+                String dateText = matcher.group(1);
+                SimpleDateFormat df = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+                retval = df.parse(dateText);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retval;
     }
 }

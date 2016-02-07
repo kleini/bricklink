@@ -4,24 +4,26 @@
 
 package org.kleini.bricklink;
 
+import static java.math.RoundingMode.HALF_UP;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.selenium.BrickLinkSelenium;
 import org.kleini.bricklink.selenium.catalog.NoSuchPartException;
 import org.kleini.bricklink.selenium.data.PartOutData;
-
-import au.com.bytecode.opencsv.CSVParser;
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
+import org.kleini.lego.LEGOShopSelenium;
+import org.kleini.lego.Set;
 
 /**
  * 
@@ -35,55 +37,96 @@ public class DetermineSetValues {
     }
 
     public static void main(String[] args) throws Exception {
-        File file = new File(args[0]);
-        List<String[]> lines;
+        List<Set> sets;
         try (
-            FileInputStream fis = new FileInputStream(file);
-            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-            CSVReader reader = new CSVReader(isr, ';', CSVParser.DEFAULT_QUOTE_CHARACTER, false);
+            LEGOShopSelenium shopSelenium = new LEGOShopSelenium();
         ) {
-            lines = reader.readAll();
+            sets = shopSelenium.getAvailableSets();
         }
         Configuration configuration = new Configuration();
-        List<String[]> output = new ArrayList<String[]>();
-        List<String[]> noPrice = new ArrayList<String[]>();
+        List<Marge> output = new ArrayList<Marge>();
         try (
             BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         ) {
-            for (String[] values : lines) {
-                String itemId = values[0];
+            int i = 1;
+            for (Set set : sets) {
+                String itemId = Integer.toString(set.getIdentifier());
                 BigDecimal value = BigDecimal.ZERO;
+                PartOutData data = null;
                 try {
-                    PartOutData data = selenium.getPartOutValue(new ItemType[] { ItemType.SET, ItemType.GEAR }, itemId);
+                    data = selenium.getPartOutValue(new ItemType[] { ItemType.SET, ItemType.GEAR }, itemId);
                     value = data.getValue();
                 } catch (NoSuchPartException e) {
                     System.err.println("Can not get part out value for set/gear " + itemId + '.');
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (BigDecimal.ZERO.compareTo(value) == 0) {
-                    noPrice.add(values);
-                } else {
-                    String[] extended = new String[values.length + 1];
-                    System.arraycopy(values, 0, extended, 0, values.length);
-                    extended[values.length] = value.toString();
-                    output.add(extended);
+                Marge marge = new Marge(set);
+                marge.setPartOutValue(value);
+                output.add(marge);
+                System.out.println((100*i++/sets.size()) + "% " + marge.toString());
+                if (null == data) {
+                    continue;
+                }
+                try {
+                    Date date = selenium.getInventoryCreateDate(data.getType(), itemId);
+                    marge.setInventoried(date);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
+        output.sort(new Comparator<Marge>() {
+            @Override
+            public int compare(Marge o1, Marge o2) {
+                return o2.getMarge().compareTo(o1.getMarge());
+            }
+        });
         try (
-            FileOutputStream fos = new FileOutputStream(new File(args[1]));
+            FileOutputStream fos = new FileOutputStream(new File(args[0]));
             OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
-            CSVWriter csvw = new CSVWriter(osw, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER, "\r\n");
         ) {
-            csvw.writeAll(output);
+            for (Marge marge : output) {
+                osw.write(marge.toString());
+                osw.write(System.lineSeparator());
+            }
         }
-        try (
-            FileOutputStream fos = new FileOutputStream(new File(args[2]));
-            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
-            CSVWriter csvw = new CSVWriter(osw, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER, "\r\n");
-        ) {
-            csvw.writeAll(noPrice);
+    }
+
+    private static final BigDecimal HUNDRED = new BigDecimal("100");
+
+    private static final class Marge {
+        private final Set set;
+        private BigDecimal partOutValue;
+        private BigDecimal marge;
+        private Date inventoried;
+        Marge(Set set) {
+            super();
+            this.set = set;
+        }
+        void setPartOutValue(BigDecimal value) {
+            this.partOutValue = value;
+            try {
+                this.marge = HUNDRED.multiply(partOutValue.divide(set.getRetailPrice(), HALF_UP)).subtract(HUNDRED);
+            } catch (ArithmeticException e) {
+                this.marge = new BigDecimal("0");
+            }
+        }
+        BigDecimal getMarge() {
+            return marge;
+        }
+        void setInventoried(Date inventoried) {
+            this.inventoried = inventoried;
+        }
+        @Override
+        public String toString() {
+            String retval = "" + set.getIdentifier() + " " + set.getName() + " " + set.getRetailPrice() + " " + partOutValue + " " + marge;
+            if (null != inventoried) {
+                if (((System.currentTimeMillis() - inventoried.getTime()) / 1000 / 60 / 60 / 24) < 100) {
+                    retval += " very young, inventoried on " + new SimpleDateFormat("MMM dd, yyyy", Locale.US).format(inventoried);
+                }
+            }
+            return retval;
         }
     }
 }

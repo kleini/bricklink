@@ -46,7 +46,7 @@ public class PartOutPage {
         Pattern pattern = Pattern.compile("EUR ([\\d\\.]+)");
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
-            return new PartOutData(new BigDecimal(matcher.group(1)));
+            return new PartOutData(new BigDecimal(matcher.group(1)), type);
         }
         throw new Exception("Can not extract part out value for item " + itemId + " as " + type + ".");
     }

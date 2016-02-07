@@ -6,6 +6,8 @@ package org.kleini.bricklink.selenium.data;
 
 import java.math.BigDecimal;
 
+import org.kleini.bricklink.data.ItemType;
+
 /**
  * Data from the part out value page.
  *
@@ -14,13 +16,19 @@ import java.math.BigDecimal;
 public class PartOutData {
 
     private final BigDecimal value;
+    private final ItemType type;
 
-    public PartOutData(BigDecimal value) {
+    public PartOutData(BigDecimal value, ItemType type) {
         super();
         this.value = value;
+        this.type = type;
     }
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    public ItemType getType() {
+        return type;
     }
 }
