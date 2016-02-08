@@ -44,7 +44,7 @@ public class DetermineSetValues {
             sets = shopSelenium.getAvailableSets();
         }
         Configuration configuration = new Configuration();
-        List<Marge> output = new ArrayList<Marge>();
+        List<Margin> output = new ArrayList<Margin>();
         try (
             BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
         ) {
@@ -61,7 +61,7 @@ public class DetermineSetValues {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Marge marge = new Marge(set);
+                Margin marge = new Margin(set);
                 marge.setPartOutValue(value);
                 output.add(marge);
                 System.out.println((100*i++/sets.size()) + "% " + marge.toString());
@@ -76,9 +76,9 @@ public class DetermineSetValues {
                 }
             }
         }
-        output.sort(new Comparator<Marge>() {
+        output.sort(new Comparator<Margin>() {
             @Override
-            public int compare(Marge o1, Marge o2) {
+            public int compare(Margin o1, Margin o2) {
                 return o2.getMarge().compareTo(o1.getMarge());
             }
         });
@@ -86,7 +86,7 @@ public class DetermineSetValues {
             FileOutputStream fos = new FileOutputStream(new File(args[0]));
             OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
         ) {
-            for (Marge marge : output) {
+            for (Margin marge : output) {
                 osw.write(marge.toString());
                 osw.write(System.lineSeparator());
             }
@@ -95,12 +95,12 @@ public class DetermineSetValues {
 
     private static final BigDecimal HUNDRED = new BigDecimal("100");
 
-    private static final class Marge {
+    private static final class Margin {
         private final Set set;
         private BigDecimal partOutValue;
         private BigDecimal marge;
         private Date inventoried;
-        Marge(Set set) {
+        Margin(Set set) {
             super();
             this.set = set;
         }
