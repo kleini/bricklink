@@ -1,13 +1,11 @@
 package org.kleini.lego;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -20,7 +18,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  * set nummer span[class='item-code']
- * 
+ *
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
@@ -39,20 +37,22 @@ public class LEGOShopSelenium implements Closeable {
             driver = new ChromeDriver();
         } else {
             DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, "--logLevel=DEBUG");
-            driver = new PhantomJSDriver(capabilities);
+            // --webdriver-loglevel=DEBUG
+            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] { "--ssl-protocol=any" });
+            PhantomJSDriver phantom = new PhantomJSDriver(capabilities);
+            driver = phantom;
         }
-        driver.get(URL);
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         driver.close();
     }
 
     private static final Pattern pattern = Pattern.compile("([\\d\\,]+) €");
 
     public List<Set> getAvailableSets() {
+        driver.get(URL);
         driver.findElement(By.id("pagination-9999")).click();
         List<WebElement> elements = driver.findElements(By.cssSelector("ul[id='product-results'] > li"));
         List<Set> retval = new LinkedList<Set>();

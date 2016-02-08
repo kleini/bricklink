@@ -5,7 +5,6 @@
 package org.kleini.bricklink;
 
 import static java.math.RoundingMode.HALF_UP;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -16,7 +15,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.selenium.BrickLinkSelenium;
@@ -26,7 +24,7 @@ import org.kleini.lego.LEGOShopSelenium;
 import org.kleini.lego.Set;
 
 /**
- * 
+ *
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
