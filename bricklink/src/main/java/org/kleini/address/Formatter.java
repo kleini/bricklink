@@ -24,6 +24,9 @@ public final class Formatter {
         case FI:
             addFinland(sb, address);
             break;
+        case FR:
+            addStandard(sb, address);
+            break;
         case GB:
             addUnitedKingdom(sb, address);
             break;
@@ -36,7 +39,7 @@ public final class Formatter {
         default:
             throw new Exception("Formatter for country " + address.getCountry().getName() + " missing.");
         }
-        return "";
+        return sb.toString();
     }
 
     private static void addName(StringBuilder sb, Address address) {
