@@ -9,7 +9,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.kleini.bricklink.data.Country;
+import org.kleini.address.Country;
 import org.kleini.bricklink.data.PriceDetail;
 import org.kleini.bricklink.data.PriceGuide;
 

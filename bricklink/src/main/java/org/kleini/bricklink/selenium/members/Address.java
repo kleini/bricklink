@@ -4,7 +4,7 @@
 
 package org.kleini.bricklink.selenium.members;
 
-import org.kleini.bricklink.data.Country;
+import org.kleini.address.Country;
 import org.kleini.bricklink.data.Name;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

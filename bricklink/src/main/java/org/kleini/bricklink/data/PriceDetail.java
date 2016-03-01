@@ -6,7 +6,7 @@ package org.kleini.bricklink.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+import org.kleini.address.Country;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

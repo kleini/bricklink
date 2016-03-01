@@ -2,9 +2,7 @@
  * GPL v3
  */
 
-package org.kleini.bricklink.data;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
+package org.kleini.address;
 
 /**
  * {@link Country} lists ISO 3166-1 alpha-2 country codes.
@@ -35,7 +33,7 @@ public enum Country {
     BD(null),
     BE("Belgium"),
     BF(null),
-    BG(null),
+    BG("Bulgaria"),
     BH(null),
     BI(null),
     BJ(null),
@@ -171,7 +169,7 @@ public enum Country {
     MV(null),
     MW(null),
     MX(null),
-    MY(null),
+    MY("Malaysia"),
     MZ(null),
     NA(null),
     NC(null),
@@ -270,8 +268,7 @@ public enum Country {
         this.name = name;
     }
 
-    @JsonCreator
-    public static Country forValue(String value) {
+    public static Country parse(String value) {
         return Country.valueOf(value.toUpperCase());
     }
 

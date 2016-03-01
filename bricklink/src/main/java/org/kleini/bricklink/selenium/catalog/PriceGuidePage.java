@@ -8,11 +8,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import org.apache.commons.io.IOUtils;
+import org.kleini.address.Country;
 import org.kleini.bricklink.data.Color;
 import org.kleini.bricklink.data.Condition;
-import org.kleini.bricklink.data.Country;
 import org.kleini.bricklink.data.Currency;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
@@ -22,7 +21,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

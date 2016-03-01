@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.data;
 
+import org.kleini.address.Country;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
