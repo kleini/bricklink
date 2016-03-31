@@ -21,10 +21,6 @@ public final class Formatter {
         case CA:
             addCanada(sb, address);
             break;
-        case NO:
-        case FR:
-            addStandard(sb, address);
-            break;
         case CZ:
             addCzech(sb, address);
             break;
@@ -39,6 +35,11 @@ public final class Formatter {
             break;
         case US:
             addUSA(sb, address);
+            break;
+        case FR:
+        case HK:
+        case NO:
+            addStandard(sb, address);
             break;
         default:
             throw new Exception("Formatter for country " + address.getCountry().getName() + " missing.");
@@ -60,7 +61,16 @@ public final class Formatter {
 
     private static void addStandard(StringBuilder sb, Address address) {
         addName(sb, address);
-        sb.append(address.getPostalCode() + " " + address.getCityName()); sb.append('\n');
+        if (null != address.getPostalCode()) {
+            sb.append(address.getPostalCode());
+            sb.append(' ');
+        }
+        if (null != address.getCityName()) {
+            sb.append(address.getCityName());
+        }
+        if (null != address.getPostalCode() && null != address.getCityName()) {
+            sb.append('\n');
+        }
         if (null != address.getStateOrProvince()) {
             sb.append(address.getStateOrProvince()); sb.append('\n');
         }
