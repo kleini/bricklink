@@ -228,7 +228,7 @@ public enum Country {
     TD(null),
     TF(null),
     TG(null),
-    TH(null),
+    TH("Thailand"),
     TJ(null),
     TK(null),
     TL(null),

@@ -30,6 +30,9 @@ public final class Formatter {
         case GB:
             addUnitedKingdom(sb, address);
             break;
+        case TH:
+            addThailand(sb, address);
+            break;
         case TW:
             addTaiwan(sb, address);
             break;
@@ -77,6 +80,13 @@ public final class Formatter {
         addCountry(sb, address);
     }
 
+    private static void addThailand(StringBuilder sb, Address address) {
+        addName(sb, address);
+        sb.append(address.getCityName()); sb.append('\n');
+        sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); sb.append('\n');
+        addCountry(sb, address);
+    }
+
     private static void addCanada(StringBuilder sb, Address address) {
         addName(sb, address);
         sb.append(address.getCityName()); sb.append(' '); sb.append(address.getStateOrProvince()); sb.append(' '); sb.append(address.getPostalCode()); sb.append('\n');
@@ -112,7 +122,7 @@ public final class Formatter {
         sb.append(address.getCityName()); sb.append(", "); sb.append(address.getPostalCode()); sb.append('\n');
         addCountry(sb, address);
     }
-
+    
     private static void addUnitedKingdom(StringBuilder sb, Address address) {
         sb.append(address.getName()); sb.append('\n');
         sb.append(address.getStreet1()); sb.append('\n');
