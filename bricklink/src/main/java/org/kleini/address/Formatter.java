@@ -18,10 +18,8 @@ public final class Formatter {
     public static String format(Address address) throws Exception {
         StringBuilder sb = new StringBuilder();
         switch (address.getCountry()) {
-        case AU:
         case CA:
-        case KR:
-            addStandard2(sb, address);
+            addCanada(sb, address);
             break;
         case CZ:
             addCzech(sb, address);
@@ -38,13 +36,15 @@ public final class Formatter {
         case TW:
             addTaiwan(sb, address);
             break;
-        case US:
-            addUSA(sb, address);
-            break;
         case FR:
         case HK:
         case NO:
             addStandard(sb, address);
+            break;
+        case AU:
+        case KR:
+        case US:
+            addStandard2(sb, address);
             break;
         default:
             throw new Exception("Formatter for country " + address.getCountry().getName() + " missing.");
@@ -82,9 +82,15 @@ public final class Formatter {
         addCountry(sb, address);
     }
 
-    private static void addStandard2(StringBuilder sb, Address address) {
+    private static void addCanada(StringBuilder sb, Address address) {
         addName(sb, address);
         sb.append(address.getCityName()); sb.append(' '); sb.append(address.getStateOrProvince()); sb.append(' '); sb.append(address.getPostalCode()); sb.append('\n');
+        addCountry(sb, address);
+    }
+
+    private static void addStandard2(StringBuilder sb, Address address) {
+        addName(sb, address);
+        sb.append(address.getCityName()); sb.append(", "); sb.append(address.getStateOrProvince()); sb.append(' '); sb.append(address.getPostalCode()); sb.append('\n');
         addCountry(sb, address);
     }
 
@@ -147,12 +153,6 @@ public final class Formatter {
             }
         }
         sb.append(address.getPostalCode().toUpperCase()); sb.append('\n');
-        addCountry(sb, address);
-    }
-
-    private static void addUSA(StringBuilder sb, Address address) {
-        addName(sb, address);
-        sb.append(address.getCityName()); sb.append(", "); sb.append(address.getStateOrProvince()); sb.append(' '); sb.append(address.getPostalCode()); sb.append('\n');
         addCountry(sb, address);
     }
 }
