@@ -33,6 +33,9 @@ public final class Formatter {
         case GB:
             addUnitedKingdom(sb, address);
             break;
+        case RU:
+            addRussia(sb, address);
+            break;
         case TH:
             addThailand(sb, address);
             break;
@@ -90,10 +93,9 @@ public final class Formatter {
         addCountry(sb, address);
     }
 
-    private static void addChina(StringBuilder sb, Address address) {
+    private static void addStandard2(StringBuilder sb, Address address) {
         addName(sb, address);
-        sb.append(address.getCityName()); lb(sb);
-        sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); lb(sb);
+        sb.append(address.getCityName()); sb.append(", "); sb.append(address.getStateOrProvince()); sb.append(' '); sb.append(address.getPostalCode()); sb.append('\n');
         addCountry(sb, address);
     }
 
@@ -103,9 +105,10 @@ public final class Formatter {
         addCountry(sb, address);
     }
 
-    private static void addStandard2(StringBuilder sb, Address address) {
+    private static void addChina(StringBuilder sb, Address address) {
         addName(sb, address);
-        sb.append(address.getCityName()); sb.append(", "); sb.append(address.getStateOrProvince()); sb.append(' '); sb.append(address.getPostalCode()); sb.append('\n');
+        sb.append(address.getCityName()); lb(sb);
+        sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); lb(sb);
         addCountry(sb, address);
     }
 
@@ -129,6 +132,13 @@ public final class Formatter {
         }
         sb.append('\n');
         sb.append(address.getPostalCode()); sb.append('\n');
+        addCountry(sb, address);
+    }
+
+    private static void addRussia(StringBuilder sb, Address address) {
+        addName(sb, address);
+        sb.append(address.getCityName()); lb(sb);
+        sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); lb(sb);
         addCountry(sb, address);
     }
 
