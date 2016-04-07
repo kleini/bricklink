@@ -41,6 +41,7 @@ public final class Formatter {
             break;
         case FR:
         case HK:
+        case NL:
         case NO:
             addStandard(sb, address);
             break;
