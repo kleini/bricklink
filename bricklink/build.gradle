@@ -13,7 +13,7 @@ dependencies {
 task partout(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.PartOut'
-  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties' ]
+  systemProperties = [ configurationFile: 'src/main/resources/bricklink.properties' ]
   if (null != System.getProperty("exec.args")) {
     args System.getProperty("exec.args") .split()
   }
@@ -21,7 +21,7 @@ task partout(type: JavaExec) {
 task pgTabs(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.PriceGuideTabs'
-  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties', numTabs: 10, browser: 'firefox' ]
+  systemProperties = [ configurationFile: 'src/main/resources/bricklink.properties', numTabs: 10, browser: 'firefox' ]
   if (null != System.getProperty("exec.args")) {
     args System.getProperty("exec.args") .split()
   }
@@ -29,7 +29,7 @@ task pgTabs(type: JavaExec) {
 task setValues(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.DetermineSetValues'
-  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties', browser: 'firefox' ]
+  systemProperties = [ configurationFile: 'src/main/resources/bricklink.properties', browser: 'firefox' ]
   if (null != System.getProperty("exec.args")) {
     args System.getProperty("exec.args") .split()
   }

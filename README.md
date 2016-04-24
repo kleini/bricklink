@@ -4,18 +4,21 @@ BrickLink tools
 I wrote some tools for myself to ease my work selling LEGO bricks on BrickLink. Maybe this tools can help you with your daily work with
 BrickLink, too.
 
+Build status
+------------
+[![Build Status](https://travis-ci.org/kleini/bricklink.svg?branch=master)](https://travis-ci.org/kleini/bricklink)
+
 Requirements
 ------------
-- Maven
-- PhantomJS
+- Gradle
+- PhantomJS, Firefox or Chrome
 
 Compile
 -------
 
 First you need to compile the sources
 
-    cd bricklink
-    mvn compile
+    gradle assemble
 
 Configuration
 -------------
@@ -33,8 +36,7 @@ database. If you want to part out such a set or if you want to use the BrickLink
 use the following command to create a part out of a set. The arguments are the set number "71006-1" in this example and the multiplier how
 much sets you want to part out.
 
-    cd bricklink
-    mvn exec:java -Dexec.mainClass="org.kleini.bricklink.PartOut" -DconfigurationFile=src/main/resources/bricklink.properties -Dexec.args="71006-1 10"
+    gradle partout 71006-1 10
 
 Support
 -------
@@ -48,7 +50,7 @@ Marcus Klein (<himself@kleini.org>)
 Copyright and License
 ---------------------
 
-Copyright 2014 Marcus Klein
+Copyright 2016 Marcus Klein
 
 Licensed under the GNU General Public License, Version 3.0 (the "License");
 you may not use this file except in compliance with the License.
