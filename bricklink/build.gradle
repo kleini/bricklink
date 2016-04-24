@@ -1,0 +1,30 @@
+dependencies {
+  compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
+  compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
+  compile 'net.sf.opencsv:opencsv:2.3'
+  compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.52.0'
+  compile 'org.seleniumhq.selenium:selenium-chrome-driver:2.52.0'
+  compile('com.codeborne:phantomjsdriver:1.2.1') {
+    exclude group: 'org.seleniumhq.selenium', module: 'selenium-java'
+    exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
+  }
+  testCompile 'junit:junit:4.11'
+}
+task partout(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main 'org.kleini.bricklink.PartOut'
+  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties' ]
+  args System.getProperty("exec.args").split()
+}
+task pgTabs(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main 'org.kleini.bricklink.PriceGuideTabs'
+  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties', numTabs: 10, browser: 'firefox' ]
+  args System.getProperty("exec.args").split()
+}
+task setValues(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main 'org.kleini.bricklink.DetermineSetValues'
+  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties', browser: 'firefox' ]
+  args System.getProperty("exec.args").split()
+}
