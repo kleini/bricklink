@@ -1,5 +1,6 @@
 group = 'org.kleini'
 version = '0.8.1'
+
 dependencies {
   compile 'com.fasterxml.jackson.core:jackson-databind:2.2.3'
   compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
@@ -12,6 +13,7 @@ dependencies {
   }
   testCompile 'junit:junit:4.11'
 }
+
 task partout(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.PartOut'
@@ -20,6 +22,7 @@ task partout(type: JavaExec) {
     args System.getProperty("exec.args") .split()
   }
 }
+
 task pgTabs(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.PriceGuideTabs'
@@ -28,6 +31,7 @@ task pgTabs(type: JavaExec) {
     args System.getProperty("exec.args") .split()
   }
 }
+
 task setValues(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.DetermineSetValues'
@@ -36,3 +40,4 @@ task setValues(type: JavaExec) {
     args System.getProperty("exec.args") .split()
   }
 }
+
