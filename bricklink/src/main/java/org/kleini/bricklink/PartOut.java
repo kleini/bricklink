@@ -11,6 +11,7 @@ import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.api.SubsetsRequest;
 import org.kleini.bricklink.api.SubsetsResponse;
+import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Entry;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.Subset;
@@ -60,7 +61,7 @@ public final class PartOut {
                     item.setColorID(entry.getColor().getIdentifier());
                     item.setColorName(entry.getColor().getName());
                     item.setQty(entry.getQuantity() * multiplier);
-                    item.setCondition("N");
+                    item.setCondition(Condition.N.name());
                     if (counterParts) {
                         item.setComments("" + subset.getIdentifier() + ',' + entry.isAlternate());
                     }

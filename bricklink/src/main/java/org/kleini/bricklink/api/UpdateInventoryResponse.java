@@ -1,0 +1,20 @@
+/*
+ * GPL v3
+ */
+
+package org.kleini.bricklink.api;
+
+import org.kleini.bricklink.data.Inventory;
+
+/**
+ * {@link UpdateInventoryResponse}
+ *
+ * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
+ */
+public class UpdateInventoryResponse extends Response<Inventory> {
+
+    public UpdateInventoryResponse(org.kleini.bricklink.data.Response<Inventory> response) {
+        super(response);
+    }
+
+}

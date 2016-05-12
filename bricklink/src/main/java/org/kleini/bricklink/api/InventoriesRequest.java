@@ -4,6 +4,8 @@
 
 package org.kleini.bricklink.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.kleini.bricklink.data.Category;
 import org.kleini.bricklink.data.Color;
 import org.kleini.bricklink.data.ItemType;
@@ -16,11 +18,8 @@ import org.kleini.bricklink.data.ItemType;
 public final class InventoriesRequest implements Request<InventoriesResponse> {
 
     private final ItemType type;
-
     private final Status status;
-
     private final Category category;
-
     private final Color color;
 
     public InventoriesRequest(ItemType type, Status status, Category category, Color color) {
@@ -38,13 +37,20 @@ public final class InventoriesRequest implements Request<InventoriesResponse> {
 
     @Override
     public Parameter[] getParameters() {
-        return new Parameter[] {
-            // API description is wrong. The value must not be "part". It must be "P".
-            new Parameter("item_type", type.getLongId()),
-            new Parameter("status", status.getIdentifier()),
-            new Parameter("category_id", category.getIdentifier()),
-            new Parameter("color_id", color.getIdentifier())
-        };
+        List<Parameter> params = new ArrayList<Parameter>();
+        if (null != type) {
+            params.add(new Parameter("item_type", type.getLongId()));
+        }
+        if (null != status) {
+            params.add(new Parameter("status", status.getIdentifier()));
+        }
+        if (null != category) {
+            params.add(new Parameter("category_id", category.getIdentifier()));
+        }
+        if (null != color) {
+            params.add(new Parameter("color_id", color.getIdentifier()));
+        }
+        return params.toArray(new Parameter[params.size()]);
     }
 
     @Override
