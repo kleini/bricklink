@@ -39,7 +39,6 @@ public final class Info4LEGOarticles {
 
     public static void main(String[] args) throws Exception {
         File file = new File(args[0]);
-        @SuppressWarnings("unchecked")
         List<String> lines = FileUtils.readLines(file, "UTF-8");
         Configuration configuration = new Configuration();
         BrickLinkClient client = new BrickLinkClient(configuration);

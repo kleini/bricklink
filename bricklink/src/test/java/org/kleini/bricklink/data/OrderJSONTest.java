@@ -4,13 +4,16 @@
 
 package org.kleini.bricklink.data;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -38,13 +41,13 @@ public class OrderJSONTest {
     public void testObjectFromJSON() throws JsonParseException, JsonMappingException, IOException {
         InputStream stream = getClass().getClassLoader().getResourceAsStream("order.txt");
         Order order = mapper.readValue(stream, Order.class);
-        assertTrue(true);
+        assertNotNull(order);
     }
 
     @Test
     public void testListFromJSON() throws JsonParseException, JsonMappingException, IOException {
         InputStream stream = getClass().getClassLoader().getResourceAsStream("orders.txt");
         List<Order> orders = mapper.readValue(stream, new TypeReference<ArrayList<Order>>() { });
-        assertTrue(true);
+        assertNotNull(orders);
     }
 }
