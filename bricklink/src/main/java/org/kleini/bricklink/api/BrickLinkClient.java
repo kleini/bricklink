@@ -4,34 +4,34 @@
 
 package org.kleini.bricklink.api;
 
-import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_SECRET;
-import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_VALUE;
 import static org.kleini.bricklink.api.ConfigurationProperty.CONSUMER_KEY;
 import static org.kleini.bricklink.api.ConfigurationProperty.CONSUMER_SECRET;
-
+import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_SECRET;
+import static org.kleini.bricklink.api.ConfigurationProperty.TOKEN_VALUE;
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.net.ssl.SSLContext;
-
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.ssl.SSLContexts;
 
 /**
  * {@link BrickLinkClient}
@@ -50,7 +50,7 @@ public final class BrickLinkClient implements Closeable {
         consumer = new CommonsHttpOAuthConsumer(consumerKey, consumerSecret);
         consumer.setTokenWithSecret(tokenValue, tokenSecret);
         SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustAllStrategy()).build();
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, new DefaultHostnameVerifier());
         client = HttpClients.custom().setSSLSocketFactory(sslsf).build();
     }
 
@@ -60,7 +60,21 @@ public final class BrickLinkClient implements Closeable {
 
     public <T extends Response<?>> T execute(Request<T> request) throws Exception {
         String url = BASE_URL + request.getPath();
-        HttpRequestBase httpRequest = new HttpGet(addQueryParams2URL(url, getGETParameter(request)));
+        HttpRequestBase httpRequest;
+        switch (request.getMethod()) {
+        case GET:
+            httpRequest = new HttpGet(addQueryParams2URL(url, getGETParameter(request)));
+            break;
+        case PUT:
+            HttpPut put = new HttpPut(url);
+            httpRequest = put;
+            StringEntity entity = new StringEntity(request.getBody(), Charset.forName("UTF-8"));
+            entity.setContentType("application/json");
+            put.setEntity(entity);
+            break;
+        default:
+            throw new Exception("Not implemented HTTP method: " + request.getMethod());
+        }
         consumer.sign(httpRequest);
         CloseableHttpResponse httpResponse = client.execute(httpRequest);
         final T response;
@@ -74,6 +88,7 @@ public final class BrickLinkClient implements Closeable {
         return response;
     }
 
+    @Override
     public void close() throws IOException {
         client.close();
     }

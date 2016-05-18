@@ -11,7 +11,7 @@ import org.kleini.bricklink.data.ItemType;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class KnownColorsRequest implements Request<KnownColorsResponse> {
+public final class KnownColorsRequest extends AbstractGetRequest<KnownColorsResponse> {
 
     private final ItemType type;
     private final String identifier;

@@ -17,7 +17,7 @@ import org.kleini.bricklink.data.ItemType;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class PriceGuideRequest implements Request<PriceGuideResponse> {
+public final class PriceGuideRequest extends AbstractGetRequest<PriceGuideResponse> {
 
     private final ItemType type;
     private final String itemID;

@@ -9,7 +9,7 @@ package org.kleini.bricklink.api;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class OrdersRequest implements Request<OrdersResponse> {
+public final class OrdersRequest extends AbstractGetRequest<OrdersResponse> {
 
     public OrdersRequest() {
         super();

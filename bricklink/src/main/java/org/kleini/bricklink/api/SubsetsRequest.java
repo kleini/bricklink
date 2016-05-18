@@ -13,7 +13,7 @@ import org.kleini.bricklink.data.ItemType;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class SubsetsRequest implements Request<SubsetsResponse> {
+public final class SubsetsRequest extends AbstractGetRequest<SubsetsResponse> {
 
     private final ItemType type;
     private final String itemID;

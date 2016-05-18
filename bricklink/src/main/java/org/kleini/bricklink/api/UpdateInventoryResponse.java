@@ -17,4 +17,7 @@ public class UpdateInventoryResponse extends Response<Inventory> {
         super(response);
     }
 
+    public Inventory getInventory() {
+        return getResponse().getData();
+    }
 }

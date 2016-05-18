@@ -9,7 +9,7 @@ package org.kleini.bricklink.api;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class ItemNumberRequest implements Request<ItemNumberResponse> {
+public class ItemNumberRequest extends AbstractGetRequest<ItemNumberResponse> {
 
     private final int elementId;
 

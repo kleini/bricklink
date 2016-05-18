@@ -59,6 +59,7 @@ public final class BrickLinkSelenium implements Closeable {
         } else {
             DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
             capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, "--logLevel=DEBUG");
+            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--ssl-protocol=tlsv1"});
             driver = new PhantomJSDriver(capabilities);
         }
         driver.get(URL);
@@ -70,6 +71,7 @@ public final class BrickLinkSelenium implements Closeable {
         this(configuration.getProperty(LOGIN), configuration.getProperty(PASSWORD));
     }
 
+    @Override
     public void close() {
         loginPage.logout();
         driver.quit();

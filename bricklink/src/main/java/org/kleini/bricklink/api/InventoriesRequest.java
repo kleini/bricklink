@@ -15,7 +15,7 @@ import org.kleini.bricklink.data.ItemType;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class InventoriesRequest implements Request<InventoriesResponse> {
+public final class InventoriesRequest extends AbstractGetRequest<InventoriesResponse> {
 
     private final ItemType type;
     private final Status status;

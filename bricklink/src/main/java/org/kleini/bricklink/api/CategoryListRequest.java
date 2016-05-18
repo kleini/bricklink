@@ -9,7 +9,7 @@ package org.kleini.bricklink.api;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class CategoryListRequest implements Request<CategoryListResponse> {
+public final class CategoryListRequest extends AbstractGetRequest<CategoryListResponse> {
 
     public CategoryListRequest() {
         super();

@@ -9,7 +9,7 @@ package org.kleini.bricklink.api;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class ColorsRequest implements Request<ColorsResponse> {
+public final class ColorsRequest extends AbstractGetRequest<ColorsResponse> {
 
     public ColorsRequest() {
         super();
