@@ -43,6 +43,7 @@ public final class Formatter {
             addTaiwan(sb, address);
             break;
         case AT:
+        case CH:
         case FR:
         case HK:
         case NL:
