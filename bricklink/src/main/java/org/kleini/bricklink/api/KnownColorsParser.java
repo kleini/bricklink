@@ -17,7 +17,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class KnownColorsParser extends Parser<KnownColorsResponse, List<KnownColor>> {
+public class KnownColorsParser extends Parser<KnownColorsResponse, Response<List<KnownColor>>> {
 
     KnownColorsParser() {
         super();

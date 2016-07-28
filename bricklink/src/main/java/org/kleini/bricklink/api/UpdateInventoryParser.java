@@ -4,7 +4,6 @@
 
 package org.kleini.bricklink.api;
 
-import org.kleini.api.Parser;
 import org.kleini.bricklink.data.Inventory;
 import org.kleini.bricklink.data.Response;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -14,7 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class UpdateInventoryParser extends Parser<UpdateInventoryResponse, Inventory> {
+public class UpdateInventoryParser extends MetaParser<UpdateInventoryResponse, Inventory> {
 
     public UpdateInventoryParser() {
         super();

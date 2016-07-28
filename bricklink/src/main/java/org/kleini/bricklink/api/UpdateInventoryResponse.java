@@ -4,7 +4,6 @@
 
 package org.kleini.bricklink.api;
 
-import org.kleini.api.Response;
 import org.kleini.bricklink.data.Inventory;
 
 /**
@@ -12,7 +11,7 @@ import org.kleini.bricklink.data.Inventory;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class UpdateInventoryResponse extends Response<Inventory> {
+public class UpdateInventoryResponse extends MetaResponse<Inventory> {
 
     public UpdateInventoryResponse(org.kleini.bricklink.data.Response<Inventory> response) {
         super(response);

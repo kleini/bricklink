@@ -16,7 +16,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class SubsetsParser extends Parser<SubsetsResponse, List<Subset>> {
+public class SubsetsParser extends Parser<SubsetsResponse, Response<List<Subset>>> {
 
     public SubsetsParser() {
         super();

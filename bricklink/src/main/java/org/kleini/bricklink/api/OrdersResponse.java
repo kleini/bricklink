@@ -15,7 +15,7 @@ import org.kleini.bricklink.data.Order;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class OrdersResponse extends Response<ArrayList<Order>> {
+public final class OrdersResponse extends Response<org.kleini.bricklink.data.Response<ArrayList<Order>>> {
 
     public OrdersResponse(org.kleini.bricklink.data.Response<ArrayList<Order>> response) {
         super(response);

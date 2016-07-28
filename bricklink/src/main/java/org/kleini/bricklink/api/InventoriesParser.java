@@ -17,7 +17,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class InventoriesParser extends Parser<InventoriesResponse, List<Inventory>> {
+public class InventoriesParser extends Parser<InventoriesResponse, Response<List<Inventory>>> {
 
     public InventoriesParser() {
         super();

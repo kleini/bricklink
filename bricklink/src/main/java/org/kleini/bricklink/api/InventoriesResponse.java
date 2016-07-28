@@ -14,7 +14,7 @@ import org.kleini.bricklink.data.Inventory;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class InventoriesResponse extends Response<List<Inventory>> {
+public class InventoriesResponse extends Response<org.kleini.bricklink.data.Response<List<Inventory>>> {
 
     public InventoriesResponse(org.kleini.bricklink.data.Response<List<Inventory>> response) {
         super(response);

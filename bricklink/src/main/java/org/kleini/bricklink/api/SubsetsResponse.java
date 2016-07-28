@@ -14,7 +14,7 @@ import org.kleini.bricklink.data.Subset;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class SubsetsResponse extends Response<List<Subset>> {
+public final class SubsetsResponse extends Response<org.kleini.bricklink.data.Response<List<Subset>>> {
 
     protected SubsetsResponse(org.kleini.bricklink.data.Response<List<Subset>> response) {
         super(response);

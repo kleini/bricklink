@@ -8,8 +8,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
-import org.kleini.bricklink.data.Meta;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,21 +34,17 @@ public abstract class Parser<T extends Response<?>, U> {
     }
 
     public final T parse(String body) throws Exception {
-        final org.kleini.bricklink.data.Response<U> response;
+        final U response;
         try {
             response = mapper.readValue(body, getResponseType());
         } catch (JsonMappingException e) {
             System.err.println("Body: " + body);
             throw e;
         }
-        Meta meta = response.getMeta();
-        if (200 != meta.getCode()) {
-            throw new Exception(meta.getMessage() + ";" + meta.getDescription());
-        }
         return createResponse(response);
     }
 
-    protected abstract TypeReference<org.kleini.bricklink.data.Response<U>> getResponseType();
+    protected abstract TypeReference<U> getResponseType();
 
-    protected abstract T createResponse(org.kleini.bricklink.data.Response<U> response);
+    protected abstract T createResponse(U response);
 }

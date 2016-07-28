@@ -11,14 +11,14 @@ package org.kleini.api;
  */
 public abstract class Response<T> {
 
-    private org.kleini.bricklink.data.Response<T> response;
+    private T response;
 
-    protected Response(org.kleini.bricklink.data.Response<T> response) {
+    protected Response(T response) {
         super();
         this.response = response;
     }
 
-    public org.kleini.bricklink.data.Response<T> getResponse() {
+    public T getResponse() {
         return response;
     }
 }

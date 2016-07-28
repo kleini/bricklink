@@ -5,8 +5,6 @@
 package org.kleini.bricklink.api;
 
 import java.util.List;
-
-import org.kleini.api.Parser;
 import org.kleini.bricklink.data.Response;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -15,7 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class CategoryListParser extends Parser<CategoryListResponse, List<Category>> {
+public final class CategoryListParser extends MetaParser<CategoryListResponse, List<Category>> {
 
     public CategoryListParser() {
         super();

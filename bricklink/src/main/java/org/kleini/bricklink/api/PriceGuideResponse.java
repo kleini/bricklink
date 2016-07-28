@@ -12,7 +12,7 @@ import org.kleini.bricklink.data.PriceGuide;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class PriceGuideResponse extends Response<PriceGuide> {
+public final class PriceGuideResponse extends Response<org.kleini.bricklink.data.Response<PriceGuide>> {
 
     public PriceGuideResponse(org.kleini.bricklink.data.Response<PriceGuide> response) {
         super(response);

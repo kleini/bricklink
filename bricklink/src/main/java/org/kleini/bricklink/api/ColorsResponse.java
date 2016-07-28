@@ -13,7 +13,7 @@ import org.kleini.api.Response;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class ColorsResponse extends Response<List<Color>> {
+public class ColorsResponse extends Response<org.kleini.bricklink.data.Response<List<Color>>> {
 
     protected ColorsResponse(org.kleini.bricklink.data.Response<List<Color>> response) {
         super(response);

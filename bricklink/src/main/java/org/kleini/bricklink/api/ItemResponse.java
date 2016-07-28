@@ -12,7 +12,7 @@ import org.kleini.bricklink.data.Item;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class ItemResponse extends Response<Item> {
+public final class ItemResponse extends Response<org.kleini.bricklink.data.Response<Item>> {
 
     protected ItemResponse(org.kleini.bricklink.data.Response<Item> response) {
         super(response);

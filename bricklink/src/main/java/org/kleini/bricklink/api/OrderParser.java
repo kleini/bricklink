@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class OrderParser extends Parser<OrderResponse, Order> {
+public final class OrderParser extends Parser<OrderResponse, Response<Order>> {
 
     public OrderParser() {
         super();

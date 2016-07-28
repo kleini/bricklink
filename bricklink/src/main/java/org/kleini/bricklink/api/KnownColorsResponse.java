@@ -14,7 +14,7 @@ import org.kleini.bricklink.data.KnownColor;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class KnownColorsResponse extends Response<List<KnownColor>> {
+public class KnownColorsResponse extends Response<org.kleini.bricklink.data.Response<List<KnownColor>>> {
 
     protected KnownColorsResponse(org.kleini.bricklink.data.Response<List<KnownColor>> response) {
         super(response);

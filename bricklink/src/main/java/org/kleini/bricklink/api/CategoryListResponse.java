@@ -6,14 +6,12 @@ package org.kleini.bricklink.api;
 
 import java.util.List;
 
-import org.kleini.api.Response;
-
 /**
  * {@link CategoryListResponse}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class CategoryListResponse extends Response<List<Category>> {
+public class CategoryListResponse extends MetaResponse<List<Category>> {
 
     protected CategoryListResponse(org.kleini.bricklink.data.Response<List<Category>> response) {
         super(response);

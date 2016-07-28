@@ -5,7 +5,6 @@
 package org.kleini.bricklink.api;
 
 import java.util.ArrayList;
-
 import org.kleini.api.Parser;
 import org.kleini.bricklink.data.Order;
 import org.kleini.bricklink.data.Response;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-final class OrdersParser extends Parser<OrdersResponse, ArrayList<Order>> {
+final class OrdersParser extends Parser<OrdersResponse, Response<ArrayList<Order>>> {
 
     OrdersParser() {
         super();

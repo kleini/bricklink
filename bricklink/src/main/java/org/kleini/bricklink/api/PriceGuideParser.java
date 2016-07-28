@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public final class PriceGuideParser extends Parser<PriceGuideResponse, PriceGuide> {
+public final class PriceGuideParser extends Parser<PriceGuideResponse, Response<PriceGuide>> {
 
     public PriceGuideParser() {
         super();

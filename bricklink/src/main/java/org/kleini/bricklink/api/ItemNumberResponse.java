@@ -15,7 +15,7 @@ import org.kleini.bricklink.data.ItemMapping;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class ItemNumberResponse extends Response<List<ItemMapping>> {
+public class ItemNumberResponse extends Response<org.kleini.bricklink.data.Response<List<ItemMapping>>> {
 
     public ItemNumberResponse(org.kleini.bricklink.data.Response<List<ItemMapping>> response) {
         super(response);

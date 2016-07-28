@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class ColorsParser extends Parser<ColorsResponse, List<Color>> {
+public class ColorsParser extends Parser<ColorsResponse, Response<List<Color>>> {
 
     @Override
     protected TypeReference<Response<List<Color>>> getResponseType() {
