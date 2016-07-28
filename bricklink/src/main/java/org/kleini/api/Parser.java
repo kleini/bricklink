@@ -2,7 +2,7 @@
  * GPL v3
  */
 
-package org.kleini.bricklink.api;
+package org.kleini.api;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -19,15 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-abstract class Parser<T extends Response<?>, U> {
+public abstract class Parser<T extends Response<?>, U> {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    Parser() {
+    protected Parser() {
         super();
     }
 
-    final static String checkResponse(CloseableHttpResponse response) throws Exception {
+    public final static String checkResponse(CloseableHttpResponse response) throws Exception {
         StatusLine status = response.getStatusLine();
         if (HttpStatus.SC_OK != status.getStatusCode()) {
             throw new Exception("Request failed. (" + status.getStatusCode() + ", " + status.getReasonPhrase() + ")");
@@ -35,7 +35,7 @@ abstract class Parser<T extends Response<?>, U> {
         return EntityUtils.toString(response.getEntity());
     }
 
-    final T parse(String body) throws Exception {
+    public final T parse(String body) throws Exception {
         final org.kleini.bricklink.data.Response<U> response;
         try {
             response = mapper.readValue(body, getResponseType());

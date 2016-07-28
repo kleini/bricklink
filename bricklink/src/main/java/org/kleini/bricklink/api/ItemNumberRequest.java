@@ -4,6 +4,8 @@
 
 package org.kleini.bricklink.api;
 
+import org.kleini.api.Parameter;
+
 /**
  * {@link ItemNumberRequest} can be used to resolve a LEGO article number to the according BrickLink part, type and color.
  *

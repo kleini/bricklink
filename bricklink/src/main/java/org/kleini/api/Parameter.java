@@ -2,16 +2,16 @@
  * GPL v3
  */
 
-package org.kleini.bricklink.api;
+package org.kleini.api;
 
 /**
  * {@link Parameter}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-class Parameter {
+public class Parameter {
 
-    static final Parameter[] EMPTY = new Parameter[0];
+    public static final Parameter[] EMPTY = new Parameter[0];
 
     private final String name;
     private final String value;
@@ -34,11 +34,11 @@ class Parameter {
         this(name, Boolean.toString(value));
     }
 
-    final String getName() {
+    public final String getName() {
         return name;
     }
 
-    final String getValue() {
+    public final String getValue() {
         return value;
     }
 }

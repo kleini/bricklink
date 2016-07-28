@@ -32,6 +32,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContexts;
+import org.kleini.api.Parameter;
+import org.kleini.api.Parser;
+import org.kleini.api.Request;
+import org.kleini.api.Response;
 
 /**
  * {@link BrickLinkClient}
@@ -63,7 +67,7 @@ public final class BrickLinkClient implements Closeable {
         HttpRequestBase httpRequest;
         switch (request.getMethod()) {
         case GET:
-            httpRequest = new HttpGet(addQueryParams2URL(url, getGETParameter(request)));
+            httpRequest = new HttpGet(addQueryParams2URL(url, convertParameter(request)));
             break;
         case PUT:
             HttpPut put = new HttpPut(url);
@@ -93,7 +97,7 @@ public final class BrickLinkClient implements Closeable {
         client.close();
     }
 
-    private static List<NameValuePair> getGETParameter(Request<?> request) {
+    public static List<NameValuePair> convertParameter(Request<?> request) {
         List<NameValuePair> retval = new LinkedList<NameValuePair>();
         for (Parameter param : request.getParameters()) {
             retval.add(new BasicNameValuePair(param.getName(), param.getValue()));
@@ -101,7 +105,7 @@ public final class BrickLinkClient implements Closeable {
         return retval;
     }
 
-    private static String addQueryParams2URL(String url, List<NameValuePair> params) {
+    public static String addQueryParams2URL(String url, List<NameValuePair> params) {
         if (0 == params.size()) {
             return url;
         }

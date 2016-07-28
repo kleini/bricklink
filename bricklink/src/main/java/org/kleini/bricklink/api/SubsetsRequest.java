@@ -6,6 +6,8 @@ package org.kleini.bricklink.api;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import org.kleini.api.Parameter;
 import org.kleini.bricklink.data.ItemType;
 
 /**

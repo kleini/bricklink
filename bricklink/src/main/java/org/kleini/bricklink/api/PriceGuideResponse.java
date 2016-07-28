@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.api;
 
+import org.kleini.api.Response;
 import org.kleini.bricklink.data.PriceGuide;
 
 /**

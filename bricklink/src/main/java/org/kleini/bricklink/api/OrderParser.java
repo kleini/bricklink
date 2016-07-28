@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.api;
 
+import org.kleini.api.Parser;
 import org.kleini.bricklink.data.Order;
 import org.kleini.bricklink.data.Response;
 import com.fasterxml.jackson.core.type.TypeReference;

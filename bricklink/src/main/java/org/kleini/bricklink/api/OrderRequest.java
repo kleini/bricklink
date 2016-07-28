@@ -4,6 +4,8 @@
 
 package org.kleini.bricklink.api;
 
+import org.kleini.api.Parameter;
+
 /**
  * {@link OrderRequest}
  *

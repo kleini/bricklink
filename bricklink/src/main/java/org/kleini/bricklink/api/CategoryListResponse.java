@@ -6,6 +6,8 @@ package org.kleini.bricklink.api;
 
 import java.util.List;
 
+import org.kleini.api.Response;
+
 /**
  * {@link CategoryListResponse}
  *

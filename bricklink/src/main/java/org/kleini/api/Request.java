@@ -2,10 +2,10 @@
  * GPL v3
  */
 
-package org.kleini.bricklink.api;
+package org.kleini.api;
 
 /**
- * {@link Request}
+ * Interface for arbitrary requests to APIs.
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
@@ -13,6 +13,7 @@ public interface Request<T extends Response<?>> {
 
     enum Method {
         GET,
+        POST,
         PUT
     }
 
@@ -25,5 +26,4 @@ public interface Request<T extends Response<?>> {
     Parser<? extends T, ?> getParser();
 
     String getBody() throws Exception;
-
 }

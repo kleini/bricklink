@@ -4,7 +4,11 @@
 
 package org.kleini.bricklink.api;
 
-import static org.kleini.bricklink.api.Request.Method.PUT;
+import static org.kleini.api.Request.Method.PUT;
+
+import org.kleini.api.Request;
+import org.kleini.api.Response;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**

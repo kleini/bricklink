@@ -2,7 +2,7 @@
  * GPL v3
  */
 
-package org.kleini.bricklink.api;
+package org.kleini.api;
 
 /**
  * {@link Response}

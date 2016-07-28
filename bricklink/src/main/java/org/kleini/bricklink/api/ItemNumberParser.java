@@ -6,6 +6,7 @@ package org.kleini.bricklink.api;
 
 import java.util.List;
 
+import org.kleini.api.Parser;
 import org.kleini.bricklink.data.ItemMapping;
 import org.kleini.bricklink.data.Response;
 
