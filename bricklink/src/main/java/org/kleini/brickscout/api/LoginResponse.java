@@ -5,19 +5,20 @@
 package org.kleini.brickscout.api;
 
 import org.kleini.api.Response;
+import org.kleini.brickscout.data.Token;
 
 /**
- * 
+ *
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class LoginResponse extends Response<String> {
+public class LoginResponse extends Response<Token> {
 
-    public LoginResponse(org.kleini.bricklink.data.Response<String> response) {
+    public LoginResponse(Token response) {
         super(response);
     }
 
     public String getToken() {
-        return getResponse().getData();
+        return getResponse().getAccessToken();
     }
 }

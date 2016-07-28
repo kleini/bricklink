@@ -1,7 +1,8 @@
-package org.kleini.brickscout.api;
 /*
  * GPL v3
  */
+
+package org.kleini.brickscout.api;
 
 import static org.kleini.bricklink.api.BrickLinkClient.addQueryParams2URL;
 import static org.kleini.bricklink.api.BrickLinkClient.convertParameter;
@@ -49,6 +50,8 @@ public class BrickScoutClient implements Closeable {
 
     private void login(String username, String password) throws Exception {
         LoginResponse response = execute(new LoginRequest(username, password));
+        // FIXME
+        System.out.println(response.toString());
     }
 
     public <T extends Response<?>> T execute(Request<T> request) throws Exception {

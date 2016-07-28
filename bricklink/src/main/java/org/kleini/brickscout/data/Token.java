@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * 
+ *
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
@@ -24,7 +24,7 @@ public final class Token {
     }
 
     @JsonProperty("access_token")
-    String getAccessToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 

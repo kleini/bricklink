@@ -11,7 +11,7 @@ import org.kleini.api.Parameter;
 import org.kleini.api.Request;
 
 /**
- * 
+ *
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
@@ -52,7 +52,7 @@ public class LoginRequest implements Request<LoginResponse> {
     }
 
     @Override
-    public String getBody() throws Exception {
+    public String getBody() {
         return null;
     }
 }
