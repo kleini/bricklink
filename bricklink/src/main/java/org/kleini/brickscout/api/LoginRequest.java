@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kleini.api.Parameter;
-import org.kleini.api.Request;
+import org.kleini.api.AbstractPostRequest;
 
 /**
  *
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class LoginRequest implements Request<LoginResponse> {
+public class LoginRequest extends AbstractPostRequest<LoginResponse> {
 
     private String username;
     private String password;
@@ -49,10 +49,5 @@ public class LoginRequest implements Request<LoginResponse> {
     @Override
     public LoginParser getParser() {
         return new LoginParser();
-    }
-
-    @Override
-    public String getBody() {
-        return null;
     }
 }

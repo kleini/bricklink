@@ -26,6 +26,7 @@ import org.kleini.api.Parser;
 import org.kleini.api.Request;
 import org.kleini.api.Response;
 import org.kleini.bricklink.api.Configuration;
+import org.kleini.brickscout.data.Token;
 
 /**
  * Client for running API requests to BrickScout.
@@ -37,6 +38,7 @@ public class BrickScoutClient implements Closeable {
     private static final String BASE_URL = "https://api.brickscout.com/";
 
     private final CloseableHttpClient client;
+    private Token token;
 
     public BrickScoutClient(String username, String password) throws Exception {
         super();
@@ -50,7 +52,7 @@ public class BrickScoutClient implements Closeable {
 
     private void login(String username, String password) throws Exception {
         LoginResponse response = execute(new LoginRequest(username, password));
-        // FIXME
+        this.token = response.getToken();
         System.out.println(response.toString());
     }
 
@@ -89,6 +91,7 @@ public class BrickScoutClient implements Closeable {
 
     @Override
     public void close() throws IOException {
+        // TODO logout request
         client.close();
     }
 }

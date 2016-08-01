@@ -18,7 +18,7 @@ public class LoginResponse extends Response<Token> {
         super(response);
     }
 
-    public String getToken() {
-        return getResponse().getAccessToken();
+    public Token getToken() {
+        return getResponse();
     }
 }

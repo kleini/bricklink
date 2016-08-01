@@ -5,7 +5,6 @@
 package org.kleini.brickscout.api;
 
 import org.kleini.api.Parser;
-import org.kleini.bricklink.data.Response;
 import org.kleini.brickscout.data.Token;
 import com.fasterxml.jackson.core.type.TypeReference;
 

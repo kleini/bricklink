@@ -42,4 +42,9 @@ public final class Token {
     void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Token \"" + accessToken + "\"";
+    }
 }
