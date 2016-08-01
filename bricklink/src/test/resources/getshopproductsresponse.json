@@ -1,0 +1,1053 @@
+{
+  "pageMetadata": {
+    "size": 20,
+    "totalElements": 7,
+    "totalPages": 1,
+    "number": 0
+  },
+  "representations": [
+    {
+      "shopProductUUID": "77cd0144-30ec-7d55-279f-8ac83391acca",
+      "shopItems": [
+        {
+          "shopItemUUID": "8c3ede84-7c2d-0b49-f383-a4ed7d8c7d42",
+          "createdDate": "2016-05-25T20:39:25.460+0000",
+          "shopStock": 37,
+          "name": "Black Brick, Modified 1 x 1 with Clip Vertical (open O clip) - Hollow Stud",
+          "description": "(No description)",
+          "condition": "NEW",
+          "unitGrossPrice": {
+            "amount": 0.03,
+            "currency": "EUR"
+          },
+          "unitNetPrice": {
+            "amount": 0.03,
+            "currency": "EUR"
+          },
+          "bulkQuantity": 1,
+          "discount": 0,
+          "draft": false,
+          "shopProduct": null,
+          "tieredGrossPriceEntries": [],
+          "deleted": null,
+          "isActive": true,
+          "remarks": null,
+          "selectedForBulkUpdate": false,
+          "_embedded": {},
+          "_links": {
+            "/api/docs/shops/products/getOne": {
+              "href": "/api/shops/kleinisbricks/products/77cd0144-30ec-7d55-279f-8ac83391acca"
+            },
+            "/api/docs/shops/getOne": {
+              "href": "/api/shops/kleinisbricks"
+            },
+            "self": {
+              "href": "/api/shops/kleinisbricks/shopitems/8c3ede84-7c2d-0b49-f383-a4ed7d8c7d42"
+            }
+          }
+        }
+      ],
+      "bulky": false,
+      "bestseller": false,
+      "highlighted": false,
+      "boundingBox": {
+        "minLengthInMM": 10,
+        "medLengthInMM": 10,
+        "maxLengthInMM": 20
+      },
+      "weightInGram": 0.58,
+      "_embedded": {
+        "/api/docs/catalog/products/getOne": {
+          "name": "Black Brick, Modified 1 x 1 with Clip Vertical (open O clip) - Hollow Stud",
+          "description": "-",
+          "ean": "4057296548972",
+          "code": "part__30241b__11",
+          "weightInGram": 0.58,
+          "averageNetPriceAmount": {
+            "amount": 0.05,
+            "currency": "EUR"
+          },
+          "sixMonthAverageNetPriceAmount": {
+            "amount": 0.04,
+            "currency": "EUR"
+          },
+          "minPrice": {
+            "amount": 0.03,
+            "currency": "EUR"
+          },
+          "maxPrice": {
+            "amount": 1.1,
+            "currency": "EUR"
+          },
+          "inventoryCount": 0,
+          "_embedded": {
+            "/api/docs/core/images/getOne": [
+              {
+                "imageUUID": "203b8f15-8d8e-485e-b6cc-f805cc44e72c",
+                "alt": "Black Brick, Modified 1 x 1 with Clip Vertical (open O clip) - Hollow Stud",
+                "longdesc": "(No description)",
+                "uploadUrl": null,
+                "type": "PRODUCT_IMAGE",
+                "contentType": "image/jpg",
+                "ordering": 0,
+                "_embedded": {},
+                "_links": {
+                  "related": [
+                    {
+                      "href": "https://img-acc.brickscout.com/20/3b/8f/15/8d/8e/48/5e/b6/cc/f8/05/cc/44/e7/2c/80x80.png",
+                      "name": "80x80"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/20/3b/8f/15/8d/8e/48/5e/b6/cc/f8/05/cc/44/e7/2c/186x186.png",
+                      "name": "186x186"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/20/3b/8f/15/8d/8e/48/5e/b6/cc/f8/05/cc/44/e7/2c/279x279.png",
+                      "name": "279x279"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/20/3b/8f/15/8d/8e/48/5e/b6/cc/f8/05/cc/44/e7/2c/750x750.png",
+                      "name": "750x750"
+                    }
+                  ],
+                  "self": {
+                    "href": "/api/core/images/203b8f15-8d8e-485e-b6cc-f805cc44e72c"
+                  }
+                }
+              }
+            ]
+          },
+          "_links": {
+            "/api/docs/catalog/catalog_items/getOne": {
+              "href": "/api/catalog/catalog_items/part__30241b"
+            },
+            "/api/docs/catalog/colors/getOne": {
+              "href": "/api/catalog/colors/black"
+            },
+            "self": {
+              "href": "/api/catalog/products/4057296548972"
+            },
+            "/api/docs/catalog/language_codes/getOne": {
+              "href": "/api/catalog/language_codes/--"
+            },
+            "/api/docs/core/images/getOne": [
+              {
+                "href": "/api/core/images/203b8f15-8d8e-485e-b6cc-f805cc44e72c"
+              }
+            ],
+            "/api/docs/catalog/products/shop_items/getAll": {
+              "href": "/api/catalog/products/4057296548972/shop_items"
+            }
+          }
+        }
+      },
+      "_links": {
+        "/api/docs/catalog/products/getOne": {
+          "href": "/api/catalog/products/4057296548972"
+        },
+        "/api/docs/shops/getOne": {
+          "href": "/api/shops/kleinisbricks"
+        },
+        "self": {
+          "href": "/api/shops/kleinisbricks/products/77cd0144-30ec-7d55-279f-8ac83391acca"
+        }
+      }
+    },
+    {
+      "shopProductUUID": "3c58a758-31f5-70a7-bfd3-b016ce2e7f62",
+      "shopItems": [
+        {
+          "shopItemUUID": "c8dbee1e-8d23-e12e-8011-7c9ce11204a6",
+          "createdDate": "2016-05-25T20:39:25.460+0000",
+          "shopStock": 6,
+          "name": "Black Brick, Modified 1 x 1 with Clip Vertical",
+          "description": "(No description)",
+          "condition": "NEW",
+          "unitGrossPrice": {
+            "amount": 0.02,
+            "currency": "EUR"
+          },
+          "unitNetPrice": {
+            "amount": 0.02,
+            "currency": "EUR"
+          },
+          "bulkQuantity": 1,
+          "discount": 0,
+          "draft": false,
+          "shopProduct": null,
+          "tieredGrossPriceEntries": [],
+          "deleted": null,
+          "isActive": true,
+          "remarks": null,
+          "selectedForBulkUpdate": false,
+          "_embedded": {},
+          "_links": {
+            "/api/docs/shops/products/getOne": {
+              "href": "/api/shops/kleinisbricks/products/3c58a758-31f5-70a7-bfd3-b016ce2e7f62"
+            },
+            "/api/docs/shops/getOne": {
+              "href": "/api/shops/kleinisbricks"
+            },
+            "self": {
+              "href": "/api/shops/kleinisbricks/shopitems/c8dbee1e-8d23-e12e-8011-7c9ce11204a6"
+            }
+          }
+        }
+      ],
+      "bulky": false,
+      "bestseller": false,
+      "highlighted": false,
+      "boundingBox": {
+        "minLengthInMM": 10,
+        "medLengthInMM": 10,
+        "maxLengthInMM": 20
+      },
+      "weightInGram": 0.59,
+      "_embedded": {
+        "/api/docs/catalog/products/getOne": {
+          "name": "Black Brick, Modified 1 x 1 with Clip Vertical",
+          "description": "-",
+          "ean": "4057296548897",
+          "code": "part__30241__11",
+          "weightInGram": 0.59,
+          "averageNetPriceAmount": null,
+          "sixMonthAverageNetPriceAmount": null,
+          "minPrice": {
+            "amount": 0.02,
+            "currency": "EUR"
+          },
+          "maxPrice": {
+            "amount": 0.02,
+            "currency": "EUR"
+          },
+          "inventoryCount": 0,
+          "_embedded": {
+            "/api/docs/core/images/getOne": []
+          },
+          "_links": {
+            "/api/docs/catalog/catalog_items/getOne": {
+              "href": "/api/catalog/catalog_items/part__30241"
+            },
+            "/api/docs/catalog/colors/getOne": {
+              "href": "/api/catalog/colors/black"
+            },
+            "self": {
+              "href": "/api/catalog/products/4057296548897"
+            },
+            "/api/docs/catalog/language_codes/getOne": {
+              "href": "/api/catalog/language_codes/--"
+            },
+            "/api/docs/core/images/getOne": [],
+            "/api/docs/catalog/products/shop_items/getAll": {
+              "href": "/api/catalog/products/4057296548897/shop_items"
+            }
+          }
+        }
+      },
+      "_links": {
+        "/api/docs/catalog/products/getOne": {
+          "href": "/api/catalog/products/4057296548897"
+        },
+        "/api/docs/shops/getOne": {
+          "href": "/api/shops/kleinisbricks"
+        },
+        "self": {
+          "href": "/api/shops/kleinisbricks/products/3c58a758-31f5-70a7-bfd3-b016ce2e7f62"
+        }
+      }
+    },
+    {
+      "shopProductUUID": "dc9799c1-ccd7-2701-7be4-b0a09bd91027",
+      "shopItems": [
+        {
+          "shopItemUUID": "7f13ea46-b128-4a35-e184-e57e6713aacc",
+          "createdDate": "2016-05-27T09:51:29.151+0000",
+          "shopStock": 1210,
+          "name": "Yellow Plate 1 x 1",
+          "description": "(No description)",
+          "condition": "NEW",
+          "unitGrossPrice": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "unitNetPrice": {
+            "amount": 0.06,
+            "currency": "EUR"
+          },
+          "bulkQuantity": 1,
+          "discount": 0,
+          "draft": false,
+          "shopProduct": null,
+          "tieredGrossPriceEntries": [
+            {
+              "quantity": 100,
+              "tieredPrice": {
+                "amount": 0.06,
+                "currency": "EUR"
+              }
+            },
+            {
+              "quantity": 1000,
+              "tieredPrice": {
+                "amount": 0.06,
+                "currency": "EUR"
+              }
+            }
+          ],
+          "deleted": null,
+          "isActive": true,
+          "remarks": "B,+13",
+          "selectedForBulkUpdate": false,
+          "_embedded": {},
+          "_links": {
+            "/api/docs/shops/products/getOne": {
+              "href": "/api/shops/kleinisbricks/products/dc9799c1-ccd7-2701-7be4-b0a09bd91027"
+            },
+            "/api/docs/shops/getOne": {
+              "href": "/api/shops/kleinisbricks"
+            },
+            "self": {
+              "href": "/api/shops/kleinisbricks/shopitems/7f13ea46-b128-4a35-e184-e57e6713aacc"
+            }
+          }
+        }
+      ],
+      "bulky": false,
+      "bestseller": false,
+      "highlighted": false,
+      "boundingBox": {
+        "minLengthInMM": 0.1,
+        "medLengthInMM": 1,
+        "maxLengthInMM": 1
+      },
+      "weightInGram": 0.02,
+      "_embedded": {
+        "/api/docs/catalog/products/getOne": {
+          "name": "Yellow Plate 1 x 1",
+          "description": "-",
+          "ean": "4057296549665",
+          "code": "part__3024__3",
+          "weightInGram": 0.2,
+          "averageNetPriceAmount": {
+            "amount": 0.1,
+            "currency": "EUR"
+          },
+          "sixMonthAverageNetPriceAmount": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "minPrice": {
+            "amount": 0.04,
+            "currency": "EUR"
+          },
+          "maxPrice": {
+            "amount": 0.08,
+            "currency": "EUR"
+          },
+          "inventoryCount": 0,
+          "_embedded": {
+            "/api/docs/core/images/getOne": [
+              {
+                "imageUUID": "cc417be6-4582-475b-b3cc-4ccfe7eaf9a4",
+                "alt": "Yellow Plate 1 x 1",
+                "longdesc": "(No description)",
+                "uploadUrl": null,
+                "type": "PRODUCT_IMAGE",
+                "contentType": "image/jpg",
+                "ordering": 0,
+                "_embedded": {},
+                "_links": {
+                  "related": [
+                    {
+                      "href": "https://img-acc.brickscout.com/cc/41/7b/e6/45/82/47/5b/b3/cc/4c/cf/e7/ea/f9/a4/80x80.png",
+                      "name": "80x80"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/cc/41/7b/e6/45/82/47/5b/b3/cc/4c/cf/e7/ea/f9/a4/186x186.png",
+                      "name": "186x186"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/cc/41/7b/e6/45/82/47/5b/b3/cc/4c/cf/e7/ea/f9/a4/279x279.png",
+                      "name": "279x279"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/cc/41/7b/e6/45/82/47/5b/b3/cc/4c/cf/e7/ea/f9/a4/750x750.png",
+                      "name": "750x750"
+                    }
+                  ],
+                  "self": {
+                    "href": "/api/core/images/cc417be6-4582-475b-b3cc-4ccfe7eaf9a4"
+                  }
+                }
+              }
+            ]
+          },
+          "_links": {
+            "/api/docs/catalog/catalog_items/getOne": {
+              "href": "/api/catalog/catalog_items/part__3024"
+            },
+            "/api/docs/catalog/colors/getOne": {
+              "href": "/api/catalog/colors/yellow"
+            },
+            "self": {
+              "href": "/api/catalog/products/4057296549665"
+            },
+            "/api/docs/catalog/language_codes/getOne": {
+              "href": "/api/catalog/language_codes/--"
+            },
+            "/api/docs/core/images/getOne": [
+              {
+                "href": "/api/core/images/cc417be6-4582-475b-b3cc-4ccfe7eaf9a4"
+              }
+            ],
+            "/api/docs/catalog/products/shop_items/getAll": {
+              "href": "/api/catalog/products/4057296549665/shop_items"
+            }
+          }
+        }
+      },
+      "_links": {
+        "/api/docs/catalog/products/getOne": {
+          "href": "/api/catalog/products/4057296549665"
+        },
+        "/api/docs/shops/getOne": {
+          "href": "/api/shops/kleinisbricks"
+        },
+        "self": {
+          "href": "/api/shops/kleinisbricks/products/dc9799c1-ccd7-2701-7be4-b0a09bd91027"
+        }
+      }
+    },
+    {
+      "shopProductUUID": "2d060260-dab5-b94e-19e8-702c41c21a58",
+      "shopItems": [
+        {
+          "shopItemUUID": "bc256956-617c-6dd2-2e32-3b8649c1b277",
+          "createdDate": "2016-05-27T09:51:29.151+0000",
+          "shopStock": 1070,
+          "name": "Dark Green Plate 1 x 1",
+          "description": "(No description)",
+          "condition": "NEW",
+          "unitGrossPrice": {
+            "amount": 0.1,
+            "currency": "EUR"
+          },
+          "unitNetPrice": {
+            "amount": 0.08,
+            "currency": "EUR"
+          },
+          "bulkQuantity": 1,
+          "discount": 0,
+          "draft": false,
+          "shopProduct": null,
+          "tieredGrossPriceEntries": [
+            {
+              "quantity": 100,
+              "tieredPrice": {
+                "amount": 0.1,
+                "currency": "EUR"
+              }
+            },
+            {
+              "quantity": 1000,
+              "tieredPrice": {
+                "amount": 0.09,
+                "currency": "EUR"
+              }
+            }
+          ],
+          "deleted": null,
+          "isActive": true,
+          "remarks": "B,+13",
+          "selectedForBulkUpdate": false,
+          "_embedded": {},
+          "_links": {
+            "/api/docs/shops/products/getOne": {
+              "href": "/api/shops/kleinisbricks/products/2d060260-dab5-b94e-19e8-702c41c21a58"
+            },
+            "/api/docs/shops/getOne": {
+              "href": "/api/shops/kleinisbricks"
+            },
+            "self": {
+              "href": "/api/shops/kleinisbricks/shopitems/bc256956-617c-6dd2-2e32-3b8649c1b277"
+            }
+          }
+        }
+      ],
+      "bulky": false,
+      "bestseller": false,
+      "highlighted": false,
+      "boundingBox": {
+        "minLengthInMM": 0.1,
+        "medLengthInMM": 1,
+        "maxLengthInMM": 1
+      },
+      "weightInGram": 0.02,
+      "_embedded": {
+        "/api/docs/catalog/products/getOne": {
+          "name": "Dark Green Plate 1 x 1",
+          "description": "-",
+          "ean": "4057296549856",
+          "code": "part__3024__80",
+          "weightInGram": 0.2,
+          "averageNetPriceAmount": {
+            "amount": 0.1,
+            "currency": "EUR"
+          },
+          "sixMonthAverageNetPriceAmount": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "minPrice": {
+            "amount": 0.1,
+            "currency": "EUR"
+          },
+          "maxPrice": {
+            "amount": 1.1,
+            "currency": "EUR"
+          },
+          "inventoryCount": 0,
+          "_embedded": {
+            "/api/docs/core/images/getOne": [
+              {
+                "imageUUID": "00ad5492-d206-446a-a0c6-d0f050a118b8",
+                "alt": "Dark Green Plate 1 x 1",
+                "longdesc": "(No description)",
+                "uploadUrl": null,
+                "type": "PRODUCT_IMAGE",
+                "contentType": "image/jpg",
+                "ordering": 0,
+                "_embedded": {},
+                "_links": {
+                  "related": [
+                    {
+                      "href": "https://img-acc.brickscout.com/00/ad/54/92/d2/06/44/6a/a0/c6/d0/f0/50/a1/18/b8/80x80.png",
+                      "name": "80x80"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/00/ad/54/92/d2/06/44/6a/a0/c6/d0/f0/50/a1/18/b8/186x186.png",
+                      "name": "186x186"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/00/ad/54/92/d2/06/44/6a/a0/c6/d0/f0/50/a1/18/b8/279x279.png",
+                      "name": "279x279"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/00/ad/54/92/d2/06/44/6a/a0/c6/d0/f0/50/a1/18/b8/750x750.png",
+                      "name": "750x750"
+                    }
+                  ],
+                  "self": {
+                    "href": "/api/core/images/00ad5492-d206-446a-a0c6-d0f050a118b8"
+                  }
+                }
+              }
+            ]
+          },
+          "_links": {
+            "/api/docs/catalog/catalog_items/getOne": {
+              "href": "/api/catalog/catalog_items/part__3024"
+            },
+            "/api/docs/catalog/colors/getOne": {
+              "href": "/api/catalog/colors/dark%20green"
+            },
+            "self": {
+              "href": "/api/catalog/products/4057296549856"
+            },
+            "/api/docs/catalog/language_codes/getOne": {
+              "href": "/api/catalog/language_codes/--"
+            },
+            "/api/docs/core/images/getOne": [
+              {
+                "href": "/api/core/images/00ad5492-d206-446a-a0c6-d0f050a118b8"
+              }
+            ],
+            "/api/docs/catalog/products/shop_items/getAll": {
+              "href": "/api/catalog/products/4057296549856/shop_items"
+            }
+          }
+        }
+      },
+      "_links": {
+        "/api/docs/catalog/products/getOne": {
+          "href": "/api/catalog/products/4057296549856"
+        },
+        "/api/docs/shops/getOne": {
+          "href": "/api/shops/kleinisbricks"
+        },
+        "self": {
+          "href": "/api/shops/kleinisbricks/products/2d060260-dab5-b94e-19e8-702c41c21a58"
+        }
+      }
+    },
+    {
+      "shopProductUUID": "9626bcdf-50b9-2e74-f2a2-6e685bb99df6",
+      "shopItems": [
+        {
+          "shopItemUUID": "b4008408-b852-768e-871a-ca355dc0e63a",
+          "createdDate": "2016-05-27T09:51:29.151+0000",
+          "shopStock": 1120,
+          "name": "Light Aqua Plate 1 x 1",
+          "description": "(No description)",
+          "condition": "NEW",
+          "unitGrossPrice": {
+            "amount": 0.08,
+            "currency": "EUR"
+          },
+          "unitNetPrice": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "bulkQuantity": 1,
+          "discount": 0,
+          "draft": false,
+          "shopProduct": null,
+          "tieredGrossPriceEntries": [
+            {
+              "quantity": 100,
+              "tieredPrice": {
+                "amount": 0.07,
+                "currency": "EUR"
+              }
+            }
+          ],
+          "deleted": null,
+          "isActive": true,
+          "remarks": "+11",
+          "selectedForBulkUpdate": false,
+          "_embedded": {},
+          "_links": {
+            "/api/docs/shops/products/getOne": {
+              "href": "/api/shops/kleinisbricks/products/9626bcdf-50b9-2e74-f2a2-6e685bb99df6"
+            },
+            "/api/docs/shops/getOne": {
+              "href": "/api/shops/kleinisbricks"
+            },
+            "self": {
+              "href": "/api/shops/kleinisbricks/shopitems/b4008408-b852-768e-871a-ca355dc0e63a"
+            }
+          }
+        }
+      ],
+      "bulky": false,
+      "bestseller": false,
+      "highlighted": false,
+      "boundingBox": {
+        "minLengthInMM": 0.1,
+        "medLengthInMM": 1,
+        "maxLengthInMM": 1
+      },
+      "weightInGram": 0.02,
+      "_embedded": {
+        "/api/docs/catalog/products/getOne": {
+          "name": "Light Aqua Plate 1 x 1",
+          "description": "-",
+          "ean": "4057296549566",
+          "code": "part__3024__152",
+          "weightInGram": 0.2,
+          "averageNetPriceAmount": {
+            "amount": 0.1,
+            "currency": "EUR"
+          },
+          "sixMonthAverageNetPriceAmount": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "minPrice": {
+            "amount": 0.08,
+            "currency": "EUR"
+          },
+          "maxPrice": {
+            "amount": 1.1,
+            "currency": "EUR"
+          },
+          "inventoryCount": 0,
+          "_embedded": {
+            "/api/docs/core/images/getOne": [
+              {
+                "imageUUID": "5a789dd6-20dc-4006-9da6-ca562d75bb49",
+                "alt": "Light Aqua Plate 1 x 1",
+                "longdesc": "(No description)",
+                "uploadUrl": null,
+                "type": "PRODUCT_IMAGE",
+                "contentType": "image/jpg",
+                "ordering": 0,
+                "_embedded": {},
+                "_links": {
+                  "related": [
+                    {
+                      "href": "https://img-acc.brickscout.com/5a/78/9d/d6/20/dc/40/06/9d/a6/ca/56/2d/75/bb/49/80x80.png",
+                      "name": "80x80"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/5a/78/9d/d6/20/dc/40/06/9d/a6/ca/56/2d/75/bb/49/186x186.png",
+                      "name": "186x186"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/5a/78/9d/d6/20/dc/40/06/9d/a6/ca/56/2d/75/bb/49/279x279.png",
+                      "name": "279x279"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/5a/78/9d/d6/20/dc/40/06/9d/a6/ca/56/2d/75/bb/49/750x750.png",
+                      "name": "750x750"
+                    }
+                  ],
+                  "self": {
+                    "href": "/api/core/images/5a789dd6-20dc-4006-9da6-ca562d75bb49"
+                  }
+                }
+              }
+            ]
+          },
+          "_links": {
+            "/api/docs/catalog/catalog_items/getOne": {
+              "href": "/api/catalog/catalog_items/part__3024"
+            },
+            "/api/docs/catalog/colors/getOne": {
+              "href": "/api/catalog/colors/light%20aqua"
+            },
+            "self": {
+              "href": "/api/catalog/products/4057296549566"
+            },
+            "/api/docs/catalog/language_codes/getOne": {
+              "href": "/api/catalog/language_codes/--"
+            },
+            "/api/docs/core/images/getOne": [
+              {
+                "href": "/api/core/images/5a789dd6-20dc-4006-9da6-ca562d75bb49"
+              }
+            ],
+            "/api/docs/catalog/products/shop_items/getAll": {
+              "href": "/api/catalog/products/4057296549566/shop_items"
+            }
+          }
+        }
+      },
+      "_links": {
+        "/api/docs/catalog/products/getOne": {
+          "href": "/api/catalog/products/4057296549566"
+        },
+        "/api/docs/shops/getOne": {
+          "href": "/api/shops/kleinisbricks"
+        },
+        "self": {
+          "href": "/api/shops/kleinisbricks/products/9626bcdf-50b9-2e74-f2a2-6e685bb99df6"
+        }
+      }
+    },
+    {
+      "shopProductUUID": "8b6a8996-2889-1c38-e171-203796d105c4",
+      "shopItems": [
+        {
+          "shopItemUUID": "0c13c733-0b65-0ae0-bd52-b1532aafb536",
+          "createdDate": "2016-05-27T09:51:29.151+0000",
+          "shopStock": 400,
+          "name": "Pearl Gold Plate 1 x 1",
+          "description": "(No description)",
+          "condition": "NEW",
+          "unitGrossPrice": {
+            "amount": 0.05,
+            "currency": "EUR"
+          },
+          "unitNetPrice": {
+            "amount": 0.04,
+            "currency": "EUR"
+          },
+          "bulkQuantity": 1,
+          "discount": 0,
+          "draft": false,
+          "shopProduct": null,
+          "tieredGrossPriceEntries": [],
+          "deleted": null,
+          "isActive": true,
+          "remarks": null,
+          "selectedForBulkUpdate": false,
+          "_embedded": {},
+          "_links": {
+            "/api/docs/shops/products/getOne": {
+              "href": "/api/shops/kleinisbricks/products/8b6a8996-2889-1c38-e171-203796d105c4"
+            },
+            "/api/docs/shops/getOne": {
+              "href": "/api/shops/kleinisbricks"
+            },
+            "self": {
+              "href": "/api/shops/kleinisbricks/shopitems/0c13c733-0b65-0ae0-bd52-b1532aafb536"
+            }
+          }
+        }
+      ],
+      "bulky": false,
+      "bestseller": false,
+      "highlighted": false,
+      "boundingBox": {
+        "minLengthInMM": 0.1,
+        "medLengthInMM": 1,
+        "maxLengthInMM": 1
+      },
+      "weightInGram": 0.02,
+      "_embedded": {
+        "/api/docs/catalog/products/getOne": {
+          "name": "Pearl Gold Plate 1 x 1",
+          "description": "-",
+          "ean": "4057296549511",
+          "code": "part__3024__115",
+          "weightInGram": 0.2,
+          "averageNetPriceAmount": {
+            "amount": 0.1,
+            "currency": "EUR"
+          },
+          "sixMonthAverageNetPriceAmount": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "minPrice": {
+            "amount": 0.05,
+            "currency": "EUR"
+          },
+          "maxPrice": {
+            "amount": 0.11,
+            "currency": "EUR"
+          },
+          "inventoryCount": 0,
+          "_embedded": {
+            "/api/docs/core/images/getOne": [
+              {
+                "imageUUID": "8e8cecf8-6760-4a4a-a484-e0ae4a4f3258",
+                "alt": "Pearl Gold Plate 1 x 1",
+                "longdesc": "(No description)",
+                "uploadUrl": null,
+                "type": "PRODUCT_IMAGE",
+                "contentType": "image/jpg",
+                "ordering": 0,
+                "_embedded": {},
+                "_links": {
+                  "related": [
+                    {
+                      "href": "https://img-acc.brickscout.com/8e/8c/ec/f8/67/60/4a/4a/a4/84/e0/ae/4a/4f/32/58/80x80.png",
+                      "name": "80x80"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/8e/8c/ec/f8/67/60/4a/4a/a4/84/e0/ae/4a/4f/32/58/186x186.png",
+                      "name": "186x186"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/8e/8c/ec/f8/67/60/4a/4a/a4/84/e0/ae/4a/4f/32/58/279x279.png",
+                      "name": "279x279"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/8e/8c/ec/f8/67/60/4a/4a/a4/84/e0/ae/4a/4f/32/58/750x750.png",
+                      "name": "750x750"
+                    }
+                  ],
+                  "self": {
+                    "href": "/api/core/images/8e8cecf8-6760-4a4a-a484-e0ae4a4f3258"
+                  }
+                }
+              }
+            ]
+          },
+          "_links": {
+            "/api/docs/catalog/catalog_items/getOne": {
+              "href": "/api/catalog/catalog_items/part__3024"
+            },
+            "/api/docs/catalog/colors/getOne": {
+              "href": "/api/catalog/colors/pearl%20gold"
+            },
+            "self": {
+              "href": "/api/catalog/products/4057296549511"
+            },
+            "/api/docs/catalog/language_codes/getOne": {
+              "href": "/api/catalog/language_codes/--"
+            },
+            "/api/docs/core/images/getOne": [
+              {
+                "href": "/api/core/images/8e8cecf8-6760-4a4a-a484-e0ae4a4f3258"
+              }
+            ],
+            "/api/docs/catalog/products/shop_items/getAll": {
+              "href": "/api/catalog/products/4057296549511/shop_items"
+            }
+          }
+        }
+      },
+      "_links": {
+        "/api/docs/catalog/products/getOne": {
+          "href": "/api/catalog/products/4057296549511"
+        },
+        "/api/docs/shops/getOne": {
+          "href": "/api/shops/kleinisbricks"
+        },
+        "self": {
+          "href": "/api/shops/kleinisbricks/products/8b6a8996-2889-1c38-e171-203796d105c4"
+        }
+      }
+    },
+    {
+      "shopProductUUID": "dc877326-1f3e-4a09-2d8d-bf5f49a4c6dc",
+      "shopItems": [
+        {
+          "shopItemUUID": "0d647897-9e3d-a14d-f148-277823a21348",
+          "createdDate": "2016-05-27T09:51:29.151+0000",
+          "shopStock": 1120,
+          "name": "Yellowish Green Plate 1 x 1",
+          "description": "(No description)",
+          "condition": "NEW",
+          "unitGrossPrice": {
+            "amount": 0.08,
+            "currency": "EUR"
+          },
+          "unitNetPrice": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "bulkQuantity": 1,
+          "discount": 0,
+          "draft": false,
+          "shopProduct": null,
+          "tieredGrossPriceEntries": [
+            {
+              "quantity": 100,
+              "tieredPrice": {
+                "amount": 0.07,
+                "currency": "EUR"
+              }
+            }
+          ],
+          "deleted": null,
+          "isActive": true,
+          "remarks": "+8",
+          "selectedForBulkUpdate": false,
+          "_embedded": {},
+          "_links": {
+            "/api/docs/shops/products/getOne": {
+              "href": "/api/shops/kleinisbricks/products/dc877326-1f3e-4a09-2d8d-bf5f49a4c6dc"
+            },
+            "/api/docs/shops/getOne": {
+              "href": "/api/shops/kleinisbricks"
+            },
+            "self": {
+              "href": "/api/shops/kleinisbricks/shopitems/0d647897-9e3d-a14d-f148-277823a21348"
+            }
+          }
+        }
+      ],
+      "bulky": false,
+      "bestseller": false,
+      "highlighted": false,
+      "boundingBox": {
+        "minLengthInMM": 0.1,
+        "medLengthInMM": 1,
+        "maxLengthInMM": 1
+      },
+      "weightInGram": 0.02,
+      "_embedded": {
+        "/api/docs/catalog/products/getOne": {
+          "name": "Yellowish Green Plate 1 x 1",
+          "description": "-",
+          "ean": "4057296549597",
+          "code": "part__3024__158",
+          "weightInGram": 0.2,
+          "averageNetPriceAmount": {
+            "amount": 0.1,
+            "currency": "EUR"
+          },
+          "sixMonthAverageNetPriceAmount": {
+            "amount": 0.07,
+            "currency": "EUR"
+          },
+          "minPrice": {
+            "amount": 0.08,
+            "currency": "EUR"
+          },
+          "maxPrice": {
+            "amount": 0.08,
+            "currency": "EUR"
+          },
+          "inventoryCount": 0,
+          "_embedded": {
+            "/api/docs/core/images/getOne": [
+              {
+                "imageUUID": "460c5ce4-a7a2-4b5c-83ac-3dac9956ef8b",
+                "alt": "Yellowish Green Plate 1 x 1",
+                "longdesc": "(No description)",
+                "uploadUrl": null,
+                "type": "PRODUCT_IMAGE",
+                "contentType": "image/jpg",
+                "ordering": 0,
+                "_embedded": {},
+                "_links": {
+                  "related": [
+                    {
+                      "href": "https://img-acc.brickscout.com/46/0c/5c/e4/a7/a2/4b/5c/83/ac/3d/ac/99/56/ef/8b/80x80.png",
+                      "name": "80x80"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/46/0c/5c/e4/a7/a2/4b/5c/83/ac/3d/ac/99/56/ef/8b/186x186.png",
+                      "name": "186x186"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/46/0c/5c/e4/a7/a2/4b/5c/83/ac/3d/ac/99/56/ef/8b/279x279.png",
+                      "name": "279x279"
+                    },
+                    {
+                      "href": "https://img-acc.brickscout.com/46/0c/5c/e4/a7/a2/4b/5c/83/ac/3d/ac/99/56/ef/8b/750x750.png",
+                      "name": "750x750"
+                    }
+                  ],
+                  "self": {
+                    "href": "/api/core/images/460c5ce4-a7a2-4b5c-83ac-3dac9956ef8b"
+                  }
+                }
+              }
+            ]
+          },
+          "_links": {
+            "/api/docs/catalog/catalog_items/getOne": {
+              "href": "/api/catalog/catalog_items/part__3024"
+            },
+            "/api/docs/catalog/colors/getOne": {
+              "href": "/api/catalog/colors/yellowish%20green"
+            },
+            "self": {
+              "href": "/api/catalog/products/4057296549597"
+            },
+            "/api/docs/catalog/language_codes/getOne": {
+              "href": "/api/catalog/language_codes/--"
+            },
+            "/api/docs/core/images/getOne": [
+              {
+                "href": "/api/core/images/460c5ce4-a7a2-4b5c-83ac-3dac9956ef8b"
+              }
+            ],
+            "/api/docs/catalog/products/shop_items/getAll": {
+              "href": "/api/catalog/products/4057296549597/shop_items"
+            }
+          }
+        }
+      },
+      "_links": {
+        "/api/docs/catalog/products/getOne": {
+          "href": "/api/catalog/products/4057296549597"
+        },
+        "/api/docs/shops/getOne": {
+          "href": "/api/shops/kleinisbricks"
+        },
+        "self": {
+          "href": "/api/shops/kleinisbricks/products/dc877326-1f3e-4a09-2d8d-bf5f49a4c6dc"
+        }
+      }
+    }
+  ],
+  "_embedded": {},
+  "_links": {
+    "self": {
+      "href": "/api/shops/kleinisbricks/products?query=3024"
+    },
+    "last": {
+      "href": "/api/shops/kleinisbricks/products?query=3024"
+    },
+    "first": {
+      "href": "/api/shops/kleinisbricks/products?query=3024"
+    }
+  }
+}
