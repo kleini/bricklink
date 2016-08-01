@@ -21,4 +21,9 @@ public abstract class Response<T> {
     public T getResponse() {
         return response;
     }
+
+    @Override
+    public String toString() {
+        return "Response [" + response + "]";
+    }
 }

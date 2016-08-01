@@ -7,6 +7,7 @@ package org.kleini.bricklink.api;
 import java.util.ArrayList;
 import java.util.List;
 import org.kleini.address.Country;
+import org.kleini.api.AbstractGetRequest;
 import org.kleini.api.Parameter;
 import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Currency;

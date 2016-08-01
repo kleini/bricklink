@@ -6,7 +6,7 @@ package org.kleini.bricklink.api;
 
 import java.util.HashSet;
 import java.util.Set;
-
+import org.kleini.api.AbstractPutRequest;
 import org.kleini.api.Parameter;
 import org.kleini.bricklink.data.Inventory;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
