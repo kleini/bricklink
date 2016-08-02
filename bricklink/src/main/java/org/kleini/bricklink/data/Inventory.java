@@ -6,6 +6,7 @@ package org.kleini.bricklink.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 @JsonIgnoreProperties({"color_name","my_weight","tier_quantity1","tier_quantity2","tier_quantity3","tier_price1","tier_price2","tier_price3"})
+@JsonFilter("update filter") // for UpdateInventoryRequest
 public final class Inventory {
 
     /**

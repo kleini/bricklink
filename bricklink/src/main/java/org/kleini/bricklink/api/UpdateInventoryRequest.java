@@ -9,8 +9,6 @@ import java.util.Set;
 import org.kleini.api.AbstractPutRequest;
 import org.kleini.api.Parameter;
 import org.kleini.bricklink.data.Inventory;
-import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
@@ -48,16 +46,7 @@ public class UpdateInventoryRequest extends AbstractPutRequest<UpdateInventoryRe
         }
         SimpleBeanPropertyFilter filter = new SimpleBeanPropertyFilter.FilterExceptFilter(properties);
         SimpleFilterProvider fProvider = new SimpleFilterProvider();
-        fProvider.addFilter("fieldFilter", filter);
-        mapper.setAnnotationIntrospector(
-            new JacksonAnnotationIntrospector() {
-                private static final long serialVersionUID = -1209134534857706066L;
-                @Override
-                public Object findFilterId(AnnotatedClass ac) {
-                    return "fieldFilter";
-                }
-            }
-        );
+        fProvider.addFilter("update filter", filter);
         return mapper.writer(fProvider).writeValueAsString(inventory);
     }
 
