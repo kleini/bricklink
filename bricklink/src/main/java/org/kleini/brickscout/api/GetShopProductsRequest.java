@@ -4,6 +4,8 @@
 
 package org.kleini.brickscout.api;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.kleini.api.AbstractGetRequest;
 import org.kleini.api.Parameter;
 
@@ -16,10 +18,12 @@ import org.kleini.api.Parameter;
 public final class GetShopProductsRequest extends AbstractGetRequest<GetShopProductsResponse> {
 
     private final String shopName;
+    private final String query;
 
-    public GetShopProductsRequest(String shopName) {
+    public GetShopProductsRequest(String shopName, String query) {
         super();
         this.shopName = shopName;
+        this.query = query;
     }
 
     @Override
@@ -29,8 +33,12 @@ public final class GetShopProductsRequest extends AbstractGetRequest<GetShopProd
 
     @Override
     public Parameter[] getParameters() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Parameter> params = new ArrayList<Parameter>();
+        if (null != query) {
+            params.add(new Parameter("query", query));
+        }
+        params.add(new Parameter("size", 1000));
+        return params.toArray(new Parameter[params.size()]);
     }
 
     @Override
