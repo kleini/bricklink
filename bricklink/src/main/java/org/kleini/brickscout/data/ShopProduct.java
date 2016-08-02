@@ -5,7 +5,9 @@
 package org.kleini.brickscout.data;
 
 import java.util.List;
-import org.springframework.hateoas.ResourceSupport;
+
+import org.springframework.hateoas.Resources;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-@JsonIgnoreProperties({"bulky","bestseller","highlighted","boundingBox","weightInGram","_embedded","_links"})
-public class ShopProduct extends ResourceSupport {
+@JsonIgnoreProperties({"bulky","bestseller","highlighted","boundingBox","weightInGram"})
+public class ShopProduct extends Resources<TODO> {
 
     private String shopProductUUID;
     private List<ShopItem> shopItems;

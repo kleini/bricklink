@@ -4,16 +4,14 @@
 
 package org.kleini.brickscout.data;
 
-import org.springframework.hateoas.ResourceSupport;
-
 /**
- * {@link ShopItem2}
+ * {@link TODO}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class ShopItem2 {
+public class TODO {
 
-    public ShopItem2() {
+    public TODO() {
         super();
     }
 }

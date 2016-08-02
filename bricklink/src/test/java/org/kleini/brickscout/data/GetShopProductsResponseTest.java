@@ -7,8 +7,10 @@ package org.kleini.brickscout.data;
 import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,15 +49,14 @@ public class GetShopProductsResponseTest {
 
     @Test
     public void testWriteJSON() throws IOException {
-        ResourceSupport resourceSupport = new ResourceSupport();
-        resourceSupport.add(new Link("localhost"));
-//        mapper.writeValue(System.out, resourceSupport);
-
-        ShopProduct2 product = new ShopProduct2();
+        ShopProduct product = new ShopProduct();
         PageMetadata metadata = new PagedResources.PageMetadata(20, 0, 1, 1);
         Link link = new Link("localhost");
-        PagedResources<ShopProduct2> resources = new PagedResources<ShopProduct2>(Collections.emptyList(), metadata, link);
-        mapper.writeValue(System.out, resources);
+        Representations representations = new Representations(Collections.emptyList(), metadata, link);
+        List<ShopProduct> list = new ArrayList<ShopProduct>();
+        list.add(product);
+        representations.setRepresentations(list);
+        mapper.writeValue(System.out, representations);
     }
 
     @Test
@@ -73,7 +74,7 @@ public class GetShopProductsResponseTest {
         try (
             InputStream stream = getClass().getClassLoader().getResourceAsStream("getshopproductsresponse.json");
         ) {
-            PagedResources<ShopProduct2> resource = mapper.readValue(stream, new TypeReference<PagedResources<ShopProduct2>>() {});
+            Representations<ShopProduct> resource = mapper.readValue(stream, new TypeReference<Representations<ShopProduct>>() {});
             assertTrue(true);
         }
     }
