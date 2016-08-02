@@ -283,4 +283,9 @@ public final class Inventory {
     public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
+
+    @Override
+    public String toString() {
+        return "Inventory [identifier=" + identifier + ", item=" + item + ", color=" + color + ", quantity=" + quantity + ", condition=" + condition + ", price=" + price + ", bulk=" + bulk + ", retain=" + retain + ", stockRoom=" + stockRoom + ", stockRoomId=" + stockRoomId + ", created=" + created + "]";
+    }
 }
