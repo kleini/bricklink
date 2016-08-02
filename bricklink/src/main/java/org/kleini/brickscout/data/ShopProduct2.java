@@ -6,21 +6,19 @@ package org.kleini.brickscout.data;
 
 import java.util.List;
 import org.springframework.hateoas.ResourceSupport;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * {@link ShopProduct}
+ * {@link ShopProduct2}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-@JsonIgnoreProperties({"bulky","bestseller","highlighted","boundingBox","weightInGram","_embedded","_links"})
-public class ShopProduct extends ResourceSupport {
+public class ShopProduct2 {
 
     private String shopProductUUID;
-    private List<ShopItem> shopItems;
+    private List<ShopItem2> shopItems;
 
-    public ShopProduct() {
+    public ShopProduct2() {
         super();
     }
 
@@ -35,12 +33,12 @@ public class ShopProduct extends ResourceSupport {
     }
 
     @JsonProperty("shopItems")
-    public List<ShopItem> getShopItems() {
+    public List<ShopItem2> getShopItems() {
         return shopItems;
     }
 
     @JsonProperty("shopItems")
-    public void setShopItems(List<ShopItem> shopItems) {
+    public void setShopItems(List<ShopItem2> shopItems) {
         this.shopItems = shopItems;
     }
 }

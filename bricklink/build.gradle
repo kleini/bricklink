@@ -11,6 +11,8 @@ dependencies {
     exclude group: 'org.seleniumhq.selenium', module: 'selenium-java'
     exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
   }
+  compile 'org.springframework.hateoas:spring-hateoas:0.20.0.RELEASE'
+  compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
   testCompile 'junit:junit:4.11'
 }
 
