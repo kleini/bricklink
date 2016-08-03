@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 @JsonIgnoreProperties({"bulky","bestseller","highlighted","boundingBox","weightInGram"})
-public class ShopProduct extends Resources<TODO> {
+public class ShopProduct extends Resources<CatalogItem> {
 
     private String shopProductUUID;
     private List<ShopItem> shopItems;

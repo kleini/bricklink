@@ -10,7 +10,12 @@ public class Test {
         try (
             BrickScoutClient client = new BrickScoutClient(configuration);
         ) {
-            
+
         }
+        // http://docs.spring.io/spring-hateoas/docs/current/reference/html/#client
+//        Traverson traverson = new Traverson(new URI("http://localhost:8080/api/"), MediaTypes.HAL_JSON);
+//        String name = traverson.follow("movies", "movie", "actor").
+//          withTemplateParameters(parameters).
+//          toObject("$.name");
     }
 }
