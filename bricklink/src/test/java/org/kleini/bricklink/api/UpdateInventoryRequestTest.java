@@ -16,6 +16,10 @@ import org.kleini.bricklink.data.Inventory;
  */
 public class UpdateInventoryRequestTest {
 
+    public UpdateInventoryRequestTest() {
+        super();
+    }
+
     @Test
     public void testGetBody() throws Exception {
         Inventory update = new Inventory();

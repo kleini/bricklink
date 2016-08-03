@@ -45,9 +45,9 @@ public class UpdateInventoryRequest extends AbstractPutRequest<UpdateInventoryRe
             properties.add(field);
         }
         SimpleBeanPropertyFilter filter = new SimpleBeanPropertyFilter.FilterExceptFilter(properties);
-        SimpleFilterProvider fProvider = new SimpleFilterProvider();
-        fProvider.addFilter("update filter", filter);
-        return mapper.writer(fProvider).writeValueAsString(inventory);
+        SimpleFilterProvider provider = new SimpleFilterProvider();
+        provider.addFilter("update inventory request filter", filter);
+        return mapper.writer(provider).writeValueAsString(inventory);
     }
 
     @Override

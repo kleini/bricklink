@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 @JsonIgnoreProperties({"color_name","my_weight","tier_quantity1","tier_quantity2","tier_quantity3","tier_price1","tier_price2","tier_price3"})
-@JsonFilter("update filter") // for UpdateInventoryRequest
+@JsonFilter("update inventory request filter") // for UpdateInventoryRequest
 public final class Inventory {
 
     /**
