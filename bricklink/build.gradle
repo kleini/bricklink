@@ -1,5 +1,16 @@
 version = '0.8.2'
 
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+  }
+}
+
+apply plugin: 'spring-boot'
+
 dependencies {
   compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
   compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
@@ -13,7 +24,9 @@ dependencies {
   }
   compile 'org.springframework.hateoas:spring-hateoas:0.20.0.RELEASE'
   compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
-  compile group: 'org.springframework', name: 'spring-web', version: '4.2.0.RELEASE'
+  compile 'org.springframework.boot:spring-boot-starter'
+  compile 'org.springframework.boot:spring-boot-starter-web'
+  compile 'org.springframework:spring-web'
   testCompile 'junit:junit:4.11'
 }
 
