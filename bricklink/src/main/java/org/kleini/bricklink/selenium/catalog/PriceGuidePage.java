@@ -43,7 +43,11 @@ public final class PriceGuidePage {
     }
 
     private void load(ItemType itemType, String itemID, int colorID) {
-        driver.get("https://www.bricklink.com/catalogPG.asp?itemType=" + itemType.getId() + "&itemNo=" + itemID + "&itemSeq=1&colorID=" + Integer.toString(colorID) + "&v=P&prDec=4");
+        String currentURL = driver.getCurrentUrl();
+        String newURL = "https://www.bricklink.com/catalogPG.asp?itemType=" + itemType.getId() + "&itemNo=" + itemID + "&itemSeq=1&colorID=" + Integer.toString(colorID) + "&v=P&prDec=4";
+        if (!newURL.equals(currentURL)) {
+            driver.get(newURL);
+        }
     }
 
     @SuppressWarnings("unused")
