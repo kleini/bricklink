@@ -8,6 +8,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * This class provides functions for the login page.
@@ -27,27 +30,29 @@ public class LoginPage {
     }
 
     private void open() {
-        WebElement loginLink = driver.findElement(By.linkText("Log in or Register"));
+        WebElement loginLink = driver.findElement(By.xpath("//button[contains(text(),'Log in or Register')]"));
         loginLink.click();
     }
 
     public void login(String password) throws Exception {
         WebElement usernameInput = driver.findElement(By.id("frmUsername"));
         usernameInput.sendKeys(login);
-        WebElement passwordInput = driver.findElement(By.id("frmPasswordTopNav"));
+        WebElement passwordInput = driver.findElement(By.id("frmPassword"));
         passwordInput.sendKeys(password);
-        WebElement loginButton = driver.findElement(By.xpath("//input[@type='button' and @value='Log in to BrickLink']"));
+        WebElement loginButton = driver.findElement(By.id("blbtnLogin"));
         loginButton.click();
-        // Fail if the Logoff link does not appear.
+        // Fail if the button to "My BL" does not appear
         try {
-            driver.findElement(By.xpath("//b[text()='Welcome to MyBrickLink']"));
+            new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-href='/my.asp']")));
         } catch (NoSuchElementException e) {
             throw new Exception("Login failed. Please check credentials!");
         }
     }
 
     public void logout() {
-        driver.findElement(By.linkText(login)).click();
-        driver.findElement(By.linkText("Logoff")).click();
+        WebElement myBlButton = driver.findElement(By.xpath("//button[@data-href='/my.asp']"));
+        new Actions(driver).moveToElement(myBlButton).build().perform();
+        WebElement logout = new WebDriverWait(driver, 2).until(ExpectedConditions.elementToBeClickable(driver.findElement(By.id("blbtnLogout"))));
+        logout.click();
     }
 }

@@ -39,13 +39,15 @@ public final class PriceGuidePage {
     }
 
     private void open() {
-        WebElement catalogTab = driver.findElement(By.linkText("Catalog"));
-        catalogTab.click();
-        WebElement priceGuideTab = driver.findElement(By.linkText("Price Guide"));
-        priceGuideTab.click();
+        driver.get("https://www.bricklink.com/catalogPG.asp");
     }
 
-    public PriceGuide getPriceGuide(ItemType itemType, String itemID, int colorID, GuideType guideType, Condition condition, boolean details) throws Exception {
+    private void load(ItemType itemType, String itemID, int colorID) {
+        driver.get("https://www.bricklink.com/catalogPG.asp?itemType=" + itemType.getId() + "&itemNo=" + itemID + "&itemSeq=1&colorID=" + Integer.toString(colorID) + "&v=P&prDec=4");
+    }
+
+    @SuppressWarnings("unused")
+    private void fillSearch(ItemType itemType, String itemID, int colorID) {
         open();
         // Fill all required input fields.
         WebElement itemTypeSelect = driver.findElement(By.xpath("//b[text()='View Price Guide Info:']/../../..//select[@name='itemType']"));
@@ -64,8 +66,10 @@ public final class PriceGuidePage {
         roundToSelect.findElement(By.xpath("option[@value='4']")).click();
         WebElement button = driver.findElement(By.xpath("//input[@value='View Price Guide Info']"));
         button.click();
-        // TODO Go directly to the page by filling the URL
-        // https://www.bricklink.com/catalogPG.asp?itemType=P&itemNo=3004&itemSeq=1&colorID=5&v=P&priceGroup=Y&prDec=4
+    }
+
+    public PriceGuide getPriceGuide(ItemType itemType, String itemID, int colorID, GuideType guideType, Condition condition, boolean details) throws Exception {
+        load(itemType, itemID, colorID);
         // Go to next page and fetch values
         WebElement myColumn = driver.findElement(By.cssSelector("td[width=\"25%\"]:nth-of-type(" + calculateColumn(guideType, condition) + ")"));
         if (driver instanceof JavascriptExecutor) {
