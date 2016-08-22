@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.selenium.catalog;
 
+import static org.kleini.bricklink.selenium.BrickLinkSelenium.URL;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +40,12 @@ public final class PriceGuidePage {
     }
 
     private void open() {
-        driver.get("https://www.bricklink.com/catalogPG.asp");
+        driver.get(URL + "/catalogPG.asp");
     }
 
     private void load(ItemType itemType, String itemID, int colorID) {
         String currentURL = driver.getCurrentUrl();
-        String newURL = "https://www.bricklink.com/catalogPG.asp?itemType=" + itemType.getId() + "&itemNo=" + itemID + "&itemSeq=1&colorID=" + Integer.toString(colorID) + "&v=P&prDec=4";
+        String newURL = URL + "/catalogPG.asp?itemType=" + itemType.getId() + "&itemNo=" + itemID + "&itemSeq=1&colorID=" + Integer.toString(colorID) + "&v=P&prDec=4";
         if (!newURL.equals(currentURL)) {
             driver.get(newURL);
         }

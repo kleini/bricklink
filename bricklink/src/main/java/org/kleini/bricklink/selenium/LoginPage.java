@@ -4,10 +4,14 @@
 
 package org.kleini.bricklink.selenium;
 
+import static org.kleini.bricklink.selenium.BrickLinkSelenium.URL;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * This class provides functions for the login page.
@@ -27,26 +31,35 @@ public class LoginPage {
     }
 
     private void open() {
-        driver.get("https://www.bricklink.com/v2/login.page");
+        driver.get(URL + "/v2/login.page");
+    }
+
+    private WebElement selectDisplayed(List<WebElement> list) throws Exception {
+        for (WebElement tmp : list) {
+            if (tmp.isDisplayed()) {
+                return tmp;
+            }
+        }
+        throw new Exception("All elements are not displayed.");
     }
 
     public void login(String password) throws Exception {
-        WebElement usernameInput = driver.findElement(By.id("frmUsername"));
+        WebElement usernameInput = selectDisplayed(driver.findElements(By.id("frmUsername")));
         usernameInput.sendKeys(login);
-        WebElement passwordInput = driver.findElement(By.id("frmPassword"));
+        WebElement passwordInput = selectDisplayed(driver.findElements(By.id("frmPassword")));
         passwordInput.sendKeys(password);
-        WebElement loginButton = driver.findElement(By.id("blbtnLogin"));
+        WebElement loginButton = selectDisplayed(driver.findElements(By.id("blbtnLogin")));
         loginButton.click();
         try {
             // Fail if the logout link does not appear.
-            driver.findElement(By.id("idMyPageLogout"));
+            new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("idMyPageLogout")));
         } catch (NoSuchElementException e) {
             throw new Exception("Login failed. Please check credentials!");
         }
     }
 
     public void logout() {
-        driver.get("https://www.bricklink.com/my.asp");
+        driver.get(URL + "/my.asp");
         WebElement logoutLink = driver.findElement(By.id("idMyPageLogout"));
         logoutLink.click();
     }

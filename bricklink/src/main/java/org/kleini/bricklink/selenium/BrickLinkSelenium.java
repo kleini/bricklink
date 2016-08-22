@@ -6,7 +6,6 @@ package org.kleini.bricklink.selenium;
 
 import static org.kleini.bricklink.api.ConfigurationProperty.LOGIN;
 import static org.kleini.bricklink.api.ConfigurationProperty.PASSWORD;
-
 import java.io.Closeable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.Category;
 import org.kleini.bricklink.data.Color;
@@ -43,7 +41,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public final class BrickLinkSelenium implements Closeable {
 
-    private static final String URL = "https://www.bricklink.com";
+    public static final String URL = "https://www.bricklink.com";
 
     private final WebDriver driver;
 
@@ -62,7 +60,6 @@ public final class BrickLinkSelenium implements Closeable {
             capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--ssl-protocol=tlsv1"});
             driver = new PhantomJSDriver(capabilities);
         }
-        driver.get(URL);
         loginPage = new LoginPage(driver, login);
         loginPage.login(password);
     }
