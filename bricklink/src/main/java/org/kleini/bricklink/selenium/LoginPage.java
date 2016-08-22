@@ -8,9 +8,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * This class provides functions for the login page.
@@ -30,8 +27,7 @@ public class LoginPage {
     }
 
     private void open() {
-        WebElement loginLink = driver.findElement(By.xpath("//button[contains(text(),'Log in or Register')]"));
-        loginLink.click();
+        driver.get("https://www.bricklink.com/v2/login.page");
     }
 
     public void login(String password) throws Exception {
@@ -41,18 +37,17 @@ public class LoginPage {
         passwordInput.sendKeys(password);
         WebElement loginButton = driver.findElement(By.id("blbtnLogin"));
         loginButton.click();
-        // Fail if the button to "My BL" does not appear
         try {
-            new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@data-href='/my.asp']")));
+            // Fail if the logout link does not appear.
+            driver.findElement(By.id("idMyPageLogout"));
         } catch (NoSuchElementException e) {
             throw new Exception("Login failed. Please check credentials!");
         }
     }
 
     public void logout() {
-        WebElement myBlButton = driver.findElement(By.xpath("//button[@data-href='/my.asp']"));
-        new Actions(driver).moveToElement(myBlButton).build().perform();
-        WebElement logout = new WebDriverWait(driver, 2).until(ExpectedConditions.elementToBeClickable(driver.findElement(By.id("blbtnLogout"))));
-        logout.click();
+        driver.get("https://www.bricklink.com/my.asp");
+        WebElement logoutLink = driver.findElement(By.id("idMyPageLogout"));
+        logoutLink.click();
     }
 }
