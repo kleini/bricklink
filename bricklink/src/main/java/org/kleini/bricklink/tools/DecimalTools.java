@@ -35,4 +35,9 @@ public final class DecimalTools {
     public static BigDecimal round(BigDecimal decimal, int newScale) {
         return decimal.setScale(newScale, RoundingMode.HALF_UP);
     }
+
+    public static int compareMinScale(BigDecimal decimal1, BigDecimal decimal2) {
+        int scale = Math.min(decimal1.scale(), decimal2.scale());
+        return round(decimal1, scale).compareTo(round(decimal2, scale));
+    }
 }

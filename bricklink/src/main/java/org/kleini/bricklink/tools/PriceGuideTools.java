@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import org.kleini.address.Country;
 import org.kleini.bricklink.data.PriceDetail;
@@ -77,6 +78,56 @@ public final class PriceGuideTools {
         BigDecimal retval = details.get(0).getPrice();
         for (PriceDetail detail : details) {
             retval = detail.getPrice().min(retval);
+        }
+        return retval;
+    }
+
+    public static PriceGuide extract(PriceGuide guide, Country country) {
+        PriceGuide retval = new PriceGuide();
+        List<PriceDetail> list = new ArrayList<PriceDetail>();
+        BigDecimal minPrice = null;
+        BigDecimal maxPrice = null;
+        List<BigDecimal> forAverage = new ArrayList<BigDecimal>();
+        BigDecimal quantityAveragePrice = BigDecimal.ZERO;
+        int scale = 0;
+        int units = 0;
+        int quantity = 0;
+        for (PriceDetail detail : guide.getDetail()) {
+            if (country.equals(detail.getSellerCountry())) {
+                list.add(detail);
+                if (null == minPrice) {
+                    minPrice = maxPrice = detail.getPrice();
+                }
+                minPrice = minPrice.min(detail.getPrice());
+                maxPrice = maxPrice.max(detail.getPrice());
+                forAverage.add(detail.getPrice());
+                quantityAveragePrice = quantityAveragePrice.add(detail.getPrice().multiply(new BigDecimal(detail.getQuantity())));
+                scale = Math.max(scale, detail.getPrice().scale());
+                units++;
+                quantity += detail.getQuantity();
+            }
+        }
+        retval.setDetail(list);
+        retval.setItem(guide.getItem());
+        retval.setNewOrUsed(guide.getNewOrUsed());
+        retval.setCurrency(guide.getCurrency());
+        retval.setMinPrice(minPrice);
+        retval.setMaxPrice(maxPrice);
+        retval.setAveragePrice(0 == forAverage.size() ? null : DecimalTools.getAverage(forAverage.toArray(new BigDecimal[forAverage.size()])));
+        retval.setQuantityAveragePrice(0 == quantity ? null : quantityAveragePrice.divide(new BigDecimal(quantity), scale, RoundingMode.HALF_UP));
+        retval.setUnits(units);
+        retval.setQuantity(quantity);
+        return retval;
+    }
+
+    public static List<PriceDetail> removeStore(List<PriceDetail> details, String name) {
+        List<PriceDetail> retval = new ArrayList<PriceDetail>(details);
+        Iterator<PriceDetail> iter = retval.iterator();
+        while (iter.hasNext()) {
+            PriceDetail detail = iter.next();
+            if (name.equals(detail.getStore())) {
+                iter.remove();
+            }
         }
         return retval;
     }

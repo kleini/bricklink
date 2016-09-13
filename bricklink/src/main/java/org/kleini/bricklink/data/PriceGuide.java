@@ -4,6 +4,7 @@
 
 package org.kleini.bricklink.data;
 
+import static org.kleini.bricklink.tools.DecimalTools.compareMinScale;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -206,7 +207,7 @@ public final class PriceGuide {
         if (averagePrice == null) {
             if (other.averagePrice != null)
                 return false;
-        } else if (0 != averagePrice.compareTo(other.averagePrice))
+        } else if (0 != compareMinScale(averagePrice, other.averagePrice))
             return false;
         if (currency != other.currency)
             return false;
@@ -223,12 +224,12 @@ public final class PriceGuide {
         if (maxPrice == null) {
             if (other.maxPrice != null)
                 return false;
-        } else if (0 != maxPrice.compareTo(other.maxPrice))
+        } else if (0 != compareMinScale(maxPrice, other.maxPrice))
             return false;
         if (minPrice == null) {
             if (other.minPrice != null)
                 return false;
-        } else if (0 != minPrice.compareTo(other.minPrice))
+        } else if (0 != compareMinScale(minPrice, other.minPrice))
             return false;
 //        if (newOrUsed != other.newOrUsed)
 //            return false;
@@ -237,7 +238,7 @@ public final class PriceGuide {
         if (quantityAveragePrice == null) {
             if (other.quantityAveragePrice != null)
                 return false;
-        } else if (0 != quantityAveragePrice.compareTo(other.quantityAveragePrice))
+        } else if (0 != compareMinScale(quantityAveragePrice, other.quantityAveragePrice))
             return false;
         if (units != other.units)
             return false;

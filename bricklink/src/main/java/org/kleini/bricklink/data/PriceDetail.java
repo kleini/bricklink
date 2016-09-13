@@ -7,6 +7,7 @@ package org.kleini.bricklink.data;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.kleini.address.Country;
+import org.kleini.bricklink.tools.DecimalTools;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -158,7 +159,7 @@ public final class PriceDetail {
         if (price == null) {
             if (other.price != null)
                 return false;
-        } else if (0 != price.compareTo(other.price))
+        } else if (0 != DecimalTools.compareMinScale(price, other.price))
             return false;
         if (quantity != other.quantity)
             return false;
