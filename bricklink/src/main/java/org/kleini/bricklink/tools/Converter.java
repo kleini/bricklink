@@ -30,6 +30,7 @@ public final class Converter {
         retval.setItemName(inventory.getItem().getName());
         retval.setItemTypeID(inventory.getItem().getType().getId());
         retval.setItemTypeName(inventory.getItem().getType().name());
+        retval.setLotID(inventory.getIdentifier());
         retval.setPrice(inventory.getPrice());
         retval.setQty(inventory.getQuantity());
         retval.setRemarks(inventory.getRemarks());
