@@ -410,7 +410,13 @@ public enum Category {
     RETAIL_DISPLAY_CASE(848, "Retail Display Case"),
     JURASSIC_WORLD(850, "Jurassic World"),
     SCOOBY_DOO(856, "Scooby-Doo"),
-    DIMENSIONS(860, "Dimensions");
+    DIMENSIONS(860, "Dimensions"),
+    NEXO_KNIGHTS(868, "Nexo Knights"),
+    YEAR_2016(869, "2016"),
+    GHOSTBUSTERS(870, "Ghostbusters"),
+    THE_ANGRY_BIRDS_MOVIE(876, "The Angry Birds Movie"),
+    DISNEY(878, "Disney"),
+    PLATE_DECORATED(885, "Plate, Decorated");
 
     private final int identifier;
 

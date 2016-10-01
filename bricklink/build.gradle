@@ -48,3 +48,9 @@ task setValues(type: JavaExec) {
   }
 }
 
+task colorsAndCategories(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main 'org.kleini.bricklink.tools.ColorsAndCategories'
+  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties' ]
+}
+
