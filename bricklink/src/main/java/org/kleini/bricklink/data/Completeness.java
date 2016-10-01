@@ -13,7 +13,8 @@ public enum Completeness {
 
     COMPLETE('C'),
     INCOMPLETE('B'),
-    SEALED('S');
+    SEALED('S'),
+    UNDEFINED('X');
 
     private final char identifier;
 
