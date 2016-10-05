@@ -3,7 +3,7 @@
  */
 
 package org.kleini.bricklink.tools;
-
+import org.kleini.address.Country;
 import org.kleini.bricklink.data.Inventory;
 import org.kleini.brickstore.data.Item;
 
@@ -36,5 +36,45 @@ public final class Converter {
         retval.setRemarks(inventory.getRemarks());
         retval.setStatus("I");
         return retval;
+    }
+
+    public static org.kleini.address.Address convert(final org.kleini.bricklink.data.Address address) throws Exception {
+        if (address.getName().getFirst() == null) {
+            throw new Exception("Can not convert address.");
+        }
+        return new org.kleini.address.Address() {
+            @Override
+            public String getName() {
+                return address.getName().getFull();
+            }
+            @Override
+            public String getStreet1() {
+                return address.getAddress1();
+            }
+            @Override
+            public String getStreet2() {
+                return address.getAddress2();
+            }
+            @Override
+            public String getCityName() {
+                return address.getCity();
+            }
+            @Override
+            public String getStateOrProvince() {
+                return address.getState();
+            }
+            @Override
+            public Country getCountry() {
+                return address.getCountry();
+            }
+            @Override
+            public String getCountryName() {
+                return address.getCountry().getName();
+            }
+            @Override
+            public String getPostalCode() {
+                return address.getPostalCode();
+            }
+        };
     }
 }

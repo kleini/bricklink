@@ -6,7 +6,6 @@ package org.kleini.bricklink.api;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.kleini.api.Response;
 import org.kleini.bricklink.data.Order;
 

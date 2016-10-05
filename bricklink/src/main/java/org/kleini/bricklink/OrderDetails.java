@@ -4,23 +4,20 @@
 
 package org.kleini.bricklink;
 
-import java.io.InputStream;
-import java.util.List;
-import javax.net.ssl.SSLContext;
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.api.ConfigurationProperty;
-import org.kleini.bricklink.api.TrustAllStrategy;
+import org.kleini.bricklink.api.OrdersRequest;
+import org.kleini.bricklink.api.OrdersResponse;
+import org.kleini.bricklink.data.Order;
 import org.kleini.bricklink.data.Response;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 
 /**
  * This class is a starter and can read order details from BrickLink.
@@ -37,25 +34,27 @@ public class OrderDetails {
 
     public static void main(String[] args) throws Exception {
         Configuration configuration = new Configuration();
-
+        BrickLinkClient client = new BrickLinkClient(configuration);
         OAuthConsumer oAuthConsumer = new CommonsHttpOAuthConsumer(configuration.getProperty(ConfigurationProperty.CONSUMER_KEY), configuration.getProperty(ConfigurationProperty.CONSUMER_SECRET));
         oAuthConsumer.setTokenWithSecret(configuration.getProperty(ConfigurationProperty.TOKEN_VALUE), configuration.getProperty(ConfigurationProperty.TOKEN_SECRET));
-
-        SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(null, new TrustAllStrategy()).build();
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-        CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(sslsf).build();
         try {
-            HttpGet request = new HttpGet(BASE_URL + "/orders/1234567");
-            oAuthConsumer.sign(request);
-            CloseableHttpResponse httpResponse = client.execute(request);
-            try {
-                System.out.println("Code: " + httpResponse.getStatusLine().getStatusCode() + ',' + httpResponse.getStatusLine().getReasonPhrase());
-                InputStream stream = httpResponse.getEntity().getContent();
-                ObjectMapper mapper = new ObjectMapper();
-                Response<List<org.kleini.bricklink.data.Order>> response = mapper.readValue(stream, new TypeReference<Response<org.kleini.bricklink.data.Order>>() { /* anonymous subclass */ });
-                System.out.println(response);
-            } finally {
-                httpResponse.close();
+            OrdersResponse ordersResponse = client.execute(new OrdersRequest());
+            for (Order order : ordersResponse.getOrders()) {
+                HttpGet request = new HttpGet(BASE_URL + "/orders/" + order.getId());
+                oAuthConsumer.sign(request);
+                CloseableHttpResponse httpResponse = client.execute(request);
+                try {
+                    System.out.println("Code: " + httpResponse.getStatusLine().getStatusCode() + ',' + httpResponse.getStatusLine().getReasonPhrase());
+                    String body = EntityUtils.toString(httpResponse.getEntity());
+                    ObjectMapper mapper = new ObjectMapper();
+                    Response<Order> response = mapper.readValue(body, new TypeReference<Response<Order>>() { /* anonymous subclass */ });
+                    if (null != response.getData().getShipping().getAddress().getAddress1()) {
+                        System.out.println(body);
+                    }
+                    System.out.println(response);
+                } finally {
+                    httpResponse.close();
+                }
             }
         } finally {
             client.close();

@@ -20,10 +20,12 @@ import javax.net.ssl.SSLContext;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -60,6 +62,10 @@ public final class BrickLinkClient implements Closeable {
 
     public BrickLinkClient(Configuration configuration) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         this(configuration.getProperty(CONSUMER_KEY), configuration.getProperty(CONSUMER_SECRET), configuration.getProperty(TOKEN_VALUE), configuration.getProperty(TOKEN_SECRET));
+    }
+
+    public CloseableHttpResponse execute(HttpUriRequest request) throws IOException, ClientProtocolException {
+        return client.execute(request);
     }
 
     public <T extends Response<?>> T execute(Request<T> request) throws Exception {
