@@ -8,8 +8,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
+
 import org.kleini.address.Country;
 import org.kleini.bricklink.data.PriceDetail;
 import org.kleini.bricklink.data.PriceGuide;
@@ -82,7 +84,7 @@ public final class PriceGuideTools {
         return retval;
     }
 
-    public static PriceGuide extract(PriceGuide guide, Country country) {
+    public static PriceGuide extract(PriceGuide guide, Country... countries) {
         PriceGuide retval = new PriceGuide();
         List<PriceDetail> list = new ArrayList<PriceDetail>();
         BigDecimal minPrice = null;
@@ -92,8 +94,9 @@ public final class PriceGuideTools {
         int scale = 0;
         int units = 0;
         int quantity = 0;
+        EnumSet<Country> set = EnumSet.copyOf(java.util.Arrays.asList(countries));
         for (PriceDetail detail : guide.getDetail()) {
-            if (country.equals(detail.getSellerCountry())) {
+            if (set.contains(detail.getSellerCountry())) {
                 list.add(detail);
                 if (null == minPrice) {
                     minPrice = maxPrice = detail.getPrice();
@@ -133,9 +136,9 @@ public final class PriceGuideTools {
     }
 
     /**
-     * @return 0-based selling position with given quantity and price.
+     * @return 0-based position with given quantity and price.
      */
-    public static int getMyPosition(int quantity, BigDecimal price, List<PriceDetail> details) throws Exception {
+    public static int getPosition(int quantity, BigDecimal price, List<PriceDetail> details) throws Exception {
         for (int i = 0; i < details.size(); i++) {
             PriceDetail detail = details.get(i);
             switch (price.compareTo(detail.getPrice())) {

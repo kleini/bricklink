@@ -13,6 +13,7 @@ import org.kleini.bricklink.data.Condition;
 import org.kleini.bricklink.data.Currency;
 import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemType;
+import org.kleini.bricklink.data.Region;
 
 /**
  * {@link PriceGuideRequest}
@@ -27,6 +28,7 @@ public final class PriceGuideRequest extends AbstractGetRequest<PriceGuideRespon
     private final GuideType guideType;
     private final Condition newOrUsed;
     private final Country country;
+    private final Region region;
 
     public PriceGuideRequest(ItemType type, String itemID, int colorID, GuideType guideType, Condition newOrUsed, Country country) {
         super();
@@ -36,10 +38,22 @@ public final class PriceGuideRequest extends AbstractGetRequest<PriceGuideRespon
         this.guideType = guideType;
         this.newOrUsed = newOrUsed;
         this.country = country;
+        this.region = null;
+    }
+
+    public PriceGuideRequest(ItemType type, String itemID, int colorID, GuideType guideType, Condition newOrUsed, Region region) {
+        super();
+        this.type = type;
+        this.itemID = itemID;
+        this.colorID = colorID;
+        this.guideType = guideType;
+        this.newOrUsed = newOrUsed;
+        this.country = null;
+        this.region = region;
     }
 
     public PriceGuideRequest(ItemType type, String itemID, int colorID, GuideType guideType, Condition newOrUsed) {
-        this(type, itemID, colorID, guideType, newOrUsed, null);
+        this(type, itemID, colorID, guideType, newOrUsed, (Country) null);
     }
 
     @Override
@@ -56,6 +70,9 @@ public final class PriceGuideRequest extends AbstractGetRequest<PriceGuideRespon
         retval.add(new Parameter("currency_code", Currency.EUR.name()));
         if (null != country) {
             retval.add(new Parameter("country_code", country.name()));
+        }
+        if (null != region) {
+            retval.add(new Parameter("region", region.name().toLowerCase()));
         }
         retval.add(new Parameter("vat", "Y")); // Vat option must be Y, N, or O
         return retval.toArray(new Parameter[retval.size()]);
