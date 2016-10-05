@@ -77,4 +77,12 @@ public final class Converter {
             }
         };
     }
+
+    public static String replaceSpecialBLAddressCharacters(String fullAddress) {
+        return fullAddress.
+                replace("&#39;", "'").
+                replace("&#40;", "(").
+                replace("&#41;", ")").
+                replace("&#45;", "-");
+    }
 }
