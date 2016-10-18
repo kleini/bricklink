@@ -48,6 +48,7 @@ public final class Formatter {
         case ES:
         case FR:
         case HK:
+        case IT:
         case NL:
         case NO:
             addStandard(sb, address);
