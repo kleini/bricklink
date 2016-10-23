@@ -33,6 +33,9 @@ public final class Formatter {
         case GB:
             addUnitedKingdom(sb, address);
             break;
+        case SG:
+            addSingapore(sb, address);
+            break;
         case RU:
             addRussia(sb, address);
             break;
@@ -78,6 +81,19 @@ public final class Formatter {
 
     private static void lb(StringBuilder sb) {
         sb.append('\n');
+    }
+
+    private static void appendNotNull(StringBuilder sb, String text, String spacer) {
+        if (null != text) {
+            sb.append(text);
+        }
+        if (null != spacer) {
+            sb.append(spacer);
+        }
+    }
+
+    private static void appendNotNull(StringBuilder sb, String text) {
+        appendNotNull(sb, text, null);
     }
 
     private static void addStandard(StringBuilder sb, Address address) {
@@ -145,6 +161,12 @@ public final class Formatter {
         sb.append(address.getCityName()); lb(sb);
         sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); lb(sb);
         addCountry(sb, address);
+    }
+
+    private static void addSingapore(StringBuilder sb, Address address) {
+        addName(sb, address);
+        sb.append(address.getCityName()); sb.append(' '); sb.append(address.getPostalCode()); lb(sb);
+        appendNotNull(sb, address.getStateOrProvince()); addCountry(sb, address);
     }
 
     private static void addTaiwan(StringBuilder sb, Address address) {
