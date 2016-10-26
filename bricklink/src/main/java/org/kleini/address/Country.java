@@ -128,7 +128,7 @@ public enum Country {
     JP("Japan"),
     KE(null),
     KG(null),
-    KH(null),
+    KH("Cambodia"),
     KI(null),
     KM(null),
     KN(null),
@@ -273,6 +273,9 @@ public enum Country {
     }
 
     public String getName() {
+        if (null == name) {
+            throw new UnsupportedOperationException("Country name for " + this + " is not defined.");
+        }
         return name;
     }
 }
