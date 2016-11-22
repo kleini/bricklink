@@ -52,7 +52,7 @@ public class LoginPage {
         loginButton.click();
         try {
             // Fail if the logout link does not appear.
-            new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("idMyPageLogout")));
+            new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("idMyPageLogout")));
         } catch (NoSuchElementException e) {
             throw new Exception("Login failed. Please check credentials!");
         }

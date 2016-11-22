@@ -66,12 +66,10 @@ public class LEGOShopSelenium implements Closeable {
                     for (WebElement element : elements) {
                         if (lastSetNumber == Integer.parseInt(element.getText())) {
                             found = true;
-                            System.out.println("Wait for next page...");
                         }
                     }
                 } catch (StaleElementReferenceException e) {
                     found = true;
-                    System.out.println("Wait for next page...");
                 }
             } while (found);
             WebElement indexE = driver.findElement(By.cssSelector("div[data-test='pagination']"));

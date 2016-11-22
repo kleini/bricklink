@@ -33,6 +33,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * {@link BrickLinkSelenium}
@@ -109,7 +111,7 @@ public final class BrickLinkSelenium implements Closeable {
         driver.get(URL + "/catalogItemInv.asp?" + type.getId() + "=" + itemId + (ItemType.GEAR.equals(type) ? "" : "-1"));
         Date retval = null;
         try {
-            WebElement element = driver.findElement(By.xpath("//font[text()[contains(.,'inventoried')]]"));
+            WebElement element = new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//font[text()[contains(.,'inventoried')]]")));
             Matcher matcher = pattern.matcher(element.getText());
             if (matcher.find()) {
                 String dateText = matcher.group(1);
