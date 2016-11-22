@@ -41,6 +41,7 @@ public class DetermineSetValues {
         ) {
             sets = shopSelenium.getAvailableSets();
         }
+        System.out.println("Number of sets: " + sets.size());
         Configuration configuration = new Configuration();
         List<Margin> output = new ArrayList<Margin>();
         try (

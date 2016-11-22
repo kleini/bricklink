@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/bricklink/src/main/java/org/kleini/bricklink/DetermineSetValues.java"/>
+<listEntry value="/bricklink-bricklink/src/main/java/org/kleini/bricklink/DetermineSetValues.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -10,6 +10,6 @@
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.kleini.bricklink.DetermineSetValues"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="values.txt"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="bricklink"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DconfigurationFile=${workspace_loc:/bricklink/bricklink.properties}"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="bricklink-bricklink"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DconfigurationFile=${workspace_loc:/bricklink-bricklink/src/main/resources/myconfiguration.properties}"/>
 </launchConfiguration>

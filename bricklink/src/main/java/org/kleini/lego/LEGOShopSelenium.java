@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -24,7 +25,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public class LEGOShopSelenium implements Closeable {
 
-    private static final String URL = "https://shop.lego.com/de-DE/catalog/productListing.jsp";
+    private static final String URL = "https://shop.lego.com/de-DE/Creator-Sets?S1=&count=18&do=json-db&showRetired=false&page=1";
 
     private final WebDriver driver;
 
@@ -53,22 +54,64 @@ public class LEGOShopSelenium implements Closeable {
 
     public List<Set> getAvailableSets() {
         driver.get(URL);
-        driver.findElement(By.id("pagination-9999")).click();
-        List<WebElement> elements = driver.findElements(By.cssSelector("ul[id='product-results'] > li"));
+        List<Set> retval = readSetsFromPage();
+        WebElement nextPageLink = null;
+        int lastSetNumber = 0;
+        do {
+            boolean found = false;
+            do {
+                found = false;
+                List<WebElement> elements = driver.findElements(By.cssSelector("div[data-test='product-leaf-group'] > div:last-of-type[data-test^='product-leaf-'] > div > span[data-test='product-leaf-id']"));
+                try {
+                    for (WebElement element : elements) {
+                        if (lastSetNumber == Integer.parseInt(element.getText())) {
+                            found = true;
+                            System.out.println("Wait for next page...");
+                        }
+                    }
+                } catch (StaleElementReferenceException e) {
+                    found = true;
+                    System.out.println("Wait for next page...");
+                }
+            } while (found);
+            WebElement indexE = driver.findElement(By.cssSelector("div[data-test='pagination']"));
+            String text = indexE.getText().replaceAll("\n", "").replaceAll("WEITER", "").replaceAll("ZUR\u00DCCK", "");
+            System.out.println(text);
+            List<Set> setsFromPage = readSetsFromPage();
+            lastSetNumber = setsFromPage.get(setsFromPage.size() - 1).getIdentifier();
+            retval.addAll(setsFromPage);
+            try {
+                nextPageLink = driver.findElement(By.cssSelector("a[class='pagination__next']"));
+            } catch (NoSuchElementException e) {
+                nextPageLink = null;
+            }
+            if (null != nextPageLink) {
+                nextPageLink.click();
+            }
+        } while (null != nextPageLink);
+        return retval;
+    }
+
+    private List<Set> readSetsFromPage() {
         List<Set> retval = new LinkedList<Set>();
-        for (WebElement element : elements) {
-            WebElement setNummerE = element.findElement(By.cssSelector("span[class='item-code']"));
+        List<WebElement> products = driver.findElements(By.cssSelector("div[data-test='product-leaf-group'] > div[data-test^='product-leaf-']"));
+        for (WebElement product : products) {
+            WebElement setNummerE = product.findElement(By.cssSelector("div > span[data-test='product-leaf-id']"));
             int setNummer = Integer.parseInt(setNummerE.getText());
             Set set = new Set(setNummer);
 
-            WebElement linkWithName = element.findElement(By.cssSelector("h4 > a"));
-            String name = linkWithName.getAttribute("title");
+            WebElement spanWithName = product.findElement(By.cssSelector("div > h2[data-test='product-leaf-title'] > a[data-test='product-leaf-link-title'] > span"));
+            String name = spanWithName.getText();
             set.setName(name);
 
-            WebElement priceElement;
-            try {
-                priceElement = element.findElement(By.cssSelector("ul > li > em"));
-            } catch (NoSuchElementException e) {
+            final WebElement priceElement;
+            List<WebElement> saleElements = product.findElements(By.cssSelector("div > div[data-test='product-leaf-pricing'] > div > div[data-test='sale-price'] > span[data-test='formatted-value']"));
+            List<WebElement> elements = product.findElements(By.cssSelector("div > div[data-test='product-leaf-pricing'] > div > div[data-test='list-price'] > span[data-test='list-pricing']"));
+            if (!saleElements.isEmpty()) {
+                priceElement = saleElements.get(0);
+            } else if (!elements.isEmpty()) {
+                priceElement = elements.get(0);
+            } else {
                 System.out.println("No retail price for Set " + setNummer);
                 continue;
             }
