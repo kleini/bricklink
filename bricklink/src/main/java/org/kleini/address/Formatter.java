@@ -87,7 +87,7 @@ public final class Formatter {
         if (null != text) {
             sb.append(text);
         }
-        if (null != spacer) {
+        if (null != text && null != spacer) {
             sb.append(spacer);
         }
     }
@@ -159,7 +159,8 @@ public final class Formatter {
     private static void addRussia(StringBuilder sb, Address address) {
         addName(sb, address);
         sb.append(address.getCityName()); lb(sb);
-        sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); lb(sb);
+        appendNotNull(sb, address.getStateOrProvince(), ", ");
+        sb.append(address.getPostalCode()); lb(sb);
         addCountry(sb, address);
     }
 

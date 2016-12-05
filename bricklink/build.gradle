@@ -5,10 +5,9 @@ dependencies {
   compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
   compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
   compile 'net.sf.opencsv:opencsv:2.3'
-  compile 'commons-io:commons-io:2.5'
-  compile 'org.seleniumhq.selenium:selenium-java:3.0.1'
-  compile 'org.seleniumhq.selenium:selenium-firefox-driver:3.0.1'
-  compile 'org.seleniumhq.selenium:selenium-chrome-driver:3.0.1'
+  compile 'org.seleniumhq.selenium:selenium-java:2.53.1'
+  compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.1'
+  compile 'org.seleniumhq.selenium:selenium-chrome-driver:2.53.1'
   compile('com.codeborne:phantomjsdriver:1.2.1') {
     exclude group: 'org.seleniumhq.selenium', module: 'selenium-java'
     exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
@@ -55,3 +54,11 @@ task colorsAndCategories(type: JavaExec) {
   systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties' ]
 }
 
+task info4LEGOarticles(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main 'org.kleini.bricklink.Info4LEGOarticles'
+  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
+  if (null != System.getProperty("exec.args")) {
+    args System.getProperty("exec.args") .split()
+  }
+}

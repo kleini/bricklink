@@ -5,13 +5,13 @@
 package org.kleini.bricklink;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.kleini.bricklink.api.BrickLinkClient;
 import org.kleini.bricklink.api.Configuration;
@@ -23,7 +23,7 @@ import org.kleini.bricklink.data.GuideType;
 import org.kleini.bricklink.data.ItemMapping;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.PriceGuide;
-
+import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
 /**
@@ -39,14 +39,24 @@ public final class Info4LEGOarticles {
 
     public static void main(String[] args) throws Exception {
         File file = new File(args[0]);
-        List<String> lines = FileUtils.readLines(file, "UTF-8");
+        List<String[]> input;
+        try (
+            FileInputStream fis = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            CSVReader csvr = new CSVReader(isr, ';', CSVWriter.DEFAULT_QUOTE_CHARACTER);
+        ) {
+            input = csvr.readAll();
+        }
         Configuration configuration = new Configuration();
         BrickLinkClient client = new BrickLinkClient(configuration);
         List<String[]> output = new ArrayList<String[]>();
         try {
-            for (String legoId : lines) {
+            for (String[] line : input) {
                 List<String> row = new ArrayList<String>();
-                row.add(legoId);
+                for (String tmp : line) {
+                    row.add(tmp);
+                }
+                String legoId = line[0];
                 int identifier;
                 try {
                     identifier = Integer.parseInt(legoId);
