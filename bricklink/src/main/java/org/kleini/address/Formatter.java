@@ -57,6 +57,7 @@ public final class Formatter {
             addStandard(sb, address);
             break;
         case AU:
+        case JP:
         case KR:
         case US:
             addStandard2(sb, address);
