@@ -258,7 +258,7 @@ public enum Country {
     WS(null),
     YE(null),
     YT(null),
-    ZA(null),
+    ZA("South Africa"),
     ZM(null),
     ZW(null);
 

@@ -60,6 +60,7 @@ public final class Formatter {
         case JP:
         case KR:
         case US:
+        case ZA:
             addStandard2(sb, address);
             break;
         default:
