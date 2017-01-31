@@ -57,7 +57,7 @@ public enum Country {
     CH("Switzerland"),
     CI(null),
     CK(null),
-    CL(null),
+    CL("Chile"),
     CM(null),
     CN("China"),
     CO(null),

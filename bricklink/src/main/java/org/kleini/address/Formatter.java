@@ -21,6 +21,9 @@ public final class Formatter {
         case CA:
             addCanada(sb, address);
             break;
+        case CL:
+            addChile(sb, address);
+            break;
         case CN:
             addChina(sb, address);
             break;
@@ -135,6 +138,21 @@ public final class Formatter {
         addCountry(sb, address);
     }
 
+    private static void addChile(StringBuilder sb, Address address) {
+        addName(sb, address);
+        sb.append(address.getCityName());
+        if (null != address.getStateOrProvince()) {
+            sb.append(", ");
+            sb.append(address.getStateOrProvince());
+        }
+        if (null != address.getPostalCode()) {
+            sb.append(", ");
+            sb.append(address.getPostalCode());
+        }
+        sb.append('\n');
+        addCountry(sb, address);
+    }
+    
     private static void addCzech(StringBuilder sb, Address address) {
         addName(sb, address);
         sb.append(address.getCityName());
