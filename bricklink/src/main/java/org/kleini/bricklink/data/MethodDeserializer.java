@@ -24,7 +24,7 @@ public class MethodDeserializer extends JsonDeserializer<Method> {
         try {
             return Method.byValue(value);
         } catch (Exception e) {
-            throw new JsonMappingException("invalid value for payment method " + value + ".", e);
+            throw JsonMappingException.from(jp, "invalid value for payment method " + value + ".", e);
         }
     }
 }
