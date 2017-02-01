@@ -1,3 +1,5 @@
-/bricklink.properties
 /build/
 /bin/
+/.classpath
+/.project
+/.settings/

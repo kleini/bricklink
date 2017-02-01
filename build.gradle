@@ -1,1 +1,28 @@
-apply from: file('convention.gradle')
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+
+    repositories {
+        jcenter()
+    }
+
+    group = 'org.kleini'
+    sourceCompatibility = '1.8';
+    targetCompatibility = '1.8';
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allJava
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifact sourcesJar
+            }
+        }
+    }
+}
