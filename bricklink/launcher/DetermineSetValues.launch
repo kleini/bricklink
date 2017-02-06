@@ -7,9 +7,8 @@
 <listEntry value="1"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.kleini.bricklink.DetermineSetValues"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="values.txt"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="bricklink-bricklink"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DconfigurationFile=${workspace_loc:/bricklink-bricklink/src/main/resources/myconfiguration.properties}"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DconfigurationFile=${workspace_loc:/bricklink-bricklink/src/main/resources/myconfiguration.properties}&#10;-Dbrowser=marionette"/>
 </launchConfiguration>

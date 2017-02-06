@@ -34,6 +34,10 @@ public class LEGOShopSelenium implements Closeable {
         String browser = System.getProperty("browser");
         if ("firefox".equals(browser)) {
             driver = new FirefoxDriver();
+        } else if ("marionette".equals(browser)) {
+            DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+            capabilities.setCapability(FirefoxDriver.MARIONETTE, Boolean.TRUE);
+            driver = new FirefoxDriver(capabilities);
         } else if ("chrome".equals(browser)) {
             driver = new ChromeDriver();
         } else {
@@ -54,7 +58,7 @@ public class LEGOShopSelenium implements Closeable {
 
     public List<Set> getAvailableSets() {
         driver.get(URL);
-        List<Set> retval = readSetsFromPage();
+        List<Set> retval = new LinkedList<Set>();
         WebElement nextPageLink = null;
         int lastSetNumber = 0;
         do {
