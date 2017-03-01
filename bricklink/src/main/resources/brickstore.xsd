@@ -8,6 +8,14 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="BrickStockXML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Inventory"/>
+        <xs:element ref="GuiState"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Inventory">
     <xs:complexType>
       <xs:sequence>

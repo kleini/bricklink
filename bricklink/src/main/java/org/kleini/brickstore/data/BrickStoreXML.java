@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
     "inventory",
     "guiState"
 })
-@XmlRootElement(name = "BrickStoreXML")
+@XmlRootElement()
 public class BrickStoreXML {
 
     @XmlElement(name = "Inventory", required = true)
