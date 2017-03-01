@@ -154,7 +154,7 @@ public final class Formatter {
         sb.append('\n');
         addCountry(sb, address);
     }
-    
+
     private static void addCzech(StringBuilder sb, Address address) {
         addName(sb, address);
         sb.append(address.getCityName());
@@ -207,15 +207,15 @@ public final class Formatter {
     }
 
     private static void addUnitedKingdom(StringBuilder sb, Address address) {
-        sb.append(address.getName()); sb.append('\n');
-        sb.append(address.getStreet1()); sb.append('\n');
+        sb.append(address.getName()); lb(sb);
+        sb.append(address.getStreet1()); lb(sb);
         if (null != address.getStreet2() && null != address.getStateOrProvince()) {
             sb.append(address.getStreet2());
             sb.append(", ");
             sb.append(address.getCityName());
             sb.append(", ");
             sb.append(address.getStateOrProvince());
-            sb.append('\n');
+            lb(sb);
         } else {
             if (null != address.getStreet2()) {
                 sb.append(address.getStreet2()); sb.append('\n');
@@ -224,10 +224,10 @@ public final class Formatter {
             if (null != address.getStateOrProvince()) {
                 sb.append(", ");
                 sb.append(address.getStateOrProvince());
-                sb.append('\n');
             }
+            lb(sb);
         }
-        sb.append(address.getPostalCode().toUpperCase()); sb.append('\n');
+        sb.append(address.getPostalCode().toUpperCase()); lb(sb);
         addCountry(sb, address);
     }
 }
