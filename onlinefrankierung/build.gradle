@@ -6,6 +6,7 @@ repositories {
 
 configurations {
     jaxws
+    wsimport
 }
 
 dependencies {
@@ -14,6 +15,16 @@ dependencies {
 
 group = 'de.dhl'
 version = '2.0'
+
+sourceSets {
+    wsimport {
+        java.srcDir "src/main/generated"
+    }
+    main {
+        compileClasspath += wsimport.output
+        runtimeClasspath += wsimport.output
+    }
+}
 
 def download(url, File dest) {
     if (!dest.exists()) {
@@ -66,8 +77,12 @@ task wsimportBroken {
     }
 }
 
-compileJava {
-    dependsOn wsimport2
-    source wsimport2.destDir
-}
+sourceSets.main.java.srcDirs.add('src/main/generated')
 
+compileWsimportJava.dependsOn(wsimport2)
+
+compileJava {
+    // dependsOn(wsimport2)
+    dependsOn(compileWsimportJava)
+    source sourceSets.wsimport.java, sourceSets.main.java
+}
