@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  * </pre>
  * 
  *     verwendet.
- *    
+ * 
  * 
  * <p>Java-Klasse für Cn22Type complex type.
  * 
