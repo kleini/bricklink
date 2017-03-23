@@ -11,6 +11,12 @@ subprojects {
     sourceCompatibility = '1.8';
     targetCompatibility = '1.8';
 
+    gradle.projectsEvaluated {
+      tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+      }
+    }
+
     task sourcesJar(type: Jar) {
         classifier = 'sources'
         from sourceSets.main.allJava

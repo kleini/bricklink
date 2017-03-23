@@ -1,0 +1,11 @@
+version = '0.1.0'
+
+dependencies {
+    compile 'org.seleniumhq.selenium:selenium-java:2.53.1'
+    compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.1'
+    compile 'org.seleniumhq.selenium:selenium-chrome-driver:2.53.1'
+    compile('com.codeborne:phantomjsdriver:1.2.1') {
+        exclude group: 'org.seleniumhq.selenium', module: 'selenium-java'
+        exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
+    }
+}
