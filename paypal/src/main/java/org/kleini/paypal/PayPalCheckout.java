@@ -11,6 +11,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -25,8 +26,17 @@ public final class PayPalCheckout {
 
     public PayPalCheckout() {
         super();
-        this.driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(900, 830));
+        String browser = System.getProperty("browser");
+        if ("phantom".equals(browser)) {
+//            DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
+//            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, "--logLevel=DEBUG");
+//            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--ssl-protocol=tlsv1"});
+//            driver = new PhantomJSDriver(capabilities);
+            driver = new PhantomJSDriver();
+        } else {
+            driver = new ChromeDriver();
+            driver.manage().window().setSize(new Dimension(900, 830));
+        }
     }
 
     public void checkout(String url, String login, String password) throws Exception {
