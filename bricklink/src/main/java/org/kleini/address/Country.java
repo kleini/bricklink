@@ -200,7 +200,7 @@ public enum Country {
     PY(null),
     QA(null),
     RE(null),
-    RO(null),
+    RO("Romania"),
     RS(null),
     RU("Russia"),
     RW(null),

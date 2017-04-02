@@ -27,9 +27,6 @@ public final class Formatter {
         case CN:
             addChina(sb, address);
             break;
-        case CZ:
-            addCzech(sb, address);
-            break;
         case FI:
             addFinland(sb, address);
             break;
@@ -68,6 +65,10 @@ public final class Formatter {
         case US:
         case ZA:
             addStandard2(sb, address);
+            break;
+        case CZ:
+        case RO:
+            addStandard3(sb, address);
             break;
         default:
             throw new Exception("Formatter for country " + address.getCountry().getName() + " missing.");
@@ -156,7 +157,7 @@ public final class Formatter {
         addCountry(sb, address);
     }
 
-    private static void addCzech(StringBuilder sb, Address address) {
+    private static void addStandard3(StringBuilder sb, Address address) {
         addName(sb, address);
         sb.append(address.getCityName());
         if (null != address.getStateOrProvince()) {
