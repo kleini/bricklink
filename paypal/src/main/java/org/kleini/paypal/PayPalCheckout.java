@@ -25,8 +25,12 @@ public final class PayPalCheckout {
     private final WebDriver driver;
 
     public PayPalCheckout() {
-        super();
+        this(createDriver());
+    }
+
+    private static WebDriver createDriver() {
         String browser = System.getProperty("browser");
+        WebDriver driver;
         if ("phantom".equals(browser)) {
 //            DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
 //            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, "--logLevel=DEBUG");
@@ -37,9 +41,15 @@ public final class PayPalCheckout {
             driver = new ChromeDriver();
             driver.manage().window().setSize(new Dimension(900, 830));
         }
+        return driver;
     }
 
-    public void checkout(String url, String login, String password) throws Exception {
+    public PayPalCheckout(WebDriver driver) {
+        super();
+        this.driver = driver;
+    }
+
+    public void checkoutURL(String url, String login, String password) throws Exception {
         driver.get(url);
         String host = new URL(url).getHost();
         try {
@@ -49,7 +59,7 @@ public final class PayPalCheckout {
         }
     }
 
-    private void checkoutInternal(String login, String password, String host) throws Exception {
+    public void checkoutInternal(String login, String password, String host) throws Exception {
         new WebDriverWait(driver, 5).until(ExpectedConditions.invisibilityOfElementLocated(By.id("spinner")));
         // Login in iframe
         String lastHandle = driver.getWindowHandle();
