@@ -80,7 +80,7 @@ public final class Formatter {
     private static void addName(StringBuilder sb, Address address) {
         sb.append(address.getName()); lb(sb);
         sb.append(address.getStreet1()); sb.append('\n');
-        if (null != address.getStreet2()) {
+        if (null != address.getStreet2() && address.getStreet2().length() > 0) {
             sb.append(address.getStreet2()); sb.append('\n');
         }
     }
@@ -114,6 +114,9 @@ public final class Formatter {
         }
         if (null != address.getCityName()) {
             sb.append(address.getCityName());
+        }
+        if (Country.DE == address.getCountry()) {
+            return;
         }
         if (null != address.getPostalCode() && null != address.getCityName()) {
             sb.append('\n');
