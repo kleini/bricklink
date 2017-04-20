@@ -1,0 +1,56 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    jaxws
+    wsimport
+}
+
+dependencies {
+    jaxws 'com.sun.xml.ws:jaxws-tools:2.2.10'
+}
+
+group = 'de.dpag'
+version = '3.0'
+
+sourceSets {
+    wsimport {
+        java.srcDir "src/main/generated"
+    }
+    main {
+        compileClasspath += wsimport.output
+        runtimeClasspath += wsimport.output
+    }
+}
+
+task wsimport {
+    ext.destDir = file("${projectDir}/src/main/generated")
+    doLast {
+        ant {
+            sourceSets.main.output.classesDir.mkdirs()
+            destDir.mkdirs()
+            taskdef(name: 'wsimport', classname: 'com.sun.tools.ws.ant.WsImport', classpath: configurations.jaxws.asPath)
+            wsimport(
+                keep: true,
+                destdir: sourceSets.main.output.classesDir,
+                sourcedestdir: destDir,
+                package: "de.dpag.oneclickforapp.webservice",
+                xnocompile: "true",
+                wsdl: 'https://internetmarke.deutschepost.de/OneClickForAppV3/OneClickForAppServiceV3?wsdl'
+            )
+        }
+    }
+}
+wsimport.outputs.dir wsimport.destDir
+
+sourceSets.main.java.srcDirs.add('src/main/generated')
+
+compileWsimportJava.dependsOn(wsimport)
+
+compileJava {
+    dependsOn(compileWsimportJava)
+    source sourceSets.wsimport.java, sourceSets.main.java
+}
