@@ -1,0 +1,41 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    wsimport
+}
+
+group = 'de.deutschepost.dpdhl.wsprovider'
+version = '3.0'
+
+sourceSets {
+    wsimport {
+        java.srcDir "src/main/generated"
+    }
+    main {
+        compileClasspath += wsimport.output
+        runtimeClasspath += wsimport.output
+    }
+}
+
+task wsimport(type:Exec) {
+    ext.destDir = file("${projectDir}/src/main/generated")
+    doFirst {
+        wsimport.destDir.mkdirs()
+        sourceSets.main.output.classesDir.mkdirs()
+    }
+    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', destDir, '-d', sourceSets.main.output.classesDir, '-keep', '-p', 'de.deutschepost.dpdhl.wsprovider.dataobjects', 'ProductInformation.wsdl', '-b', 'common.xsd', '-Xnocompile'
+}
+wsimport.outputs.dir wsimport.destDir
+
+sourceSets.main.java.srcDirs.add('src/main/generated')
+
+compileWsimportJava.dependsOn(wsimport)
+
+compileJava {
+    dependsOn(compileWsimportJava)
+    source sourceSets.wsimport.java, sourceSets.main.java
+}

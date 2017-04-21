@@ -1,0 +1,4002 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2011 rel. 3 (http://www.altova.com) von Olaf Otto (ITZ Informationstechnologie-Zentrum Rostock GmbH) bearbeitet -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by mschulz (Deutsche Post AG) -->
+<!-- Mit XMLSpy v2011 rel. 3 (http://www.altova.com) von Olaf Otto (ITZ Informationstechnologie-Zentrum Rostock GmbH) bearbeitet -->
+<xs:schema xmlns="urn:www-deutschepost-de:Product/ProductInformation/1.1/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:www-deutschepost-de:Product/ProductInformation/1.1/common" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>
+			<service>ProductInformation</service>
+			<creationdate>31.01.2011</creationdate>
+			<servicedesigner>Uwe Neumann</servicedesigner>
+			<revisionhistory>31.01.2011: Ersterstellung</revisionhistory>
+			<revisionhistory>16.03.2011: Definition eines Datentyps timestamp und Anpassung der Request-Methoden fuer seekProduct, seekProductVersions, getProduct und getProductList durch Ersetzen der date-Parameter durch timestamp-Parameter</revisionhistory>
+			<revisionhistory>16.03.2011: Aenderung des Datentyps fuer die Request-Elemente mandantID und subMandantID auf den in der common.xsd definierten Datentyp string_maxLen20</revisionhistory>
+			<revisionhistory>16.03.2011: Einfuehrung der Elemente dimensionList und weight beim Verkaufsprodukt analog zum Basisprodukt</revisionhistory>
+			<revisionhistory>16.03.2011: Definition der Datentypen tempPriceType und tempUnitPriceType zur Abbildung temporaerer Einzel- und Produktpreise (z.B. fuer HappyHour-Preise oder zeitlich begrenzte Sonderaktionen)</revisionhistory>
+			<revisionhistory>16.03.2011: Ergaenzung einer temporaeren Preisliste in den Preisdefinitionen der Verkaufs- und Abrechnungsprodukte</revisionhistory>
+			<revisionhistory>23.03.2011: Definition zweier Attribute  im externer Idententifier zur Abbildung der ersten und der letzten PPL-Version, fuer welche eine ProMa-Produktversion gilt</revisionhistory>
+			<revisionhistory>23.03.2011: Nettopreis im priceType und im unitProceType auf optional gesetzt</revisionhistory>
+			<revisionhistory>24.03.2011: Korrektur der Multiplizitaet des Subelements groupedProperty im Element groupedPropertyList</revisionhistory>
+			<revisionhistory>29.03.2011: Aenderung der Maximallaengendefinition fuer die Attribute name und shortName im extendedIdentifier, im externIdentifier sowie im shortIdentifierType - ausserdem in der Suchparameterdefinition</revisionhistory>
+			<revisionhistory>01.04.2011: Im Response der Registrierungsmethoden den Registrierungszeitpunkt auf optional gesetzt und ein zusaetzliches message-Element eingefuehrt</revisionhistory>
+			<revisionhistory>06.04.2011: Aenderung der Maximallaengendefinition fuer das Attribut name im extendedIdentifier, im externIdentifier sowie im shortIdentifierType - ausserdem in der Suchparameterdefinition</revisionhistory>
+			<revisionhistory>08.04.2011: Aenderung des catalogValueType - Einfuehrung eines Elements name fuer den Namen des Katalogwertes und Aenderung des Datentyps des Elements value als Inhalt des Katalogwertes auf xs:string</revisionhistory>
+			<revisionhistory>18.04.2011: Aenderung der Maximallaengendefinition fuer das Element agenda im PriceFormulaType sowie Aenderung der Stellen- und Nachkommastellenanzahl fuer das Attribut value im priceOperandType</revisionhistory>
+			<revisionhistory>27.04.2011: Aenderung der Maximallaengendefinition fuer die Elemente shortName in den Datentypen fuer Laendergruppe und Entgeltzone</revisionhistory>
+			<revisionhistory>06.05.2011: Korrektur RequestType fuer registerE-MailAdress (Element eMailAdress)</revisionhistory>
+			<revisionhistory>11.05.2011: Erweiterung des Datentyps fuer das Element SalesProduct um ein optionales Subelement destinationArea</revisionhistory>
+			<revisionhistory>16.05.2011: Erweiterung des Datentyps fuer die Referenz auf Sonstige Services um eine Laenderausschlussliste</revisionhistory>
+			<revisionhistory>18.10.2011: Anpassung Attribut id im externIdentifierType auf maxLen=100, Anpassung Attribut shortName im extendedIdentifierType auf maxLen=100</revisionhistory>
+			<revisionhistory>22.05.2012: Erweiterung des Datentyps fuer die Abbildung externer Identifier um ein zusaetzliches Attribut fuer die aktuell gueltige PPL-Version</revisionhistory>
+			<revisionhistory>17.06.2014: Erweiterung des Datentyps fuer die Abbildung von Berechnungsformeln</revisionhistory>
+		</xs:documentation>
+	</xs:annotation>
+	<!--Einfache Datentypen-->
+	<xs:simpleType name="string_maxLen1">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer Laenge von 1 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string_maxLen10">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer maximalen Laenge vom 10 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string_maxLen20">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer maximalen Laenge vom 20 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string_maxLen50">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer maximalen Laenge vom 50 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string_maxLen100">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer maximalen Laenge vom 100 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string_maxLen150">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer maximalen Laenge von 150 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="150"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string_maxLen250">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer maximalen Laenge vom 250 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="250"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string_maxLen1000">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Strings mit einer maximalen Laenge vom 1000 Zeichen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="nationalZipCodeType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung einer nationalen Postleitzahl (String mit genau fuenf numerischen Zeichen, ggf. fuehrende Null)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{5}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="routeRegionType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung einer Leitregion - ersten beiden Ziffern der PLZ (String mit genau zwei numerischen Zeichen, ggf. fuehrende Null)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="routeZoneType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung einer Leitzone - erste Ziffe der PLZ (String mit genau einem numerischen Zeichen)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{1}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="branchType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung einer Sparte (String mit genau zwei numerischen Zeichen, ggf. fuehrende Null)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="dayType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung eines Wochentages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+			<xs:enumeration value="Mo"/>
+			<xs:enumeration value="Di"/>
+			<xs:enumeration value="Mi"/>
+			<xs:enumeration value="Do"/>
+			<xs:enumeration value="Fr"/>
+			<xs:enumeration value="Sa"/>
+			<xs:enumeration value="So"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Komplexe Datentypen fuer die Identifier-Abbildung-->
+	<xs:complexType name="accountProdReferenceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Produktreferenz</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="countryNegativList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Laendernegativliste</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="country" type="countryType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Land</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ProdWS-ID" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>Eindeutige Produkt-ID im ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="version" type="xs:integer" use="required">
+			<xs:annotation>
+				<xs:documentation>Produktversion</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="shortProductIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Kurz-Identifiers</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ProdWS-ID" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>Eindeutige Produkt-ID aus dem ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="string_maxLen250" use="required">
+			<xs:annotation>
+				<xs:documentation>Bezeichnung des Produktes</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validFrom" type="xs:dateTime" use="required">
+			<xs:annotation>
+				<xs:documentation>Gueltigkeitsbeginn der Produktversion</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validTo" type="xs:dateTime" use="optional">
+			<xs:annotation>
+				<xs:documentation>Gueltigkeitsende der Produktversion</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="version" type="xs:integer" use="required">
+			<xs:annotation>
+				<xs:documentation>Produktversion</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="extendedIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung des erweiterten Produkt-Identifiers</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="externIdentifier" type="externIdentifierType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Abbildung von Produkt-Identifiern aus Fremdsystemen (muessen nicht nur die Quellsys-teme sein)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ProdWS-ID" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>Eindeutiger Produkt-Identifier im ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="string_maxLen250" use="required">
+			<xs:annotation>
+				<xs:documentation>Produktname im ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="shortName" type="string_maxLen100" use="optional">
+			<xs:annotation>
+				<xs:documentation>Produktkurzbezeichnung im ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="description" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Produktbeschreibung im ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="annotation" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Produktanmerkung im ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="branche" type="branchType" use="optional">
+			<xs:annotation>
+				<xs:documentation>Sparte aus SAP. fuer welche das Abrechnungsprodukt definiert ist (01=BRIEF, 02=EXPRESS, 04=FILIALE)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="destination" use="required">
+			<xs:annotation>
+				<xs:documentation>Zielausrichtung (national oder international)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="national"/>
+					<xs:enumeration value="international"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="transport" type="string_maxLen10" use="optional">
+			<xs:annotation>
+				<xs:documentation>Transportausrichtung fuer internationale Produkte (z.B. Land, Luft oder Prio, Eco)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="type" type="string_maxLen1" use="optional">
+			<xs:annotation>
+				<xs:documentation>Produkttyp (0=Verkaufsprodukt, 1=Basisprodukt, 2=Zusatzleistung, 3=Sonstige Services)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="state" type="string_maxLen1" use="optional">
+			<xs:annotation>
+				<xs:documentation>Produktstatus bezogen auf die Vorgaenderversion (I=Insert fuer neu angelegt, U=Update fuer geaendert, O=Original fuer Unveraendert)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="version" type="xs:integer" use="required">
+			<xs:annotation>
+				<xs:documentation>Produktversion im ProdWS-System</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validFrom" type="xs:dateTime" use="required">
+			<xs:annotation>
+				<xs:documentation>Gueltigkeitsbeginn des Produktes</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validTo" type="xs:dateTime" use="optional">
+			<xs:annotation>
+				<xs:documentation>Gueltigkeitsende des Produktes</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="release" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Freigabedatum des Produktes</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="externIdentifierType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines externen Produkt-Identifiers</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="source" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>System der ID-Definition (z.B. SAP, PPL, ProMa, DHL OF usw.)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="id" type="string_maxLen100" use="required">
+			<xs:annotation>
+				<xs:documentation>ID des Produktes im Fremdsystem</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="string_maxLen250" use="optional">
+			<xs:annotation>
+				<xs:documentation>Produktname im Fremdsystem</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="description" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Beschreibung zu  dem Produkt aus dem Fremdsystem</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="annotation" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Anmerkung zu  dem Produkt aus dem Fremdsystem</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="firstPPLVersion" type="xs:integer" use="optional">
+			<xs:annotation>
+				<xs:documentation>Erste PPL-Version fuer welche die Produktversion gilt</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lastPPLVersion" type="xs:integer" use="optional">
+			<xs:annotation>
+				<xs:documentation>Letzte PPL-Version fuer welche die Produktversion gilt</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="actualPPLVersion" type="xs:integer" use="optional">
+			<xs:annotation>
+				<xs:documentation>Zum Zeitpunkt des Abrufs gueltige PPL-Version</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="sapProductType" use="optional">
+			<xs:annotation>
+				<xs:documentation>Materialart aus SAP (z.B. LEIS fuer die Leistungen der DPAG, ZUSL fuer die Zusatzleistungen der DPAG usw.)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="string_maxLen10"/>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<!--Komplexe Datentypen fuer die Preisabbildung-->
+	<xs:complexType name="currencyAmountType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbilung eines vorzeichenbehafteten Waehrungsbetrages</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="sign" use="optional">
+			<xs:annotation>
+				<xs:documentation>Vorzeichen (+ oder -)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[+\-]{1}"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="value" use="required">
+			<xs:annotation>
+				<xs:documentation>Betrag</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:fractionDigits value="2"/>
+					<xs:totalDigits value="11"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="currency" use="required">
+			<xs:annotation>
+				<xs:documentation>Waehrungseinheit</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="EUR"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="calculated" type="xs:boolean" use="required">
+			<xs:annotation>
+				<xs:documentation>Kennzeichen, ob der Preis im System berechnet oder mit diesem Wert aus dem Quellsystem uebernommen wurde</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="unitPriceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Einzelpreises</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="netPrice" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nettopreis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rate" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Umatzsterersatz in Prozent</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="grossPrice" type="currencyAmountType">
+				<xs:annotation>
+					<xs:documentation>Bruttopreis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceValidity" type="validityType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Preisgueltigkeit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tempPriceList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste zeitlich begrenzter Preise, die den eigentlichen Produktpreis temporaer uebersteuern (HappHour-Preise oder tagesweise Sonderaktionen)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="tempPrice" type="tempUnitPriceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>zeitlich begrenzter Preis, der den eigentlichen Produktpreis temporaer uebersteuert - diese temporaeren Preise duerfen sich nicht ueberlappen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tempUnitPriceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines zeitlich begrenzten Einzelpreises, welcher den eigentlichen Einzelpreis temporaer uebersteuert</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="netPrice" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nettopreis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rate" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation>Umatzsterersatz in Prozent</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="grossPrice" type="currencyAmountType">
+				<xs:annotation>
+					<xs:documentation>Bruttopreis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validFrom" type="timestampType">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsbeginn des temporaeren Preises</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validTo" type="timestampType">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsende des temporaeren Preises</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="priceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Produktpreises</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="calculatedNetPrice" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Berechneter Nettopreis als Summe der Nettopreise der Einzelprodukte</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="calculatedGrossPrice" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Berechneter Bruttopreis als Summe der Bruttopreise der Einzelprodukte</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="commercialBalance" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Vorzeichenbehafteter kaufmaennischer Ausgleich zwischen berechnetem und kaufmaennisch korrekt ermittelten Bruttopreis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="commercialGrossPrice" type="currencyAmountType">
+				<xs:annotation>
+					<xs:documentation>Kaufmaennisch korrekt ermittelter Bruttopreis als Summe der Bruttopreise zu den  Einzelnettopreissummen gleichen Umsatzsteuersatzes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceValidity" type="validityType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tempPriceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines zeitlich begrenzten Produktpreises, welcher den eigentlichen Produktpreis temporaer uebersteuert</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="price" type="priceType">
+				<xs:annotation>
+					<xs:documentation>Eindeutig definierter temporaerer Preis des Verkaufsproduktes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validFrom" type="timestampType">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsbeginn des temporaeren Preises</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validTo" type="timestampType">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsende des temporaeren Preises</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="operandType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Operanden innerhalb einer Preisberechnungsformel (stellt entweder eine Stueckzahlkomponente, eine Gewichtskomponente oder eine Preiskomponente dar)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string_maxLen50">
+				<xs:annotation>
+					<xs:documentation>Name der Formelkomponente</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="quantity" type="xs:int">
+					<xs:annotation>
+						<xs:documentation>Stueckzahl</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="weight" type="weightType">
+					<xs:annotation>
+						<xs:documentation>Gewichtsangabe mit entsprechender Gewichtseinheit</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="price" type="priceOperandType">
+					<xs:annotation>
+						<xs:documentation>Preisangabe mit entsprechender Waehrungseinheit</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="description" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschreibung zur Formelkomponente</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="priceFormulaType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Preisberechnungsformel</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="expression" type="string_maxLen100">
+				<xs:annotation>
+					<xs:documentation>Berechnungsvorschrift fuer den Preis  fuer Infopost und Sendungen zum Kilotarif (Excel-PPL: Spalte Preis_Formel)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="agenda" type="string_maxLen250" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Erlaeuterung der Preisformel (Excel-PPL: Spalte Formel_Agenda)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="formulaExpression" type="formulaExpressionType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Definition von Bedingung und eigentlichem Formelausdruck, jeweils base64-codiertes MathML</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="formulaComponentType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Formelkomponente mit Referenz auf das entsprechende EKP-Produkt, welches den Preisanteil definiert</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="prodwsID" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>Referenz auf ein Basisprodukt oder eine Zusatzleistung, dessen Preis Bestandteil einer Teilkomponente der Berechnungsformel ist</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="version" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Produktversion des Produktes aus der Formelreferenz</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="component" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Teilkomponente einer Berechnungsformel - stellt selbst eine Formel dar.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="formulaExpressionType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung des eigentlichen Formelausdrucks fuer die Preisberechnungsformel</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="condition" type="xs:base64Binary" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bedingung fuer die Berechnungsformel im MathML</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="formula" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation>Abbildung der Berechnungsformel im MathML - setzt sich aus der Addition der Teilkomponenten zusammen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="formulaComponent" type="formulaComponentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Liste der Teilkomponenten einer Berechnungsformel, welche durch Addition dieser Teilkomponenten gebildet wird. Jede Teilkomponente besitzt eine Preiskomponente, die auf den Produktpreis eines Basisproduktes oder einer Zusatzleistung beruht.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="priceOperandType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbilung einer Preiskomponente als Operand innerhalb einer Formel</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="value" use="required">
+			<xs:annotation>
+				<xs:documentation>Betrag</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:fractionDigits value="6"/>
+					<xs:totalDigits value="11"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="currency" use="required">
+			<xs:annotation>
+				<xs:documentation>Waehrungseinheit</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="ct"/>
+					<xs:enumeration value="EUR"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="priceDefinitionType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines kompletten Produktpreises</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="price" type="priceType">
+					<xs:annotation>
+						<xs:documentation>Eindeutig definierter Preis des Verkaufsproduktes</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="tempPriceList" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Liste zeitlich begrenzter Preise, die den eigentlichen Produktpreis temporaer uebersteuern (HappHour-Preise oder tagesweise Sonderaktionen)</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="tempPrice" type="tempPriceType" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>zeitlich begrenzter Preis, der den eigentlichen Produktpreis temporaer uebersteuert - diese temporaeren Preise duerfen sich nicht ueberlappen</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="minimalPrice" type="priceType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Minimalpreis fuer ein Verkaufsprodukt, wenn der eigentliche Preis durch eine Formel berechnet wird</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="priceFormula" type="priceFormulaType">
+					<xs:annotation>
+						<xs:documentation>Preisberechnungsformel</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="slidingPriceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Staffelpreises</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="slidingScale" type="numericValueType">
+				<xs:annotation>
+					<xs:documentation>Staffelung - Angabe einer Menge, eines Volumens oder eines Gewichts, welches die Staffelung des Preises bestimmt (Attribut fixValue). Das kann ein ganzzahliger Wert fuer Mengenangaben aber auch ein gebrochener Wert fuer Volumen- oder Gewichtsangaben sein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="price" type="unitPriceType">
+				<xs:annotation>
+					<xs:documentation>Preis der jeweiligen Staffelung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="slidingPriceListType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Staffelpreisliste</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bezeichnung der Staffelpreisliste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="shortName" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kurzbezeichnung der Staffelpreisliste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschreibung zur Staffelpreisliste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="annotation" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Anmerkung zur Staffelpreisliste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="slidingPrice" type="slidingPriceType" minOccurs="2" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Staffelpreis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Komplexe Datentypen fuer die Eigenschaftsabbildung-->
+	<xs:complexType name="timestampType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines definierten Zeitpunktes (Zeitstempel)</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="date" type="xs:date" use="required">
+			<xs:annotation>
+				<xs:documentation>Datum</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="time" type="xs:time" use="optional">
+			<xs:annotation>
+				<xs:documentation>Uhrzeit</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="validityType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Gueltigkeit</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="validFrom" type="timestampType">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsbeginn</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validTo" type="timestampType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsende</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="alphanumericValueType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von alphanumerischen Einzelwerten oder alphanumerischen Bereichen (z.B. fuer PLZ oder ID's)</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="firstValue" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Anfangswert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lastValue" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>Endwert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="fixValue" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>fester Wert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="currencyValueType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von Waehrungsbetraegen bzw. Bereichen von Waehrungsbetraegen</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="minValue" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Minimaler Waehrungsbetrag</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maxValue" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Maximaler Waehrungsbetrag</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fixValue" type="currencyAmountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Fester Waehrungsbetrag</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="dateValueType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von Einzeldatumsangaben oder von Datumsbereichen</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="firstDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Erstes Datum eines Datumsbereiches</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="lastDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Letztes Datum eines Datumsbereiches</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="fixDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Fester Datumswert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="dimensionType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Abmessungskomponente</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="value" use="required">
+			<xs:annotation>
+				<xs:documentation>Betrag der Laengenangabe</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="12"/>
+					<xs:fractionDigits value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="unit" use="required">
+			<xs:annotation>
+				<xs:documentation>Laengeneinheit</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="mm"/>
+					<xs:enumeration value="cm"/>
+					<xs:enumeration value="dm"/>
+					<xs:enumeration value="m"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="numericValueType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von numerischen Einzelwerten oder numerischen Bereichen, ggf. mit Masseinheit</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="minValue" type="xs:decimal" use="optional">
+			<xs:annotation>
+				<xs:documentation>Minimalwert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="maxValue" type="xs:decimal" use="optional">
+			<xs:annotation>
+				<xs:documentation>Maximalwert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="fixValue" type="xs:decimal" use="optional">
+			<xs:annotation>
+				<xs:documentation>Fixwert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="unit" type="string_maxLen10" use="optional">
+			<xs:annotation>
+				<xs:documentation>Masseinheit</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="weightType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Gewichtskomponente</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="value" use="required">
+			<xs:annotation>
+				<xs:documentation>Betrag der Gewichtsangabe</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="12"/>
+					<xs:fractionDigits value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="unit" use="required">
+			<xs:annotation>
+				<xs:documentation>Gewichtseinheit</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="g"/>
+					<xs:enumeration value="kg"/>
+					<xs:enumeration value="dt"/>
+					<xs:enumeration value="t"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="propertyValueType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von Eigenschaftswerten (sowohl Einzelwerte als auch Wertebereiche) mit den verschiedensten Formaten</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="alphanumericValue" type="alphanumericValueType">
+				<xs:annotation>
+					<xs:documentation>Abbildung alphanumerischer Werte (z.B. Bezeichnungen) und Wertebereiche (z.B. PLZ- oder ID-Bereiche)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numericValue" type="numericValueType">
+				<xs:annotation>
+					<xs:documentation>Abbildung numerischer (ganzzahliger oder dezimaler) Werte oder Wertebereiche, ggf. mit Angabe einer Masseineheit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="booleanValue" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Abbildung boolscher Werte (z.B. Aktivierung oder Deaktivierung)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateValue" type="dateValueType">
+				<xs:annotation>
+					<xs:documentation>Abbildung von Datumswerten oder Datumsbereichen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currencyValue" type="currencyValueType">
+				<xs:annotation>
+					<xs:documentation>Abbildung von Waehrungsbetraegen oder Bereichen von Waehrungsbetraegen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hyperlinkValue" type="xs:anyURI">
+				<xs:annotation>
+					<xs:documentation>Abbildung von Intranet- und Internetadressen </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="documentReferenceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Dokumentenreferenz (Internet- oder Intranetadresse, Dokumentation, Broschuere, Datei mit Serveradresse usw.)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element name="type" type="string_maxLen50">
+					<xs:annotation>
+						<xs:documentation>Typ der Dokumentenreferenz (Internet, Intranet, Dokumentation, Datei usw.)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="title" type="string_maxLen100">
+					<xs:annotation>
+						<xs:documentation>Titel der Dokumentenreferenz</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="reference" type="xs:anyURI" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Adresse der Dokumentenreferenz (Internet-/Intranetadresse, Dateiname mit kompletter Server- und Verzeichnisangabe</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="description" type="string_maxLen1000" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Beschreibung zur Dokumentenreferenz</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="format" type="string_maxLen50" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Format der Dokumentenreferenz (z.B. Broschuere, Handbuch usw.)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="materialNumber" type="string_maxLen50" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Materialnummer oder ISBN-Nummer</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="publishing" type="string_maxLen50" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Veroeffentlichung der Dokumentenreferenz (Datumsangabe, Stand vom ... usw.)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="specialDayType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von speziellen Tagen, wie z.B. Feiertagen</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Datum des speziellen Tages (z.B. Datum des Feiertags)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bezeichnung des speziellen Tages (Feiertages)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="region" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Region, in welcher dieser spezielle Tag gilt</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="type" use="required">
+						<xs:annotation>
+							<xs:documentation>Klassifizierung der Region (bundesweit, landesweit, regional)</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="bundesweit"/>
+								<xs:enumeration value="landesweit"/>
+								<xs:enumeration value="regional"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="name" type="string_maxLen50" use="optional">
+						<xs:annotation>
+							<xs:documentation>Bezeichnung der Region (Laendername, Regionenbezeichnung usw.)</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="propertyType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von Produkteigenschaften</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="propertyValue" type="propertyValueType">
+				<xs:annotation>
+					<xs:documentation>Wert der Eigenschaft - kann verschiedene Formate besitzen und sowohl einen Einzelwert als auch eine Bereichsangabe darstellen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="price" type="unitPriceType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Preisdefinition einer Eigenschaft - kann ein Aufschalg oder ein Rabatt sein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>Name der Eigenschaft</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="shortName" type="string_maxLen20" use="optional">
+			<xs:annotation>
+				<xs:documentation>Kurzbezeichnung der Eigenschaft</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="description" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Beschreibung zur Eigenschaft</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="annotation" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Anmerkung zu der Eigenschaft</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="groupedPropertyType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung gruppierter Produkteigenschaften</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="propertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" type="propertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="price" type="unitPriceType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Preisdefinition einer gruppierten Eigenschaft - kann ein Aufschlag oder ein Rabatt sein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="documentReferenceList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Dokumentenrefenzen (z.B. fuer bestimmte Nutzungen oder Frankierarten)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="documentReference" type="documentReferenceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Dokumentenreferenz</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="formatedTextList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste an definierten Texten, aufgeteilt in Zeilen und Bloecke mit entsprechenden Formatierungshinweisen, wie sie z.B. in den Frankiervermerken benoetigt werden</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="formatedText" type="formatedTextType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Formatierter Text</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>Name der Eigenschaftsgruppierung</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="shortName" type="string_maxLen20" use="optional">
+			<xs:annotation>
+				<xs:documentation>Kurzbezeichnung der Eigenschaftsgruppierung</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="description" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Beschreibung zu der Eigenschaftsgruppierung</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="annotation" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Anmerkung zu der Eigenschaftsgruppierung</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="countrySpecificPropertyType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer laenderspezifischen Eigenschaft am Produkt</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="property" type="propertyType">
+				<xs:annotation>
+					<xs:documentation>Produkteigenschaft</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="country" type="countryType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="catalogValueType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von Katalogwerten</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Name des Katalogwertes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="value" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Inhalt des Katalogwertes, wobei die einzelnen Inhalte generell als alphanumerische Zeichenketten uebergeben werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="propertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Eigenschaften eines Katalogwertes</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" type="propertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Spezielle Eigenschaft eines Katalogwertes (z.B. PAPV-Nummer bei PAPV)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="validity" type="validityType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Eigenschaften eines Katalogwertes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="catalogType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von Stammdatenkatalogen</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="catalogValueList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Katalogwerte</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="catalogValue" type="catalogValueType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Katalogwert</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:integer" use="optional">
+			<xs:annotation>
+				<xs:documentation>ProdWS-interne ID des Stammdatenkatalogs</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>Name des Stammdatenkatalogs</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="shortName" type="string_maxLen20" use="optional">
+			<xs:annotation>
+				<xs:documentation>Kurzbezeichnung des Stammdatenkatalogs</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="description" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Beschreibung zum Stammdatenkatalog</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="annotation" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Anmerkung zum Stammdatenkatalog</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validFrom" type="xs:dateTime" use="required">
+			<xs:annotation>
+				<xs:documentation>Gueltigkeitsbeginn des Katalogs (jede Aenderung am Katalog definiert einen neuen Gueltigkeitsbeginn)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validTo" type="xs:dateTime" use="optional">
+			<xs:annotation>
+				<xs:documentation>Gueltigkeitsende fuer einen Katalog</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!--Komplexe Datentypen fuer Textbausteine-->
+	<xs:complexType name="textBlockType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Textblockes mit Formatierung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="font" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Textfont (z.B. Arial, Frutiger usw.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="size" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Textgroesse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="style" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Textstil (z.B. Standard, Kursiv, Bold usw.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="underline" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Unterstreichung ja/nein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="text" type="string_maxLen100">
+				<xs:annotation>
+					<xs:documentation>Eigentlicher Text innerhalb eines Textbausteins, fuer den die angegebenen Texteigenschaften gelten</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="textRowType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Textzeile, bestehend aus mehreren Textbloecken, die unterschiedlich formatiert sein koennen</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="textBlock" type="textBlockType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Textbloecke innerhalb einer Zeile mit Formatierungsinformation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="formatedTextType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von formatierten Texten, die aus mehreren Textzeilen bestehen koennen</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name des Textbausteins (z.B. Anzeigetext und Servictext bei Frankierarten)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="textRow" type="textRowType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Textzeile, bestehend aus mindestens einem Textblock</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Komplexe Datentypen fuer die Zielausrichtung-->
+	<xs:complexType name="nationalZipCodeListType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer nationalen PLZ-Liste</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bezeichnung der PLZ-Liste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschreibung der PLZ-Liste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nationalZipCode" type="nationalZipCodeType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Nationale Postleitzahlen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="nationalZipCodeGroupType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer nationalen PLZ-Gruppe (Leitzone, Leitregion, Leitbereich)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bezeichnung der PLZ-Gruppe</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschreibung der PLZ-Gruppe</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="routeRegion" type="routeRegionType">
+					<xs:annotation>
+						<xs:documentation>Leitregion</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="routeZone" type="routeZoneType">
+					<xs:annotation>
+						<xs:documentation>Leitzone</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="nationalZipCodeArea">
+					<xs:annotation>
+						<xs:documentation>Leitbereich</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="firstZipCode" type="nationalZipCodeType"/>
+							<xs:element name="lastZipCode" type="nationalZipCodeType"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="nationalDestinationAreaType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung der nationalen Zielbereiche</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="nationalZipCodeList" type="nationalZipCodeListType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Liste der PLZ-Listen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nationalZipCodeGroup" type="nationalZipCodeGroupType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Liste der PLZ-Gruppen, wobei jede Gruppe entweder durch eine Leitregion, eine Leitzone oder einen Leitbereich definiert ist</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="countryType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Landes oder einer Destination</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="name" type="string_maxLen50" use="required">
+			<xs:annotation>
+				<xs:documentation>Name des Landes bzw. der Destination</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="alternativeName" type="string_maxLen50" use="optional">
+			<xs:annotation>
+				<xs:documentation>Alternative Bezeichnung des Landes bzw. der Destination</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="insularAreaOf" type="string_maxLen50" use="optional">
+			<xs:annotation>
+				<xs:documentation>Bezeichnung des Landes, zu dem die Destination als Aussgebiet gehoert</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="annotation" type="string_maxLen1000" use="optional">
+			<xs:annotation>
+				<xs:documentation>Anmerkung zum Land bzw. zur Destination</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="alpha2ISOCode" use="optional">
+			<xs:annotation>
+				<xs:documentation>Alpha2-ISOCode fuer Laenderkennung</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:length value="2"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="alpha3ISOCode" use="optional">
+			<xs:annotation>
+				<xs:documentation>Alpha3-ISOCode fuer Laenderkennung</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:length value="3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="numISOCode" type="xs:integer" use="optional">
+			<xs:annotation>
+				<xs:documentation>numerischer ISOCode fuer Laenderkennung</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="pseudoCode" use="optional">
+			<xs:annotation>
+				<xs:documentation>Pseudo-Code fuer Laenderkennung, wenn noch keine ISOCodes existieren</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="10"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="syntheticKey" type="xs:boolean" use="required">
+			<xs:annotation>
+				<xs:documentation>Kennzeichnung, ob es sich um ein synthetisches Land (Destination) handelt - wenn ja, Wert = true</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validFrom" type="xs:date" use="required">
+			<xs:annotation>
+				<xs:documentation>Datum, ab wann das Land bzw. die Destination gilt</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="validTo" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Datum, bis wann das Land bzw. die Destination gueltig ist</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="countryGroupType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Laendergruppe (z.B. EU, NON EU, Welt)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bezeichnung der Laendergruppe  (z.B. Europaeische Union)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="shortName" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Kurzbezeichnung der Laendergruppe (z.B. EU)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschreibung der Laendergruppe</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user" type="string_maxLen50">
+				<xs:annotation>
+					<xs:documentation>Nutzer, welcher die Laendergruppe definiert hat</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="chargeZoneType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Entgeltzone (z.B. EU, ROW, RW2, RW4)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="string_maxLen50" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bezeichnung der Entgeltzone</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="shortName" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Kurzbezeichnung der Entgeltzone (z.B. ROW)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschreibung der Entgeltzone</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user" type="string_maxLen50">
+				<xs:annotation>
+					<xs:documentation>Nutzer, welcher die Entgeltzonedefiniert hat</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="internationalDestinationAreaType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung der internationalen Zielbereiche</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="countryList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Laenderliste</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="country" type="countryType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Land</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="countryNegativList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Laendernegativliste</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="country" type="countryType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Land</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="countryGroupList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Laendergruppenliste</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="countryGroup" type="countryGroupType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Laendergruppe (z.B. EU, Europa, Welt)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="chargeZoneList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Entgeltzonenliste</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="chargeZone" type="chargeZoneType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Entgeltzone</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="destinationAreaType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung des Zielbereiches eines Produktes</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="nationalDestinationArea" type="nationalDestinationAreaType">
+				<xs:annotation>
+					<xs:documentation>Nationaler Zielbereich</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="internationalDestinationArea" type="internationalDestinationAreaType">
+				<xs:annotation>
+					<xs:documentation>Internationaler Zielbereich</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<!--Komplexe Produktdatentypen-->
+	<xs:complexType name="basicProductType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Basisproduktes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="extendedIdentifier" type="extendedIdentifierType">
+				<xs:annotation>
+					<xs:documentation>Erweiterter Produkt-Identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceDefinition" type="unitPriceType">
+				<xs:annotation>
+					<xs:documentation>Preisdefinition des Basisproduktes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="slidingPriceList" type="slidingPriceListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Staffelpreisliste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dimensionList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschraenkungen fuer die Produktabmessungen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="length" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Laenge</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="width" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Breite</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="height" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Hoehe</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="diameter" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Durchmesser</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="girth" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Gurtmass</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="addedEdgeLength" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Laenge+Breite+Hoehe</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="weight" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschraenkungen fuer das Produktgewicht</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="propertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" type="propertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="groupedPropertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der gruppierten Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="groupedProperty" type="groupedPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>gruppierte Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="destinationArea" type="destinationAreaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Definition der zulaessigen Zielbereiche</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="documentReferenceList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Dokumentreferenzen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="documentReference" type="documentReferenceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Dokumentenreferenz</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="additionalProductType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung einer Zusatzleistung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="extendedIdentifier" type="extendedIdentifierType">
+				<xs:annotation>
+					<xs:documentation>Erweiterter Produkt-Identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceDefinition" type="unitPriceType">
+				<xs:annotation>
+					<xs:documentation>Preisdefinition der Zusatzleistung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="slidingPriceList" type="slidingPriceListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Staffelpreisliste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="propertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" type="propertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="groupedPropertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der gruppierten Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="groupedProperty" type="groupedPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>gruppierte Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="destinationArea" type="destinationAreaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Definition der zulaessigen Zielbereiche</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="documentReferenceList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Dokumentreferenzen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="documentReference" type="documentReferenceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Dokumentenreferenz</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="salesProductType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Verkaufsproduktes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="extendedIdentifier" type="extendedIdentifierType">
+				<xs:annotation>
+					<xs:documentation>Erweiterter Produkt-Identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceDefinition" type="priceDefinitionType">
+				<xs:annotation>
+					<xs:documentation>Preisdefinition des Verkaufsproduktes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dimensionList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschraenkungen fuer die Produktabmessungen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="length" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Laenge</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="width" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Breite</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="height" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Hoehe</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="diameter" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Durchmesser</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="girth" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Gurtmass</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="addedEdgeLength" type="numericValueType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Laenge+Breite+Hoehe</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="weight" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschraenkungen fuer das Produktgewicht</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="propertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" type="propertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="countrySpecificPropertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der laenderspezifischen Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="countrySpecificProperty" type="countrySpecificPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Laenderspezifische Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="groupedPropertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der gruppierten Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="groupedProperty" type="groupedPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>gruppierte Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="destinationArea" type="destinationAreaType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Definition der zulaessigen Zielbereiche</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="usageList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produktnutzungen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="usage" type="groupedPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Produktnutzung</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="categoryList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produktkategorien</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="category" type="groupedPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Produktkategorie</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="stampTypeList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Frankierarten</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="stampType" type="groupedPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Frankierart</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="documentReferenceList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Dokumentreferenzen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="documentReference" type="documentReferenceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Dokumentenreferenz</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="referenceTextList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste referenzierender Texte (z.B.  Display-Hinweistexte usw.)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="referenceText" type="formatedTextType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Referenzierender Text</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="accountProductReferenceList">
+				<xs:annotation>
+					<xs:documentation>Liste der Referenzen auf die dem Verkaufsprodukt zugeordneten Abrechnungsprodukte</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="accountProductReference" type="accountProdReferenceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Referenzen auf Abrechnungsprodukte</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="accountServiceReferenceList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Referenzen auf die dem Verkaufsprodukt zugeordneten Sonstigen Services (Abholservices)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="accountServiceReference" type="accountProdReferenceType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Referenzen auf Sonstige Services</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="specialServiceType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Sonstigen Services</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="extendedIdentifier" type="extendedIdentifierType">
+				<xs:annotation>
+					<xs:documentation>Erweiterter Produkt-Identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="condition" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bedingung fuer die Nutzung des Sonstigen Services</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceDefinition" type="unitPriceType">
+				<xs:annotation>
+					<xs:documentation>Preisdefinition des Sonstigen Services</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="slidingPriceList" type="slidingPriceListType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Staffelpreisliste</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="propertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" type="propertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="groupedPropertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der gruppierten Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="groupedProperty" type="groupedPropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>gruppierte Produkteigenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="serviceDayList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der gueltigen Servicetage</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="serviceDay" type="dayType" maxOccurs="7">
+							<xs:annotation>
+								<xs:documentation>Servicetag (Wochentag)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="exclusionDayList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Ausnahmetage (z.B. Feiertage), an denen dieser Service nicht zulaessig ist</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="exclusionDay" type="specialDayType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Definition von Ausnahmetagen mit entsprechender lokaler Zuordnung</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="shortSalesProductType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung eines Verkaufsproduktes in kurzer, flacher Hierarchie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProdWS-ID" type="string_maxLen50">
+				<xs:annotation>
+					<xs:documentation>Eindeutiger Produkt-Identifier im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="externIdentifier" type="externIdentifierType">
+				<xs:annotation>
+					<xs:documentation>Abbildung von Produkt-Identifiern aus Fremdsystemen - fuer diese Abbildung werden nur Quelle und ID des Quellsystems angegeben, aus welchem das Produkt geliefert wurde</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="string_maxLen250">
+				<xs:annotation>
+					<xs:documentation>Produktname im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="destination">
+				<xs:annotation>
+					<xs:documentation>Zielausrichtung (national oder international)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="national"/>
+						<xs:pattern value="international"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="validFrom" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsbeginn des Verkaufsproduktes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validTo" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Gueltigkeitsende des Verkaufsproduktes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="priceDefinition">
+				<xs:annotation>
+					<xs:documentation>Preisdefinition des Verkaufsproduktes</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="commercialGrossPrice" type="currencyAmountType">
+							<xs:annotation>
+								<xs:documentation>Kaufmaennisch korrekt ermittelter Bruttopreis als Summe der Bruttopreise zu den  Einzelnettopreissummen gleichen Umsatzsteuersatzes</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="priceValidity" type="validityType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Preisgueltigkeit</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="length" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Laengenbeschraenkungen fuer das Verkaufsprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="width" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Breitenbeschraenkungen fuer das Verkaufsprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="height" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hoehenbeschraenkungen fuer das Verkaufsprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="diameter" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Durchmesserbeschraenkungen fuer das Verkaufsprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="girth" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Gurtmassbeschraenkungen fuer das Verkaufsprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addedEdgeLength" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Beschraenkungen fuer die Summe der Kantenlaengen eines Verkaufsproduktes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="weight" type="numericValueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Gewichtsbeschraenkungen fuer das Verkaufsprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Elemente fuer Produktabbildungen-->
+	<xs:element name="BasicProduct" type="basicProductType">
+		<xs:annotation>
+			<xs:documentation>Basisprodukt</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="AdditionalProduct" type="additionalProductType">
+		<xs:annotation>
+			<xs:documentation>Zusatzleistung</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SalesProduct" type="salesProductType">
+		<xs:annotation>
+			<xs:documentation>Verkaufsprodukt</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="SpecialService" type="specialServiceType">
+		<xs:annotation>
+			<xs:documentation>Sonstige Services (z.B. Abholservice)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ShortSalesProduct" type="shortSalesProductType">
+		<xs:annotation>
+			<xs:documentation>Verkaufsprodukt in reduzierter Abbildung</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--Komplexe Datentypen fuer die Servicemethoden-->
+	<xs:complexType name="ExceptionDetailType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp fuer die Abbildung von Fehlern beim Methodenaufruf des Webservices</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="errorNumber" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Fehlernummer - nach Fehlertabelle</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorMessage" type="string_maxLen1000">
+				<xs:annotation>
+					<xs:documentation>Fehlermeldung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="errorDetail" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Fehlermeldung des XML-Parsers</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="alphanumericOperatorType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung von Operatoren fuer alphanumerische Suchbedingungen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IS"/>
+			<xs:enumeration value="IS NOT"/>
+			<xs:enumeration value="INCLUDE"/>
+			<xs:enumeration value="INCLUDE NOT"/>
+			<xs:enumeration value="STARTED WITH"/>
+			<xs:enumeration value="ENDED WITH"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="logicalOperatorType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung von Operatoren fuer logische Suchbedingungen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AND"/>
+			<xs:enumeration value="OR"/>
+			<xs:enumeration value="NOT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="numericOperatorType">
+		<xs:annotation>
+			<xs:documentation>Simpler Datentyp zur Abbildung von Operatoren fuer numerische Suchbedingungen</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EQUALS"/>
+			<xs:enumeration value="LESS THEN"/>
+			<xs:enumeration value="LESS THEN OR EQUALS"/>
+			<xs:enumeration value="GREATER THEN"/>
+			<xs:enumeration value="GREATER THEN OR EQUALS"/>
+			<xs:enumeration value="BETWEEN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="searchParameterType">
+		<xs:annotation>
+			<xs:documentation>Komplexer Datentyp zur Abbildung von Suchparametern</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="productID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produkt-ID</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="alphanumericOperatorType">
+							<xs:annotation>
+								<xs:documentation>Operator fuer alphanumerische Suchbedingungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="id" type="string_maxLen50">
+							<xs:annotation>
+								<xs:documentation>ID oder Teil der ID</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="source" type="string_maxLen50" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Quelle der ID-Definition - wenn nicht angegeben, wird ueber die Quelle ProdWS gesucht</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productName" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktname</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="alphanumericOperatorType">
+							<xs:annotation>
+								<xs:documentation>Operator fuer alphanumerische Suchbedingungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="name" type="string_maxLen250">
+							<xs:annotation>
+								<xs:documentation>Produktname oder Teilstring des Produktnamens</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productPrice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktpreis</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="numericOperatorType">
+							<xs:annotation>
+								<xs:documentation>Operator fuer numerische Suchbedingungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="price1" type="currencyAmountType">
+							<xs:annotation>
+								<xs:documentation>erster Wert - ist generell anzugeben</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="price2" type="currencyAmountType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>zweiter Wert - ist nur fuer den Operator BETWEEN anzugeben</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productValidity" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktgueltigkeit - wird keine Gueltigkeit angegeben, wird vom aktuellen Datum ohne Zeitrelevanz ausgegangen - die Gueltigkeit kann uhrzeitbezogen oder auch nur tagesbezogen angegeben werden</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="timestamp" type="timestampType">
+							<xs:annotation>
+								<xs:documentation>nur fuer die Methode seekProduct</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:sequence>
+							<xs:annotation>
+								<xs:documentation>nur fuer die Methode seekProductVersions</xs:documentation>
+							</xs:annotation>
+							<xs:element name="operator" type="numericOperatorType">
+								<xs:annotation>
+									<xs:documentation>Operator fuer numerische Suchbedingungen</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="timestamp1" type="timestampType">
+								<xs:annotation>
+									<xs:documentation>erster Wert - ist generell anzugeben</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="timestamp2" type="timestampType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>zweiter Wert - ist nur fuer den Opeartor BETWEEN anzugeben</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productDimensionList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktabmessungen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="productDimension" maxOccurs="6">
+							<xs:annotation>
+								<xs:documentation>Abmessungen</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="name">
+										<xs:annotation>
+											<xs:documentation>Eigenschaftsname (Laenge, Breite, Hoehe, Durchmesser, Gurtmass, Laenge+Breite+Hoehe)</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Laenge"/>
+												<xs:enumeration value="Breite"/>
+												<xs:enumeration value="Hoehe"/>
+												<xs:enumeration value="Durchmesser"/>
+												<xs:enumeration value="Gurtmass"/>
+												<xs:enumeration value="Laenge+Breite+Hoehe"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="dimension">
+										<xs:annotation>
+											<xs:documentation>Abmessungswert</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="operator" type="numericOperatorType">
+													<xs:annotation>
+														<xs:documentation>Operator fuer numerische Suchbedingungen</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="dimension1" type="dimensionType">
+													<xs:annotation>
+														<xs:documentation>erster Wert - ist generell anzugeben</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="dimension2" type="dimensionType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>zweiter Wert - ist nur fuer den Opeartoe BETWEEN anzugeben</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productWeight" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktgewicht</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="numericOperatorType">
+							<xs:annotation>
+								<xs:documentation>Operator fuer numerische Suchbedingungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="weight1" type="weightType">
+							<xs:annotation>
+								<xs:documentation>erster Wert - ist generell anzugeben</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="weight2" type="weightType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>zweiter Wert - ist nur fuer den Opeartor BETWEEN anzugeben</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productPropertyList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produkteigenschaften</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="property" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Eigenschaft</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="name" type="string_maxLen50">
+										<xs:annotation>
+											<xs:documentation>Eigenschaftsname</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="value" type="propertyValueType">
+										<xs:annotation>
+											<xs:documentation>Eigenschaftswert</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productUsage" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktnutzung ( z.B. Premiumadress, Portokalkulator, ZORA)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="usage_name" type="string_maxLen50" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Bezeichnung der Nutzung</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productCategory" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktkategorie</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="category_name" type="string_maxLen50" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Bezeichnung der Kategorie</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productStampType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Frankierart /z.B. AFM, Frankit, DV Freimachung, Internetmarke)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="stampType_name" type="string_maxLen50" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Bezeichnung der Frankierart</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="productGroup" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Produktgruppe (Brief, Presse und Buch, Paeckchen, Paket usw.)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="group_name" type="string_maxLen50" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Bezeichnung der Produktgruppe</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="branch" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Sparte</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="branch_number" type="branchType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Bezeichnung der Sparte</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="destination" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Zielausrichtung</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="national"/>
+						<xs:enumeration value="international"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="countryGroupList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Laendergruppe</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="countryGroup_shortName" type="string_maxLen10" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Kurzbezeichnung der Laendergruppe(n)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="chargeZoneList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Entgeltzone</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="chargeZone_shortName" type="string_maxLen10" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Kurzbezeichnung der Entgeltzone(n)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="countryList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium Laenderkennung</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="country_ISOCode" type="string_maxLen10" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>alpha2-, alpha3- oder numerischer ISO-Code fuer die Laenderkennung</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="additionalProductList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Suchkriterium zugeordnete Zusatzleistungen</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="operator" type="logicalOperatorType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Operator fuer logische Verknuepfungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="additionalProduct_ProdWS-ID" type="string_maxLen50" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>ProdWS-ID der dem Verkaufsprodukt zugeordneten Zusatzleistungen</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Datentypen fuer die Request-Methoden des Webservice ProductInformation-->
+	<xs:complexType name="seekProductRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode seekProduct</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Mandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="searchParameterList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Suchparameter</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="searchParameter" type="searchParameterType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Sucparameter als Einzelwerte oder als Suchbedingung mit Verknuepfung</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="seekProductVersionsRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode seekProductVersions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Mandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="searchParameterList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Suchparameter</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="searchParameter" type="searchParameterType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Sucparameter als Einzelwerte oder als Suchbedingung mit Verknuepfung</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getProduct</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Mandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProdWS-ID" type="string_maxLen50">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Produkt-ID im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timestamp" type="timestampType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bei Angabe eines Zeitpunkts wird die Produktversion zurueckgeliefert, die zu diesem Zeitpunkt gueltig ist (das kann tagesbezogen, aber auch Uhrzeitbezogen erfolgen) - wird kein Zeitpunkt angegeben, wird die zum aktuellen Datum gueltige Produktversion zurueckgegeben.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dedicatedProducts" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Flag zur Kennzeichnung, ob die zugeordneten Abrechnungsprodukte und Sonstigen Service ebenfalls mitgeliefert werden sollen.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="responseMode" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>definiert, welche Produkteigenschaften zurueckgegeben werden - fuer die Version 1.0 existiert nur der Mode 0, d.h. es werden ie Produkte komplett mit all ihren Eigenschaften zurueckgegeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductVersionsRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getProductVersions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Mandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ProdWS-ID" type="string_maxLen50">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Produkt-ID im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dedicatedProducts" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Flag zur Kennzeichnung, ob die zugeordneten Abrechnungsprodukte und Sonstigen Service ebenfalls mitgeliefert werden sollen.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="responseMode" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>definiert, welche Produkteigenschaften zurueckgegeben werden - fuer die Version 1.0 existiert nur der Mode 0, d.h. es werden ie Produkte komplett mit all ihren Eigenschaften zurueckgegeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="onlyChanges" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>Definiert, ob mit der Liste nur die neuen und geaenderten Produkte (true) oder alle Produkte (false) des Mandanten geliefert werden sollen - wenn nicht angegeben, dann komplette Liste</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="referenceDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Referenzdatum, auf welches sich die die neuen und geaenderten Produkte beziehen</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="shortList" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>Definiert, ob eine stark reduzierte und flach strukturierte Liste (true) oder die Standard-Liste (false) geliefert werden soll - wenn nicht angegeben, dann Standard-Liste</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="getProductListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getProductList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandantenkennung, unter welcher der Mandant im ProdWS-System gefuehrt wird - ist auch von den Untermandanten zu uebergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige SubID, unter welcher die Untermandanten im ProdWS-System gefuehrt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timestamp" type="timestampType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bei Angabe eines Zeitpunkts werden alle Produkte zurueckgeliefert, die zu diesem Zeitpunkt gueltig sind  (kann sowohl uhrzeitbezogen als auch tagesbezogen erfolgen) - wird kein Zeitpunkt angegeben, werden alle zum aktuellen Datum gueltigen Produkte zurueckgegeben.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dedicatedProducts" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Sollen die zugeordneten Abrechnungsprodukte und Sonstigen Service mitgeliefert werden?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="responseMode" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>definiert, welche Produkteigenschaften zurueckgegeben werden - fuer die Version 1.0 existiert nur der Mode 0, d.h. es werden ie Produkte komplett mit all ihren Eigenschaften zurueckgegeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="onlyChanges" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>Definiert, ob mit der Liste nur die neuen und geaenderten Produkte (true) oder alle Produkte (false) des Mandanten geliefert werden sollen - wenn nicht angegeben, dann komplette Liste</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="referenceDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Referenzdatum, auf welches sich die die neuen und geaenderten Produkte beziehen</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="shortList" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>Definiert, ob eine stark reduzierte und flach strukturierte Liste (true) oder die Standard-Liste (false) geliefert werden soll - wenn nicht angegeben, dann Standard-Liste</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="getProductVersionsListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getProductVersionsList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandantenkennung, unter welcher der Mandant im ProdWS-System gefuehrt wird - ist auch von den Untermandanten zu uebergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige SubID, unter welcher die Untermandanten im ProdWS-System gefuehrt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dedicatedProducts" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Sollen die zugeordneten Abrechnungsprodukte und Sonstigen Service mitgeliefert werden?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="responseMode" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>definiert, welche Produkteigenschaften zurueckgegeben werden - fuer die Version 1.0 existiert nur der Mode 0, d.h. es werden ie Produkte komplett mit all ihren Eigenschaften zurueckgegeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="onlyChanges" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>Definiert, ob mit der Liste nur die neuen und geaenderten Produkte (true) oder alle Produkte (false) des Mandanten geliefert werden sollen - wenn nicht angegeben, dann komplette Liste</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="referenceDate" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation>Referenzdatum, auf welches sich die die neuen und geaenderten Produkte beziehen</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="shortList" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>Definiert, ob eine stark reduzierte und flach strukturierte Liste (true) oder die Standard-Liste (false) geliefert werden soll - wenn nicht angegeben, dann Standard-Liste</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="getChangedProductVersionsListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getChangedProductVersionsList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandantenkennung, unter welcher der Mandant im ProdWS-System gefuehrt wird - ist auch von den Untermandanten zu uebergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige SubID, unter welcher die Untermandanten im ProdWS-System gefuehrt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dedicatedProducts" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Sollen die zugeordneten Abrechnungsprodukte und Sonstigen Service mitgeliefert werden?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="responseMode" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>definiert, welche Produkteigenschaften zurueckgegeben werden - fuer die Version 1.0 existiert nur der Mode 0, d.h. es werden ie Produkte komplett mit all ihren Eigenschaften zurueckgegeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductChangeInformationRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getProductChangeInformation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandantenkennung, unter welcher der Mandant im ProdWS-System gefuehrt wird - ist auch von den Untermandanten zu uebergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="submandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige SubID, unter welcher die Untermandanten im ProdWS-System gefuehrt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lastQueryDate" type="timestampType">
+				<xs:annotation>
+					<xs:documentation>Datum der letzten Abfrage zu Produktaenderungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCatalogChangeInformationRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getCatalogChangeInformation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandantenkennung, unter welcher der Mandant im ProdWS-System gefuehrt wird - ist auch von den Untermandanten zu uebergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="submandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige SubID, unter welcher die Untermandanten im ProdWS-System gefuehrt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lastQueryDate" type="timestampType">
+				<xs:annotation>
+					<xs:documentation>Datum der letzten Abfrage zuKatalogaenderungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCatalogRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getCatalog</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Mandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="catalogName" type="string_maxLen50">
+				<xs:annotation>
+					<xs:documentation>Name des Stammdatenkatalogs</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCatalogListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode getCatalogList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Mandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="catalogProperties" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Lieferung der Eigenschaften der Katalogwerte ja/nein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="registerEMailAdressRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode registerEMailAdress</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandant-ID im ProdWS-System - muss bereist existieren</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="eMailAdress" type="xs:anyURI" minOccurs="0" maxOccurs="10">
+				<xs:annotation>
+					<xs:documentation>EMail-Adressen des Mandanten, die zusaetzlich zum Mandanten im ProdWS-System erfasst werden soll - muss angegeben werden, wenn keine Daten zum Untermandanten uebergeben werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandant" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Untermandant - es kann sowohl nur eine weitere EMail-Adresse zum Untermandanten uebergeben werden als auch ein neuer Untermandant zum Mandanten angelegt werden</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Eindeutige ID des Untermandanten - ist zwingend anzugeben, wenn nur neue EMail-Adresse uebergeben wird</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="subMandantName" type="string_maxLen50" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Name des Untermandanten - ist zwingend anzugeben, wenn eine Neuanlage des Untermandanten gewuenscht wird</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="subMandantEMailAdress" type="xs:anyURI" maxOccurs="10">
+							<xs:annotation>
+								<xs:documentation>EMail-Adressen des Untermandanten</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="overwrite" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>Definiert, ob uebergebene Mailadressen bereits gespeicherte Adressen ersetzen sollen</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="registerNotificationRequestType">
+		<xs:annotation>
+			<xs:documentation>Request-Datentyp der Methode registerNotification</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandant-ID im ProdWS - muss bereist existieren</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandant" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Untermandant - es kann sowohl nur eine Registrierung erfolgen als auch ein neuer Untermandant mit entsprechender Registrierung zum Mandanten angelegt werden</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Eindeutige ID des Untermandanten - ist zwingend anzugeben, wenn eine Registrierung erfolgen soll</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="subMandantName" type="string_maxLen50" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Name des Untermandanten - ist zwingend anzugeben, wenn eine Neuanlage des Untermandanten gewuenscht wird</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="url" type="xs:anyURI">
+							<xs:annotation>
+								<xs:documentation>Deployment-Ziel des wsdl-Files des als Servicegeber agierenden Untermandanten</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="url" type="xs:anyURI" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Deployment-Ziel des wsdl-Files des als Servicegeber agierenden Mandanten</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Datentypen fuer die Response-Methoden des Webservice ProductInformation-->
+	<xs:complexType name="seekProductResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode seekProduct</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="salesProduct" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Ergebnismenge mit Verkaufsprodukten</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="salesProductShortIdentifier" type="shortProductIdentifierType">
+							<xs:annotation>
+								<xs:documentation>Kurzidentifier des Verkaufsproduktes</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="salesProductGrossPrice" type="currencyAmountType">
+							<xs:annotation>
+								<xs:documentation>Bruttopreis des Verlaufsproduktes</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="seekProductVersionsResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode seekProductVersions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="salesProduct" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Ergebnismenge mit Verkaufsprodukten</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="salesProductShortIdentifier" type="shortProductIdentifierType">
+							<xs:annotation>
+								<xs:documentation>KLurzidentifier des Verkaufsproduktes</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="salesProductGrossPrice" type="currencyAmountType">
+							<xs:annotation>
+								<xs:documentation>Bruttopreis des Verlaufsproduktes</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getProduct</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="SalesProduct" minOccurs="0"/>
+			<xs:element ref="BasicProduct" minOccurs="0"/>
+			<xs:element ref="AdditionalProduct" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="SpecialService" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductVersionsResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getProductVersions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="salesProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen eines Verkaufsproduktes</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="SalesProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="basicProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen des Basisproduktes, welche den einzelnen Versionen des Verkaufsproduktes zugeordnet sind - prinzipiell besteht die Moeglichkeit, dass kein Basisprodukt zugeordnet ist, im Regelfall ist genau ein Basisprodukt zugeordnet (max. ein BP zulaessig)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="BasicProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="additionalProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen aller Zusatzleistungen, welche den einzelnen Versionen des Verkaufsproduktes zugeordnet sind</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="AdditionalProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="specialServiceList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen aller Sonstigen Services, welche den einzelnen Versionen des Verkaufsproduktes zugeordnet sind</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="SpecialService" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:element name="shortSalesProductList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ShortSalesProduct" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductListResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getProductList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Referenzdatum, auf welches sich die Liste bezieht</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="salesProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Verkaufsprodukte</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="SalesProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="basicProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der den Verkaufsprodukten jeweils zugeordneten Basisprodukte (entsprechende Produktversion des jeweiligen Basisprodukts)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="BasicProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="additionalProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der den Verkaufsprodukten jeweils zugeordneten Zusatzleistungen (entsprechende Produktversion der jeweiligen Zusatzleistung)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="AdditionalProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="specialServiceList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der den Verkaufsprodukten jeweils zugeordneten Sonstigen Services (entsprechende Produktversion des jeweiligen Sonstigen Service)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="SpecialService" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:element name="shortSalesProductList" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ShortSalesProduct" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductVersionsListResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getProductVersionsList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="salesProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen aller Verkaufsprodukte</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="SalesProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="basicProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen aller Basisprodukte, welche den einzelnen Versionen der Verkaufsprodukte zugeordnet sind - prinzipiell besteht die Moeglichkeit, dass kein Basisprodukt zugeordnet ist, im Regelfall ist genau ein Basisprodukt zugeordnet (max. ein BP zulaessig)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="BasicProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="additionalProductList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen aller Zusatzleistungen, welche den einzelnen Versionen der Verkaufsprodukte zugeordnet sind</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="AdditionalProduct" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="specialServiceList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Liste der Produktversionen aller Sonstigen Services, welche den einzelnen Versionen der Verkaufsprodukte zugeordnet sind</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="SpecialService" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:element name="shortSalesProductList" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ShortSalesProduct" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getChangedProductVersionsListResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getChangedProductVersionsList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="salesProductList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produktversionen aller neune und geaenderten Verkaufsprodukte</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="SalesProduct" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="basicProductList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produktversionen aller Basisprodukte, welche den einzelnen Versionen der neune und geaenderten Verkaufsprodukte zugeordnet sind - prinzipiell besteht die Moeglichkeit, dass kein Basisprodukt zugeordnet ist, im Regelfall ist genau ein Basisprodukt zugeordnet (max. ein BP zulaessig)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="BasicProduct" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="additionalProductList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produktversionen aller Zusatzleistungen, welche den einzelnen Versionen der neuen und geaenderten Verkaufsprodukte zugeordnet sind</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="AdditionalProduct" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="specialServiceList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Produktversionen aller Sonstigen Services, welche den einzelnen Versionen der neuen und geaenderten Verkaufsprodukte zugeordnet sind</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="SpecialService" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getProductChangeInformationResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getProductChangeInformation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="changesAvailable" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Aenderungen vorhanden (ja/nein)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="providingDate" type="timestampType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Bereitstellungsdatum einer neuen Produktliste mit geaenderten Produktdaten</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCatalogChangeInformationResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getCatalogChangeInformation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="changesAvailable" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Aenderungen vorhanden (ja/nein)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="catalog" type="catalogType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>ProdWS-interne ID und Namen der Kataloge, die sich geaendert haben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCatalogResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getCatalog</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="catalog" type="catalogType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Katalog mit Liste der Katalogwerte und deren Eigenschaften</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCatalogListResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode getCatalogList</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="catalogList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liste der Stammdatenkataloge</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="catalog" type="catalogType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Katalog mit Liste der Katalogwerte und deren Eigenschaften</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - wenn die Suchergebnismenge leer ist, muss ein entsprechender Hinweistext uebergeben werden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="registerEMailAdressResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode registerEMailAdress</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandant-ID im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten (SubID) im ProdWS-System - wird nur uebergeben, wenn sich ein Untermandant registriert hat</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registration" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Registrierung erfolgt - ja/nein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Registrierungszeitstempel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="registerNotificationResponseType">
+		<xs:annotation>
+			<xs:documentation>Response-Datentyp der Methode registerNotification</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mandantID" type="string_maxLen20">
+				<xs:annotation>
+					<xs:documentation>Eindeutige Mandant-ID im ProdWS-System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subMandantID" type="string_maxLen20" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Eindeutige ID des Untermandanten (SubID) im ProdWS-System - wird nur uebergeben, wenn sich ein Untermandant registriert hat</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registration" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Registrierung erfolgt - ja/nein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDateTime" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Registrierungszeitstempel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="message" type="string_maxLen1000" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hinweismeldung zum Response - z.B. wenn eine bereits existierende URL ueberschrieben wurde</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Request-Methoden des Webservice ProductInformation-->
+	<xs:element name="seekProductRequest" type="seekProductRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode seekProduct</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="seekProductVersionsRequest" type="seekProductVersionsRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode seekProductVersions</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getProductRequest" type="getProductRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getProduct</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getProductVersionsRequest" type="getProductVersionsRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getProductVersions</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getProductListRequest" type="getProductListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getProduct</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getProductVersionsListRequest" type="getProductVersionsListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getProductVersions</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getChangedProductVersionsListRequest" type="getChangedProductVersionsListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getChangedProductVersions</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getProductChangeInformationRequest" type="getProductChangeInformationRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getProductChangeInformation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getCatalogChangeInformationRequest" type="getCatalogChangeInformationRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getCatalogChangeInformation</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getCatalogRequest" type="getCatalogRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getCatalog</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="getCatalogListRequest" type="getCatalogListRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode getCatalogList</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="registerEMailAdressRequest" type="registerEMailAdressRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode registerEMailAdress</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="registerNotificationRequest" type="registerNotificationRequestType">
+		<xs:annotation>
+			<xs:documentation>Request der Methode registerNotification</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--Response-Methoden des Webservice ProductInformation-->
+	<xs:element name="seekProductResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode seekProduct</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="seekProductResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Fehlerdetail</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="seekProductVersionsResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode seekProductVersions</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="seekProductVersionsResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getProductResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getProduct</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getProductResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getProductVersionsResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getProductVersions</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getProductVersionsResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getProductListResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getProductList</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getProductListResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getProductVersionsListResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getProductVersionsList</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getProductVersionsListResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getChangedProductVersionsListResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getChangedProductVersionsList</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getChangedProductVersionsListResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getProductChangeInformationResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getProductChangeInformation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getProductChangeInformationResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnis</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getCatalogChangeInformationResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getCatalogChangeInformation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getCatalogChangeInformationResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnis</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getCatalogResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getCatalog</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getCatalogResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getCatalogListResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode getCatalogList</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="getCatalogListResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnisliste</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="registerEMailAdressResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode registerEMailAdress</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="registerEMailAdressResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnis</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="registerNotificationResponse">
+		<xs:annotation>
+			<xs:documentation>Response der Methode registerNotification</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Response" type="registerNotificationResponseType">
+					<xs:annotation>
+						<xs:documentation>Ergebnis</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Exception">
+					<xs:annotation>
+						<xs:documentation>Fehlerliste</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="exceptionDetail" type="ExceptionDetailType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="success" type="xs:boolean" use="required">
+				<xs:annotation>
+					<xs:documentation>true, wenn Anfrage erfolgreich bearbeitet werden konnte</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
