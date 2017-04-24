@@ -7,12 +7,11 @@ package org.kleini.bricklink.api;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import org.kleini.api.Parser;
+import org.kleini.bricklink.data.Color;
 import org.kleini.bricklink.data.PriceDetail;
 import org.kleini.bricklink.data.PriceGuide;
 import org.kleini.bricklink.data.Response;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
@@ -22,8 +21,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
  */
 public final class PriceGuideParser extends Parser<PriceGuideResponse, Response<PriceGuide>> {
 
-    public PriceGuideParser() {
+    private final PriceGuideRequest request;
+
+    public PriceGuideParser(PriceGuideRequest request) {
         super();
+        this.request = request;
     }
 
     @Override
@@ -34,7 +36,10 @@ public final class PriceGuideParser extends Parser<PriceGuideResponse, Response<
     }
 
     @Override
-    protected PriceGuideResponse createResponse(Response<PriceGuide> response) {
+    protected PriceGuideResponse createResponse(Response<PriceGuide> response) throws Exception {
+        if (404 == response.getMeta().getCode()) {
+            throw new Exception("Could not find " + request.getType() + " " + Color.byId(request.getColorID()) + " " + request.getItemID());
+        }
         PriceGuide priceGuide = response.getData();
         List<PriceDetail> details = priceGuide.getDetail();
         Collections.sort(details, new Comparator<PriceDetail>() {

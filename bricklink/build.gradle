@@ -20,6 +20,16 @@ gradle.projectsEvaluated {
   }
 }
 
+task fatJar(type: Jar) {
+    baseName = project.name + '-all'
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    with jar
+}
+
 task partout(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.PartOut'

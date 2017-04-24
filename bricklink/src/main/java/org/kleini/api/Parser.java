@@ -41,10 +41,15 @@ public abstract class Parser<T extends Response<?>, U> {
             System.err.println("Body: " + body);
             throw e;
         }
-        return createResponse(response);
+        try {
+            return createResponse(response);
+        } catch (Exception e) {
+            System.err.println("Body: " + body);
+            throw e;
+        }
     }
 
     protected abstract TypeReference<U> getResponseType();
 
-    protected abstract T createResponse(U response);
+    protected abstract T createResponse(U response) throws Exception;
 }

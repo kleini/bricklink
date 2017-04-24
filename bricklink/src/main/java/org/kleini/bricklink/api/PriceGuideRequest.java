@@ -80,6 +80,18 @@ public final class PriceGuideRequest extends AbstractGetRequest<PriceGuideRespon
 
     @Override
     public PriceGuideParser getParser() {
-        return new PriceGuideParser();
+        return new PriceGuideParser(this);
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public String getItemID() {
+        return itemID;
+    }
+
+    public int getColorID() {
+        return colorID;
     }
 }
