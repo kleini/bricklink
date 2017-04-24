@@ -29,7 +29,7 @@ public class BrickStoreXML {
     @XmlElement(name = "Inventory", required = true)
     protected Inventory inventory;
 
-    @XmlElement(name = "GuiState", required = true)
+    @XmlElement(name = "GuiState")
     protected GuiState guiState;
 
     public BrickStoreXML() {

@@ -87,7 +87,7 @@ public class Item {
     @XmlElement(name = "Qty", required = true)
     protected int quantity;
 
-    @XmlElement(name = "Price", required = true)
+    @XmlElement(name = "Price")
     protected BigDecimal price;
 
     @XmlElement(name = "Condition", required = true)

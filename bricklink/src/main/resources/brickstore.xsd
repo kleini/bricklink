@@ -4,7 +4,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="Inventory"/>
-        <xs:element ref="GuiState"/>
+        <xs:element minOccurs="0" ref="GuiState"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -12,7 +12,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="Inventory"/>
-        <xs:element ref="GuiState"/>
+        <xs:element minOccurs="0" ref="GuiState"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -36,7 +36,7 @@
         <xs:element ref="CategoryName"/>
         <xs:element ref="Status"/>
         <xs:element ref="Qty"/>
-        <xs:element ref="Price"/>
+        <xs:element minOccurs="0" ref="Price"/>
         <xs:element ref="Condition"/>
         <xs:element minOccurs="0" ref="Remarks"/>
         <xs:choice minOccurs="0">
