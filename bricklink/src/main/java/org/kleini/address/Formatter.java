@@ -94,11 +94,11 @@ public final class Formatter {
     }
 
     private static void appendNotNull(StringBuilder sb, String text, String spacer) {
-        if (null != text) {
+        if (null != text && text.length() > 0) {
             sb.append(text);
-        }
-        if (null != text && null != spacer) {
-            sb.append(spacer);
+            if (null != spacer && spacer.length() > 0) {
+                sb.append(spacer);
+            }
         }
     }
 
@@ -129,7 +129,9 @@ public final class Formatter {
 
     private static void addStandard2(StringBuilder sb, Address address) {
         addName(sb, address);
-        sb.append(address.getCityName()); sb.append(", "); sb.append(address.getStateOrProvince()); sb.append(' '); sb.append(address.getPostalCode()); sb.append('\n');
+        sb.append(address.getCityName()); sb.append(", ");
+        appendNotNull(sb, address.getStateOrProvince(), " ");
+        sb.append(address.getPostalCode()); sb.append('\n');
         addCountry(sb, address);
     }
 
