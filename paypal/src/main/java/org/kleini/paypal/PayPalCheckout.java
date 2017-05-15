@@ -5,6 +5,7 @@
 package org.kleini.paypal;
 
 import java.net.URL;
+import org.kleini.selenium.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.TimeoutException;
@@ -86,7 +87,7 @@ public final class PayPalCheckout {
         }
         WebElement confirmButton = new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(By.id("confirmButtonTop")));
         new WebDriverWait(driver, 5).until(ExpectedConditions.invisibilityOfElementLocated(By.id("spinner")));
-        confirmButton.click();
+        Utils.tenaciousClick(confirmButton);
         do {
             Thread.sleep(100);
         } while (driver.getCurrentUrl().contains(host));
