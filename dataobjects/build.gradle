@@ -27,7 +27,7 @@ task wsimport(type:Exec) {
         wsimport.destDir.mkdirs()
         sourceSets.main.output.classesDir.mkdirs()
     }
-    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', destDir, '-d', sourceSets.main.output.classesDir, '-keep', '-p', 'de.deutschepost.dpdhl.wsprovider.dataobjects', 'ProductInformation.wsdl', '-b', 'common.xsd', '-Xnocompile'
+    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', destDir, '-d', sourceSets.main.output.classesDir, '-keep', '-p', 'de.deutschepost.dpdhl.wsprovider.dataobjects', 'https://prodws.deutschepost.de:8443/ProdWSProvider_1_1/prodws?wsdl', '-Xnocompile'
 }
 wsimport.outputs.dir wsimport.destDir
 

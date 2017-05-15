@@ -25,7 +25,7 @@ First you need to compile the sources
 Configuration
 -------------
 
-Edit the file `bricklink/src/main/resources/bricklink.properties` and enter your BrickLink credentials. Furthermore you have to create your
+Edit the file `bricklink/src/main/resources/configuration.properties` and enter your BrickLink credentials. Furthermore you have to create your
 OAuth API access keys, secrets and tokens and enter them in that configuration file, too. Please read
 http://apidev.bricklink.com/redmine/projects/bricklink-api/wiki/Getting_Started to generate your BrickLink OAuth API access keys. You don't
 need to register any notification URLs. Notifications are not used yet.
@@ -39,6 +39,22 @@ use the following command to create a part out of a set. The arguments are the s
 much sets you want to part out.
 
     gradle partout 71006-1 10
+
+OnlineFrankierung
+-
+
+DHL Privatekunden API WSDL import.
+
+OneClickForApp
+-
+
+WSDL import of internet stamp creation of DP DHL.
+
+Dataobjects
+-
+
+DP DHL product information webservice.
+
 
 Support
 -------

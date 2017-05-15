@@ -15,10 +15,12 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 public class WSSUsernameTokenSecurityHandler implements SOAPHandler<SOAPMessageContext> {
 
     private String login;
-    private String pwd;
+    private String password;
 
-    public WSSUsernameTokenSecurityHandler() {
+    public WSSUsernameTokenSecurityHandler(String login, String password) {
         super();
+        this.login = login;
+        this.password = password;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class WSSUsernameTokenSecurityHandler implements SOAPHandler<SOAPMessageC
                 SOAPElement userElem = factory.createElement("Username", prefix, uri);
                 userElem.addTextNode(login);
                 SOAPElement pwdElem = factory.createElement("Password", prefix, uri);
-                pwdElem.addTextNode(pwd);
+                pwdElem.addTextNode(password);
                 pwdElem.addAttribute(QName.valueOf("Type"), "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText");
                 tokenElem.addChildElement(userElem);
                 tokenElem.addChildElement(pwdElem);
