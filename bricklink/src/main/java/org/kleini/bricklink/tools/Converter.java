@@ -78,8 +78,8 @@ public final class Converter {
         };
     }
 
-    public static String replaceSpecialBLAddressCharacters(String fullAddress) {
-        return fullAddress.
+    public static String replaceSpecialBLAddressCharacters(String original) {
+        return original.
                 replace("&#39;", "'").
                 replace("&#40;", "(").
                 replace("&#41;", ")").
