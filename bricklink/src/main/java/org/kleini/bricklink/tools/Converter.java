@@ -39,7 +39,7 @@ public final class Converter {
     }
 
     public static org.kleini.address.Address convert(final org.kleini.bricklink.data.Address address) throws Exception {
-        if (address.getName().getFirst() == null) {
+        if (address.getName().getFirst() == null || address.getName().getFirst().isEmpty()) {
             throw new Exception("Can not convert address.");
         }
         return new org.kleini.address.Address() {
