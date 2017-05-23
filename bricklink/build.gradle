@@ -18,6 +18,7 @@ dependencies {
     exclude group: 'org.seleniumhq.selenium', module: 'selenium-edge-driver'
   }
   compile group: 'com.github.detro', name: 'ghostdriver', version: '2.1.0'
+  compile 'de.deutschepost.dpdhl.wsprovider:dataobjects:3.0'
   testCompile 'junit:junit:4.11'
 }
 
