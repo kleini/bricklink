@@ -168,7 +168,7 @@ public enum Country {
     MU(null),
     MV(null),
     MW(null),
-    MX(null),
+    MX("Mexico"),
     MY("Malaysia"),
     MZ(null),
     NA(null),
