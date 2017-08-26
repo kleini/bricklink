@@ -8,6 +8,7 @@ import static org.kleini.bricklink.selenium.BrickLinkSelenium.URL;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -52,15 +53,24 @@ public class LoginPage {
         loginButton.click();
         try {
             // Fail if the logout link does not appear.
-            new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.id("idMyPageLogout")));
-        } catch (NoSuchElementException e) {
-            throw new Exception("Login failed. Please check credentials!");
+            new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(getLogout(driver)));
+        } catch (NoSuchElementException | TimeoutException e) {
+            throw new Exception("Login failed. Please check credentials!", e);
         }
     }
 
-    public void logout() {
+    public void logout() throws Exception {
         driver.get(URL + "/my.asp");
-        WebElement logoutLink = driver.findElement(By.id("idMyPageLogout"));
+        WebElement logoutLink = driver.findElement(getLogout(driver));
         logoutLink.click();
+    }
+
+    private static By getLogout(WebDriver driver) throws Exception {
+        if (!new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//button[contains(text(),'View Classic Layout')]"))).isEmpty()) {
+            return By.xpath("//button[@class='bl-btn' and contains(text(),'Log out')]");
+        } else if (!new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'View new My BL')]"))).isEmpty()) {
+            return By.id("idMyPageLogout");
+        }
+        throw new Exception("Can not determine whether old or new My BL is used.");
     }
 }

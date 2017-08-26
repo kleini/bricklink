@@ -8,6 +8,14 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="brickStoreXML">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Inventory"/>
+        <xs:element minOccurs="0" ref="GuiState"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="BrickStockXML">
     <xs:complexType>
       <xs:sequence>
@@ -44,6 +52,7 @@
           <xs:element ref="OrigPrice"/>
         </xs:choice>
         <xs:element ref="OrigQty"/>
+        <xs:element minOccurs="0" ref="LotID"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -59,10 +68,11 @@
   <xs:element name="Qty" type="xs:integer"/>
   <xs:element name="Price" type="xs:decimal"/>
   <xs:element name="Condition" type="xs:NCName"/>
-  <xs:element name="Remarks" type="xs:NCName"/>
+  <xs:element name="Remarks" type="xs:string"/>
   <xs:element name="Bulk" type="xs:integer"/>
   <xs:element name="OrigPrice" type="xs:decimal"/>
   <xs:element name="OrigQty" type="xs:integer"/>
+  <xs:element name="LotID" type="xs:integer"/>
   <xs:element name="GuiState">
     <xs:complexType>
       <xs:sequence>

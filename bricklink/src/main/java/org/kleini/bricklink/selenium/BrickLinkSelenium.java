@@ -7,6 +7,7 @@ package org.kleini.bricklink.selenium;
 import static org.kleini.bricklink.api.ConfigurationProperty.LOGIN;
 import static org.kleini.bricklink.api.ConfigurationProperty.PASSWORD;
 import java.io.Closeable;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -71,8 +72,12 @@ public final class BrickLinkSelenium implements Closeable {
     }
 
     @Override
-    public void close() {
-        loginPage.logout();
+    public void close() throws IOException {
+        try {
+            loginPage.logout();
+        } catch (Exception e) {
+            throw new IOException(e.getMessage(), e);
+        }
         driver.quit();
     }
 
