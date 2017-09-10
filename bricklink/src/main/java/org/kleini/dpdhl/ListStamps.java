@@ -66,21 +66,17 @@ public class ListStamps {
         new ListStamps(configuration).printProducts();
     }
 
-    private void something() {
-        
-    }
-
     private void printProducts() {
         GetProductListRequestType prodListType = new GetProductListRequestType();
         prodListType.setDedicatedProducts(true);
         prodListType.setMandantID(configuration.getProperty("org.kleini.prodws.mandantId"));
         prodListType.setResponseMode(new BigInteger("0"));
-        //prodListType.setReferenceDate(value);
+//        prodListType.setReferenceDate(value);
 
         GetProductListResponseType response = port.getProductList(prodListType).getResponse();
         for (BasicProductType product : response.getBasicProductList().getBasicProduct()) {
             NumericValueType weight = product.getWeight();
-            System.out.println(product.getExtendedIdentifier().getName());
+            System.out.println(product.getExtendedIdentifier().getName() + "," + product.getExtendedIdentifier().getProdWSID());
             if (null != weight) {
                 System.out.println("  Weight: " + product.getWeight().getMaxValue() + product.getWeight().getUnit() + " ");
             }
