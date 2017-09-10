@@ -1,4 +1,7 @@
 dist: trusty
+sudo: false
 language: java
+script:
+  - gradle check
 jdk:
   - openjdk8
