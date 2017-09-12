@@ -88,3 +88,10 @@ task determineSetValues(type: JavaExec) {
     args appArgs.split(',')
   }
 }
+
+task listStamps(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main 'org.kleini.dpdhl.ListStamps'
+  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
+}
+
