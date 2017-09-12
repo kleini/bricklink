@@ -10,7 +10,7 @@ jobs:
   include:
     - script:
         - gradle check
-    - stage: automation
+    - stage: set values
       addons:
         chrome: stable
         apt:
@@ -32,3 +32,9 @@ jobs:
         - gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
         - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
       if: type IN (cron)
+    - stage: list stamps
+      script:
+        - echo org.kleini.prodws.mandantId=$PRODWS_MANDANTID >bricklink/src/main/resources/myconfiguration.properties
+        - echo org.kleini.prodws.login=$PRODWS_LOGIN >>bricklink/src/main/resources/myconfiguration.properties
+        - echo org.kleini.prodws.password=$PRODWS_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
+        - gradle bricklink:listStamps
