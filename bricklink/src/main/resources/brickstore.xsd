@@ -46,6 +46,7 @@
         <xs:element ref="Qty"/>
         <xs:element minOccurs="0" ref="Price"/>
         <xs:element ref="Condition"/>
+        <xs:element minOccurs="0" ref="Comments"/>
         <xs:element minOccurs="0" ref="Remarks"/>
         <xs:choice minOccurs="0">
           <xs:element ref="Bulk"/>
@@ -68,6 +69,7 @@
   <xs:element name="Qty" type="xs:integer"/>
   <xs:element name="Price" type="xs:decimal"/>
   <xs:element name="Condition" type="xs:NCName"/>
+  <xs:element name="Comments" type="xs:string"/>
   <xs:element name="Remarks" type="xs:string"/>
   <xs:element name="Bulk" type="xs:integer"/>
   <xs:element name="OrigPrice" type="xs:decimal"/>
