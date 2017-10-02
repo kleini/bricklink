@@ -76,7 +76,8 @@ public class ListStamps {
         GetProductListResponseType response = port.getProductList(prodListType).getResponse();
         for (BasicProductType product : response.getBasicProductList().getBasicProduct()) {
             NumericValueType weight = product.getWeight();
-            System.out.println(product.getExtendedIdentifier().getName() + "," + product.getExtendedIdentifier().getProdWSID());
+            System.out.println(product.getExtendedIdentifier().getProdWSID());
+            System.out.println(product.getExtendedIdentifier().getName());
             if (null != weight) {
                 System.out.println("  Weight: " + product.getWeight().getMaxValue() + product.getWeight().getUnit() + " ");
             }
@@ -85,7 +86,7 @@ public class ListStamps {
             printDestination(product.getDestinationArea());
         }
         for (SalesProductType product : response.getSalesProductList().getSalesProduct()) {
-            System.out.println(product.getExtendedIdentifier().getName());
+            System.out.println(product.getExtendedIdentifier().getProdWSID());
             NumericValueType weight = product.getWeight();
             System.out.println(product.getExtendedIdentifier().getName());
             if (null != weight) {
