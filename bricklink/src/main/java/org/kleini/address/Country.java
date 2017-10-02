@@ -106,7 +106,7 @@ public enum Country {
     GU(null),
     GW(null),
     GY(null),
-    HK("Hong Kong"),
+    HK("HKG", "Hong Kong"),
     HM(null),
     HN(null),
     HR("Croatia"),
@@ -262,14 +262,25 @@ public enum Country {
     ZM(null),
     ZW(null);
 
+    private final String threeLetterCode;
     private final String name;
 
     Country(String name) {
+        this.threeLetterCode = null;
+        this.name = name;
+    }
+
+    Country(String threeLetterCode, String name) {
+        this.threeLetterCode = threeLetterCode;
         this.name = name;
     }
 
     public static Country parse(String value) {
         return Country.valueOf(value.toUpperCase());
+    }
+
+    public String getThreeLetterCode() {
+        return threeLetterCode;
     }
 
     public String getName() {
