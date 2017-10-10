@@ -63,6 +63,7 @@ public class Utils {
         if (driver instanceof JavascriptExecutor) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView(false);", e);
+            Thread.sleep(200);
             return e;
         }
         throw new Exception("WebDriver is no Javascript executor.");
