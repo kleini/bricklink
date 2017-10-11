@@ -65,6 +65,7 @@ public final class Formatter {
             // COUNTRY
             addStandard(sb, address);
             break;
+        case AE:
         case AU:
         case JP:
         case KR:
@@ -75,7 +76,7 @@ public final class Formatter {
             // fullname
             // street1
             // (street2)
-            // city, (stateOrProvince) postalCode
+            // city, (stateOrProvince) (postalCode)
             // COUNTRY
             addStandard2(sb, address);
             break;
@@ -160,14 +161,14 @@ public final class Formatter {
      * fullname
      * street1
      * (street2)
-     * city, (stateOrProvince) postalCode
+     * city, (stateOrProvince) (postalCode)
      * COUNTRY
      */
     private static void addStandard2(StringBuilder sb, Address address) {
         addNameAndStreet(sb, address);
         sb.append(address.getCityName()); sb.append(", ");
         appendNotNull(sb, address.getStateOrProvince(), " ");
-        sb.append(address.getPostalCode()); sb.append('\n');
+        appendNotNull(sb, address.getPostalCode()); lb(sb);
         addCountry(sb, address);
     }
 
