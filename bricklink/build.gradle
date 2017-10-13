@@ -76,5 +76,7 @@ task determineSetValues(type: JavaExec) {
   classpath = sourceSets.main.runtimeClasspath
   main = 'org.kleini.bricklink.DetermineSetValues'
   systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
-  args appArgs.split(',')
+  if (project.hasProperty("appArgs")) {
+    args appArgs.split(',')
+  }
 }
