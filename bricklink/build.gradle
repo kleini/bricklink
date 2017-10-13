@@ -1,16 +1,22 @@
-version = '0.8.3'
+version = '0.8.4'
+
+repositories {
+  maven {
+    url 'https://jitpack.io'
+  }
+}
 
 dependencies {
   compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
   compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
   compile 'net.sf.opencsv:opencsv:2.3'
-  compile 'org.seleniumhq.selenium:selenium-java:2.53.1'
-  compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.1'
-  compile 'org.seleniumhq.selenium:selenium-chrome-driver:2.53.1'
-  compile('com.codeborne:phantomjsdriver:1.2.1') {
-    exclude group: 'org.seleniumhq.selenium', module: 'selenium-java'
-    exclude group: 'org.seleniumhq.selenium', module: 'selenium-remote-driver'
+  compile(group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.6.0') {
+    exclude group: 'org.seleniumhq.selenium', module: 'selenium-ie-driver'
+    exclude group: 'org.seleniumhq.selenium', module: 'selenium-safari-driver'
+    exclude group: 'org.seleniumhq.selenium', module: 'selenium-opera-driver'
+    exclude group: 'org.seleniumhq.selenium', module: 'selenium-edge-driver'
   }
+  compile group: 'com.github.detro', name: 'ghostdriver', version: '2.1.0'
   testCompile 'junit:junit:4.11'
 }
 
