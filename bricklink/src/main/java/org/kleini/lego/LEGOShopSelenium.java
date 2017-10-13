@@ -2,6 +2,7 @@ package org.kleini.lego;
 
 import java.io.Closeable;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,10 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  * set nummer span[class='item-code']
@@ -35,11 +34,11 @@ public class LEGOShopSelenium implements Closeable {
         } else if ("chrome".equals(browser)) {
             driver = new ChromeDriver();
         } else {
-            DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-            // --webdriver-loglevel=DEBUG
-            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] { "--ssl-protocol=any" });
-            PhantomJSDriver phantom = new PhantomJSDriver(capabilities);
-            driver = phantom;
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("headless");
+            options.addArguments("disable-gpu");
+            options.addArguments("no-sandbox");
+            driver = new ChromeDriver(options);
         }
     }
 
