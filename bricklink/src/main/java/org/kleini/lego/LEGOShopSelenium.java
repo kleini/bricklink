@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -25,7 +23,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public class LEGOShopSelenium implements Closeable {
 
-    private static final String URL = "https://shop.lego.com/de-DE/Creator-Sets?S1=&count=18&do=json-db&showRetired=false&page=1";
+    private static final String URL = "https://shop.lego.com/de-DE/creator-3-in-1-sets?cc=de&count=1000&do=json-db&lang=de&showRetired=false";
 
     private final WebDriver driver;
 
@@ -54,40 +52,7 @@ public class LEGOShopSelenium implements Closeable {
 
     public List<Set> getAvailableSets() {
         driver.get(URL);
-        List<Set> retval = readSetsFromPage();
-        WebElement nextPageLink = null;
-        int lastSetNumber = 0;
-        do {
-            boolean found = false;
-            do {
-                found = false;
-                List<WebElement> elements = driver.findElements(By.cssSelector("div[data-test='product-leaf-group'] > div:last-of-type[data-test^='product-leaf-'] > div > span[data-test='product-leaf-id']"));
-                try {
-                    for (WebElement element : elements) {
-                        if (lastSetNumber == Integer.parseInt(element.getText())) {
-                            found = true;
-                        }
-                    }
-                } catch (StaleElementReferenceException e) {
-                    found = true;
-                }
-            } while (found);
-            WebElement indexE = driver.findElement(By.cssSelector("div[data-test='pagination']"));
-            String text = indexE.getText().replaceAll("\n", "").replaceAll("WEITER", "").replaceAll("ZUR\u00DCCK", "");
-            System.out.println(text);
-            List<Set> setsFromPage = readSetsFromPage();
-            lastSetNumber = setsFromPage.get(setsFromPage.size() - 1).getIdentifier();
-            retval.addAll(setsFromPage);
-            try {
-                nextPageLink = driver.findElement(By.cssSelector("a[class='pagination__next']"));
-            } catch (NoSuchElementException e) {
-                nextPageLink = null;
-            }
-            if (null != nextPageLink) {
-                nextPageLink.click();
-            }
-        } while (null != nextPageLink);
-        return retval;
+        return readSetsFromPage();
     }
 
     private List<Set> readSetsFromPage() {
