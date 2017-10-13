@@ -1,8 +1,8 @@
 package org.kleini.lego;
 
+import static org.kleini.selenium.Utils.headlessChrome;
 import java.io.Closeable;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,13 +11,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  * set nummer span[class='item-code']
- *
- *
+ * *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 public class LEGOShopSelenium implements Closeable {
@@ -34,11 +32,7 @@ public class LEGOShopSelenium implements Closeable {
         } else if ("chrome".equals(browser)) {
             driver = new ChromeDriver();
         } else {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("headless");
-            options.addArguments("disable-gpu");
-            options.addArguments("no-sandbox");
-            driver = new ChromeDriver(options);
+            driver = headlessChrome();
         }
     }
 

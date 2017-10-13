@@ -26,14 +26,12 @@ import org.kleini.bricklink.selenium.catalog.NoSuchPartException;
 import org.kleini.bricklink.selenium.catalog.PartOutPage;
 import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
 import org.kleini.bricklink.selenium.data.PartOutData;
+import org.kleini.selenium.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -58,10 +56,7 @@ public final class BrickLinkSelenium implements Closeable {
         } else if ("chrome".equals(browser)) {
             driver = new ChromeDriver();
         } else {
-            DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
-            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, "--logLevel=DEBUG");
-            capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, new String[] {"--ssl-protocol=tlsv1"});
-            driver = new PhantomJSDriver(capabilities);
+            driver = Utils.headlessChrome();
         }
         loginPage = new LoginPage(driver, login);
         loginPage.login(password);

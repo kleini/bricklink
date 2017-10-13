@@ -11,7 +11,9 @@ Build status
 Requirements
 ------------
 - Gradle
-- PhantomJS, Firefox or Chrome
+- PhantomJS, Firefox
+- Chrome 59 for headless mode
+- ChromeDriver 2.33 for headless mode
 
 Compile
 -------
