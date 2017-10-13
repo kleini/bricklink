@@ -8,6 +8,8 @@ import java.util.concurrent.Callable;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
  * {@link Utils}
@@ -68,4 +70,16 @@ public class Utils {
         }
         throw new Exception("WebDriver is no Javascript executor.");
     }
+
+    /**
+     * Requires ChromeDriver 2.33 and Chrome 59.
+     */
+    public static WebDriver headlessChrome() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("headless");
+        options.addArguments("disable-gpu");
+        options.addArguments("no-sandbox");
+        return new ChromeDriver(options);
+    }
+
 }
