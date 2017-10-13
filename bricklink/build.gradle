@@ -71,3 +71,10 @@ task info4LEGOarticles(type: JavaExec) {
     args System.getProperty("exec.args") .split()
   }
 }
+
+task determineSetValues(type: JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.kleini.bricklink.DetermineSetValues'
+  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
+  args appArgs.split(',')
+}
