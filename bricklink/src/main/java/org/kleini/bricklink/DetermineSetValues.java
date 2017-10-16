@@ -81,8 +81,10 @@ public class DetermineSetValues {
                 return o2.getMarge().compareTo(o1.getMarge());
             }
         });
+        File of = new File(args[0]);
+        System.out.println("Writing output file to " + of.getAbsolutePath());
         try (
-            FileOutputStream fos = new FileOutputStream(new File(args[0]));
+            FileOutputStream fos = new FileOutputStream(of);
             OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
         ) {
             for (Margin marge : output) {
