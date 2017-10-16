@@ -3,6 +3,9 @@ sudo: false
 
 addons:
   chrome: stable
+  apt:
+    packages:
+    - lftp
 
 install:
   - wget -N http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -P ~/
@@ -17,8 +20,10 @@ script:
   - whereis google-chrome-stable
   - whereis chromedriver
   - gradle check
+  - export DATE=$(date +%Y%m%d)
   - echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
   - echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
-  - gradle bricklink:determineSetValues -PappArgs=setValues.csv
+  - gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.csv
+  - lftp -e "set sftp:auto-confirm yes; open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put setValues-${DATE}.txt; exit"
 jdk:
   - openjdk8
