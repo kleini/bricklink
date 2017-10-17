@@ -31,4 +31,4 @@ jobs:
         - export DATE=$(date +%Y%m%d)
         - gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
         - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
-      if: type IN (cron, push, pull_reqest)
+      if: type IN (cron)
