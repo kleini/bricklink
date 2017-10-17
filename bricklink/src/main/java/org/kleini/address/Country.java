@@ -280,6 +280,9 @@ public enum Country {
     }
 
     public String getThreeLetterCode() {
+        if (null == threeLetterCode) {
+            throw new UnsupportedOperationException("Three letter code for " + this + " is not defined.");
+        }
         return threeLetterCode;
     }
 

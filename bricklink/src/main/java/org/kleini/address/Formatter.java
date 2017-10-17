@@ -61,7 +61,7 @@ public final class Formatter {
             // street1
             // (street2)
             // (postalCode )(city)
-            // stateOrProvince
+            // (stateOrProvince)
             // COUNTRY
             addStandard(sb, address);
             break;
@@ -90,6 +90,15 @@ public final class Formatter {
         return sb.toString();
     }
 
+    public static void format(Address address, LineFormat format) throws Exception {
+        switch (address.getCountry()) {
+        case DE:
+            formatStandard(address, format);
+        default:
+            throw new Exception("Formatter for country " + address.getCountry().getName() + " missing.");
+        }
+    }
+
     /**
      * fullname
      * street1
@@ -103,8 +112,25 @@ public final class Formatter {
         }
     }
 
+    /**
+     * fullname
+     * street1
+     * (street2)
+     */
+    private static void formatNameAndStreet(Address address, LineFormat format) {
+        format.setLine1(address.getName());
+        format.setLine2(address.getStreet1());
+        if (null != address.getStreet2() && address.getStreet2().length() > 0) {
+            format.setLine3(address.getStreet2());
+        }
+    }
+
     private static void addCountry(StringBuilder sb, Address address) {
         sb.append(address.getCountryName().toUpperCase());
+    }
+
+    private static void formatCountry(Address address, LineFormat format) {
+        format.setCountry(address.getCountryName().toUpperCase());
     }
 
     private static void lb(StringBuilder sb) {
@@ -133,7 +159,7 @@ public final class Formatter {
      * street1
      * (street2)
      * (postalCode )(city)
-     * stateOrProvince
+     * (stateOrProvince)
      * COUNTRY
      */
     private static void addStandard(StringBuilder sb, Address address) {
@@ -155,6 +181,31 @@ public final class Formatter {
             sb.append(address.getStateOrProvince()); lb(sb);
         }
         addCountry(sb, address);
+    }
+
+    /**
+     * fullname
+     * street1
+     * (street2)
+     * (postalCode )(city)
+     * (stateOrProvince)
+     * COUNTRY
+     */
+    private static void formatStandard(Address address, LineFormat format) {
+        formatNameAndStreet(address, format);
+        if (null != address.getPostalCode()) {
+            format.setZip(address.getPostalCode());
+        }
+        if (null != address.getCityName()) {
+            format.setLine4(address.getCityName());
+        }
+        if (Country.DE == address.getCountry()) {
+            return;
+        }
+        if (null != address.getStateOrProvince()) {
+            throw new UnsupportedOperationException("state or province is currently not implemented");
+        }
+        formatCountry(address, format);
     }
 
     /**
