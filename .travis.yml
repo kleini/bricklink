@@ -1,29 +1,34 @@
 dist: trusty
 sudo: false
 
-addons:
-  chrome: stable
-  apt:
-    packages:
-    - lftp
-
-install:
-  - wget -N http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -P ~/
-  - unzip ~/chromedriver_linux64.zip -d ~/
-  - rm ~/chromedriver_linux64.zip
-  - sudo mv -f ~/chromedriver /usr/local/share/
-  - sudo chmod +x /usr/local/share/chromedriver
-  - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-
-language: java
-script:
-  - whereis google-chrome-stable
-  - whereis chromedriver
-  - gradle check
-  - export DATE=$(date +%Y%m%d)
-  - echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
-  - echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
-  - gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
-  - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
 jdk:
   - openjdk8
+
+language: java
+
+jobs:
+  include:
+    - script:
+        - gradle check
+    - stage: automation
+      addons:
+        chrome: stable
+        apt:
+          packages:
+            - lftp
+      install:
+        - wget -N http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip -P ~/
+        - unzip ~/chromedriver_linux64.zip -d ~/
+        - rm ~/chromedriver_linux64.zip
+        - sudo mv -f ~/chromedriver /usr/local/share/
+        - sudo chmod +x /usr/local/share/chromedriver
+        - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+      script:
+        - whereis google-chrome-stable
+        - whereis chromedriver
+        - echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
+        - echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
+        - export DATE=$(date +%Y%m%d)
+        - gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
+        - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
+      if: type IN (cron, push, pull_reqest)
