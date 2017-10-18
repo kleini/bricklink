@@ -1,4 +1,8 @@
-package de.dpag.oneclickforapp.webservice;
+/*
+ * GPL v3
+ */
+
+package org.kleini.soap;
 
 import java.io.PrintStream;
 import java.util.Set;
@@ -8,10 +12,9 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-
 public class SOAPLoggingHandler implements SOAPHandler<SOAPMessageContext> {
 
-    private static PrintStream out = System.out;
+    private static PrintStream out = System.err;
 
     public SOAPLoggingHandler() {
         super();
