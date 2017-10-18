@@ -16,6 +16,7 @@ import de.deutschepost.dpdhl.wsprovider.dataobjects.CountryGroupType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.CountryType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.CurrencyAmountType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.DestinationAreaType;
+import de.deutschepost.dpdhl.wsprovider.dataobjects.ExternIdentifierType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListRequestType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListResponseType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListResponseType.AdditionalProductList;
@@ -71,7 +72,7 @@ public class ListStamps {
 
     private void printProducts() {
         GetProductListRequestType prodListType = new GetProductListRequestType();
-        prodListType.setDedicatedProducts(false);
+        prodListType.setDedicatedProducts(true);
         prodListType.setMandantID(configuration.getProperty("org.kleini.prodws.mandantId"));
         prodListType.setResponseMode(new BigInteger("0"));
         // complete list if not defined
@@ -84,7 +85,10 @@ public class ListStamps {
         if (null != basicProductList) {
             for (BasicProductType product : basicProductList.getBasicProduct()) {
                 NumericValueType weight = product.getWeight();
-                System.out.println(product.getExtendedIdentifier().getProdWSID());
+                for (ExternIdentifierType externIdentifierType : product.getExtendedIdentifier().getExternIdentifier()) {
+                    System.out.print(externIdentifierType.getId() + " ");
+                }
+                System.out.println();
                 System.out.println(product.getExtendedIdentifier().getName());
                 if (null != weight) {
                     System.out.println("  Weight: " + product.getWeight().getMaxValue() + product.getWeight().getUnit() + " ");
@@ -96,7 +100,10 @@ public class ListStamps {
         }
         System.out.println("Verkaufsprodukte");
         for (SalesProductType product : response.getSalesProductList().getSalesProduct()) {
-            System.out.println(product.getExtendedIdentifier().getProdWSID());
+            for (ExternIdentifierType externIdentifierType : product.getExtendedIdentifier().getExternIdentifier()) {
+                System.out.print(externIdentifierType.getId() + " ");
+            }
+            System.out.println();
             NumericValueType weight = product.getWeight();
             System.out.println(product.getExtendedIdentifier().getName());
             if (null != weight) {
