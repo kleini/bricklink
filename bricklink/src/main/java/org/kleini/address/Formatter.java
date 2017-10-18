@@ -92,11 +92,19 @@ public final class Formatter {
 
     public static void format(Address address, LineFormat format) throws Exception {
         switch (address.getCountry()) {
+        case BE:
         case DE:
             formatStandard(address, format);
+            break;
         default:
             throw new Exception("Formatter for country " + address.getCountry().getName() + " missing.");
         }
+        compare(format, format(address));
+    }
+
+    private static void compare(LineFormat format, String test) {
+        StringBuilder sb = new StringBuilder();
+        // FIXME Auto-generated method stub
     }
 
     /**
