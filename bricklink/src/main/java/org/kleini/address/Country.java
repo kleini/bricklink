@@ -31,7 +31,7 @@ public enum Country {
     BA(null),
     BB(null),
     BD(null),
-    BE("Belgium"),
+    BE("BEL", "Belgium"),
     BF(null),
     BG("Bulgaria"),
     BH(null),

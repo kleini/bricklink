@@ -10,6 +10,7 @@ import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
 import org.kleini.bricklink.api.Configuration;
+import de.deutschepost.dpdhl.wsprovider.dataobjects.AdditionalProductType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.BasicProductType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.CountryGroupType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.CountryType;
@@ -17,6 +18,8 @@ import de.deutschepost.dpdhl.wsprovider.dataobjects.CurrencyAmountType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.DestinationAreaType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListRequestType;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListResponseType;
+import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListResponseType.AdditionalProductList;
+import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListResponseType.BasicProductList;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListResponseType.ShortSalesProductList;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.GetProductListResponseType.SpecialServiceList;
 import de.deutschepost.dpdhl.wsprovider.dataobjects.InternationalDestinationAreaType;
@@ -68,23 +71,30 @@ public class ListStamps {
 
     private void printProducts() {
         GetProductListRequestType prodListType = new GetProductListRequestType();
-        prodListType.setDedicatedProducts(true);
+        prodListType.setDedicatedProducts(false);
         prodListType.setMandantID(configuration.getProperty("org.kleini.prodws.mandantId"));
         prodListType.setResponseMode(new BigInteger("0"));
+        // complete list if not defined
+        // prodListType.setOnlyChanges(false);
 //        prodListType.setReferenceDate(value);
 
         GetProductListResponseType response = port.getProductList(prodListType).getResponse();
-        for (BasicProductType product : response.getBasicProductList().getBasicProduct()) {
-            NumericValueType weight = product.getWeight();
-            System.out.println(product.getExtendedIdentifier().getProdWSID());
-            System.out.println(product.getExtendedIdentifier().getName());
-            if (null != weight) {
-                System.out.println("  Weight: " + product.getWeight().getMaxValue() + product.getWeight().getUnit() + " ");
+        System.out.println("Basisprodukte");
+        BasicProductList basicProductList = response.getBasicProductList();
+        if (null != basicProductList) {
+            for (BasicProductType product : basicProductList.getBasicProduct()) {
+                NumericValueType weight = product.getWeight();
+                System.out.println(product.getExtendedIdentifier().getProdWSID());
+                System.out.println(product.getExtendedIdentifier().getName());
+                if (null != weight) {
+                    System.out.println("  Weight: " + product.getWeight().getMaxValue() + product.getWeight().getUnit() + " ");
+                }
+                System.out.println("  Preis: " + product.getPriceDefinition().getNetPrice().getValue() + product.getPriceDefinition().getNetPrice().getCurrency() + " " +
+                    product.getPriceDefinition().getGrossPrice().getValue() + product.getPriceDefinition().getNetPrice().getCurrency());
+                printDestination(product.getDestinationArea());
             }
-            System.out.println("  Preis: " + product.getPriceDefinition().getNetPrice().getValue() + product.getPriceDefinition().getNetPrice().getCurrency() + " " +
-                product.getPriceDefinition().getGrossPrice().getValue() + product.getPriceDefinition().getNetPrice().getCurrency());
-            printDestination(product.getDestinationArea());
         }
+        System.out.println("Verkaufsprodukte");
         for (SalesProductType product : response.getSalesProductList().getSalesProduct()) {
             System.out.println(product.getExtendedIdentifier().getProdWSID());
             NumericValueType weight = product.getWeight();
@@ -99,15 +109,24 @@ public class ListStamps {
             System.out.println(priceDefinition.getPriceFormula());
             printDestination(product.getDestinationArea());
         }
+        System.out.println("Zusatzleistungen");
+        AdditionalProductList additionalProductList = response.getAdditionalProductList();
+        if (null != additionalProductList) {
+            for (AdditionalProductType product : additionalProductList.getAdditionalProduct()) {
+                System.out.println(product.getExtendedIdentifier().getName());
+            }
+        }
+        System.out.println("Verkaufsprodukte flach");
         ShortSalesProductList shortSalesProductList = response.getShortSalesProductList();
         if (null != shortSalesProductList) {
-            for (ShortSalesProductType product : response.getShortSalesProductList().getShortSalesProduct()) {
+            for (ShortSalesProductType product : shortSalesProductList.getShortSalesProduct()) {
                 System.out.println(product.getName());
             }
         }
+        System.out.println("Sonstige Services");
         SpecialServiceList specialServiceList = response.getSpecialServiceList();
         if (null != specialServiceList) {
-            for (SpecialServiceType sservice : response.getSpecialServiceList().getSpecialService()) {
+            for (SpecialServiceType sservice : specialServiceList.getSpecialService()) {
                 System.out.println(sservice.getExtendedIdentifier().getName());
             }
         }
