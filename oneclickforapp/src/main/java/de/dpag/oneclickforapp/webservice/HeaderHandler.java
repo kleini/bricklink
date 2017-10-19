@@ -16,7 +16,6 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-
 /**
  * {@link HeaderHandler}
  *
@@ -24,11 +23,11 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
  */
 public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 
-    private Header header;
+    private PartnerSignature partner;
 
-    public HeaderHandler(Header header) {
+    public HeaderHandler(PartnerSignature partner) {
         super();
-        this.header = header;
+        this.partner = partner;
     }
 
     @Override
@@ -39,25 +38,28 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
                 SOAPMessage message = context.getMessage();
                 SOAPFactory factory = SOAPFactory.newInstance();
 
-                SOAPElement partner = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "PARTNER_ID"));
-                partner.addTextNode(header.getPartnerId());
-                SOAPElement timestamp = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "REQUEST_TIMESTAMP"));
-                timestamp.addTextNode(header.getTimestamp());
-                SOAPElement keyPhase = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "KEY_PHASE"));
-                keyPhase.addTextNode(Integer.toString(header.getKeyPhase()));
-                SOAPElement signature = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "PARTNER_SIGNATURE"));
-                signature.addTextNode(header.getSignature());
-
                 SOAPHeader header = message.getSOAPHeader();
                 if (header == null) {
                     SOAPEnvelope envelope = message.getSOAPPart().getEnvelope();
                     header = envelope.addHeader();
                 }
 
-                header.addChildElement(partner);
+                SOAPElement partnerId = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "PARTNER_ID"));
+                partnerId.addTextNode(partner.getPartnerId());
+                header.addChildElement(partnerId);
+
+                SOAPElement timestamp = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "REQUEST_TIMESTAMP"));
+                timestamp.addTextNode(partner.getTimestamp());
                 header.addChildElement(timestamp);
+
+                SOAPElement keyPhase = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "KEY_PHASE"));
+                keyPhase.addTextNode(Integer.toString(partner.getKeyPhase()));
                 header.addChildElement(keyPhase);
+
+                SOAPElement signature = factory.createElement(new QName("http://oneclickforpartner.dpag.de", "PARTNER_SIGNATURE"));
+                signature.addTextNode(partner.getSignature());
                 header.addChildElement(signature);
+
                 message.saveChanges();
             } catch (Exception e) {
                 e.printStackTrace();
