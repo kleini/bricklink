@@ -14,17 +14,17 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * {@link Header}
+ * {@link PartnerSignature}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
-public class Header {
+public class PartnerSignature {
 
     private final String partnerId;
     private final int keyPhase;
     private final String key;
 
-    public Header(String partnerId, int keyPhase, String key) {
+    public PartnerSignature(String partnerId, int keyPhase, String key) {
         super();
         this.partnerId = partnerId;
         this.keyPhase = keyPhase;
