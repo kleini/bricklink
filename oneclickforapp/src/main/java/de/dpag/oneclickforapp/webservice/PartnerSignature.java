@@ -45,6 +45,10 @@ public class PartnerSignature {
         return keyPhase;
     }
 
+    public String getKey() {
+        return key;
+    }
+
     public String getSignature() throws NoSuchAlgorithmException, UnsupportedEncodingException {
         String complete = partnerId + "::" + getTimestamp() + "::" + keyPhase + "::" + key;
         MessageDigest digest = MessageDigest.getInstance("MD5");
