@@ -71,6 +71,12 @@ public class Utils {
         throw new Exception("WebDriver is no Javascript executor.");
     }
 
+    public static WebElement chromeClick(WebDriver driver, WebElement e) throws Exception {
+        scrollTo(driver, e);
+        e.click();
+        return e;
+    }
+
     /**
      * Requires ChromeDriver 2.33 and Chrome 59.
      */
