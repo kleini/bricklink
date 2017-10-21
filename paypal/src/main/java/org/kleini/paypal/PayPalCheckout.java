@@ -5,7 +5,7 @@
 package org.kleini.paypal;
 
 import java.net.URL;
-import org.kleini.selenium.Utils;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.TimeoutException;
@@ -61,33 +61,50 @@ public final class PayPalCheckout {
     }
 
     public void checkoutInternal(String login, String password, String host) throws Exception {
-        new WebDriverWait(driver, 5).until(ExpectedConditions.invisibilityOfElementLocated(By.id("spinner")));
-        // Login in iframe
-        String lastHandle = driver.getWindowHandle();
-        WebElement iframe = driver.findElement(By.cssSelector("iframe[name=injectedUl]"));
-        driver.switchTo().frame(iframe);
-        try {
-            WebElement emailInput = driver.findElement(By.id("email"));
-            emailInput.clear();
-            emailInput.sendKeys(login);
-            WebElement passwordInput = driver.findElement(By.id("password"));
-            passwordInput.clear();
-            passwordInput.sendKeys(password);
-            driver.findElement(By.id("btnLogin")).click();
-        } finally {
-            driver.switchTo().window(lastHandle);
-        }
-        try {
-            WebElement error = new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(By.id("pageLevelErrors")));
-            if (error.isDisplayed()) {
-                throw new Exception("Login failed.");
+        new WebDriverWait(driver, 20).pollingEvery(0, TimeUnit.MILLISECONDS).until(ExpectedConditions.visibilityOfElementLocated(By.id("preloaderSpinner")));
+        new WebDriverWait(driver, 20).until(ExpectedConditions.invisibilityOfElementLocated(By.id("preloaderSpinner")));
+        while (true) {
+            try {
+                new WebDriverWait(driver, 1).until(ExpectedConditions.numberOfElementsToBe(By.id("btnLogin"), Integer.valueOf(1)));
+                break;
+            } catch (TimeoutException e) {
+                // No login button. Is this the pre page? 
+                if (!driver.findElements(By.xpath("//a[contains(text(),'Einloggen')]")).isEmpty()) {
+                    WebElement loginButton = driver.findElement(By.xpath("//a[contains(text(),'Einloggen')]"));
+                    loginButton.click();
+                    // Spinner is first not available at all in DOM. It appears only for very few milliseconds.
+                    new WebDriverWait(driver, 5).pollingEvery(0, TimeUnit.MILLISECONDS).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.id("spinner"), Integer.valueOf(0)));
+                    // Is suddenly there and visible and then removed 
+                    new WebDriverWait(driver, 5).until(ExpectedConditions.numberOfElementsToBe(By.id("spinner"), Integer.valueOf(0)));
+                } else {
+                    System.out.println("I am stuck. Please check current page.");
+                    Thread.sleep(20000);
+                    throw new Exception("PayPalCheckout is stuck.");
+                }
             }
-        } catch (TimeoutException e) {
-            // Good if the error was not displayed
         }
+        WebElement emailInput = driver.findElement(By.id("email"));
+        emailInput.clear();
+        emailInput.sendKeys(login);
+        WebElement passwordInput = driver.findElement(By.id("password"));
+        passwordInput.clear();
+        passwordInput.sendKeys(password);
+        driver.findElement(By.id("btnLogin")).click();
+
+        System.out.println("Check error");
+        new WebDriverWait(driver, 20).pollingEvery(0, TimeUnit.MILLISECONDS).until(ExpectedConditions.or(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("p.notification.notification-critical")),
+                ExpectedConditions.visibilityOfElementLocated(By.id("preloaderSpinner"))));
+        if (!driver.findElements(By.cssSelector("p.notification.notification-critical")).isEmpty()) {
+            throw new Exception("Login failed.");
+        }
+        System.out.println("Second after login");
+        new WebDriverWait(driver, 20).until(ExpectedConditions.invisibilityOfElementLocated(By.id("preloaderSpinner")));
+
         WebElement confirmButton = new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(By.id("confirmButtonTop")));
-        new WebDriverWait(driver, 5).until(ExpectedConditions.invisibilityOfElementLocated(By.id("spinner")));
-        Utils.tenaciousClick(confirmButton);
+//        System.out.println("" + confirmButton.isDisplayed());
+//        System.exit(0);
+        confirmButton.click();
         do {
             Thread.sleep(100);
         } while (driver.getCurrentUrl().contains(host));
