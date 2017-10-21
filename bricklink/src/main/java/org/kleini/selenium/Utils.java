@@ -5,7 +5,10 @@
 package org.kleini.selenium;
 
 import java.util.concurrent.Callable;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -88,4 +91,15 @@ public class Utils {
         return new ChromeDriver(options);
     }
 
+    public static void test(WebDriver driver, By by) {
+        boolean weiter = false;
+        do {
+            try {
+                WebElement element = driver.findElement(by);
+                System.out.println("" + System.currentTimeMillis() + " Sichtbar? " + element.isDisplayed());
+            } catch (NoSuchElementException e) {
+                System.out.println("" + System.currentTimeMillis() + " Missing element.");
+            }
+        } while (!weiter);
+    }
 }
