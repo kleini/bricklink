@@ -28,6 +28,9 @@ import de.dpag.oneclickforapp.webservice.PartnerSignature;
  */
 public class TopUpPostage {
 
+    private static final String SUCCESS_URL = "https://portokasse.deutschepost.de/portokasse/#/payment-success";
+    private static final String CANCEL_URL = "https://www.bricklink.com/myMsg.asp";
+
     private final WebDriver driver;
 
     public TopUpPostage(WebDriver driver) {
@@ -46,11 +49,11 @@ public class TopUpPostage {
             StringBuilder html = new StringBuilder();
             html.append("<form id=myForm method=post action=https://portokasse.deutschepost.de/portokasse/marketplace/enter-app-payment>");
             html.append(createInput("PARTNER_ID", partner.getPartnerId()));
-            html.append(createInput("PARTNER_SIGNATURE", getSignature(partner.getPartnerId(), partner.getTimestamp(), "http://kleini.org/success", "http://kleini.org/cancel", userToken, "1000", partner.getKey())));
+            html.append(createInput("PARTNER_SIGNATURE", getSignature(partner.getPartnerId(), partner.getTimestamp(), SUCCESS_URL, CANCEL_URL, userToken, "1000", partner.getKey())));
             html.append(createInput("REQUEST_TIMESTAMP", partner.getTimestamp()));
             html.append(createInput("KEY_PHASE", Integer.toString(partner.getKeyPhase())));
-            html.append(createInput("SUCCESS_URL", "https://www.bricklink.com"));
-            html.append(createInput("CANCEL_URL", "https://www.bricklink.com"));
+            html.append(createInput("SUCCESS_URL", SUCCESS_URL));
+            html.append(createInput("CANCEL_URL", CANCEL_URL));
             html.append(createInput("USER_TOKEN", userToken));
             html.append(createInput("BALANCE", "1000"));
             html.append("<input type=submit name=METHOD value=mysubmitbutton>");
