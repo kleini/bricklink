@@ -15,27 +15,43 @@ public interface LineFormat {
     /**
      * name of some company or firstname and lastname
      */
-    void setLine1(String line);
+    void setName(String name);
+
+    String getName();
 
     /**
-     * street or additional
+     * additional
      */
-    void setLine2(String line);
+    void setAdditional(String additional);
+
+    String getAdditional();
+
+    /**
+     * street
+     */
+    void setStreet(String line);
+
+    String getStreet();
 
     void setHouseNo(String number);
 
+    String getHouseNo();
+
     /**
-     * additional or street
+     * same line as line 4
      */
-    void setLine3(String line);
+    void setPostalCode(String zip);
+
+    String getPostalCode();
 
     /**
      * zip and city
      */
-    void setLine4(String line);
+    void setCity(String city);
 
-    void setZip(String zip);
+    String getCity();
 
     void setCountry(String country);
 
+    String getCountry();
 }
