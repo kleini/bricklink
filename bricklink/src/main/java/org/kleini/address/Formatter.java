@@ -92,6 +92,9 @@ public final class Formatter {
 
     public static void format(Address address, LineFormat format) throws Exception {
         switch (address.getCountry()) {
+        case CN:
+            formatChina(address, format);
+            break;
         case BE:
         case DE:
             formatStandard(address, format);
@@ -104,7 +107,17 @@ public final class Formatter {
 
     private static void compare(LineFormat format, String test) {
         StringBuilder sb = new StringBuilder();
-        // FIXME Auto-generated method stub
+        sb.append(format.getName()); lb(sb);
+        appendNotNull(sb, format.getAdditional()); lb(sb);
+        sb.append(format.getStreet());
+        if (!isEmpty(format.getHouseNo())) {
+            space(sb); sb.append(format.getHouseNo());
+        }
+        lb(sb);
+        appendNotNull(sb, format.getPostalCode(), " "); sb.append(format.getCity()); lb(sb);
+        sb.append(format.getCountry());
+        System.out.println("New formatted address: \n" + sb.toString());
+        System.out.println("Old formatted address: \n" + test);
     }
 
     /**
@@ -121,16 +134,16 @@ public final class Formatter {
     }
 
     /**
-     * fullname
-     * street1
-     * (street2)
+     * line 1: fullname
+     * line 2: (street2)
+     * line 3: street1
      */
     private static void formatNameAndStreet(Address address, LineFormat format) {
-        format.setLine1(address.getName());
-        format.setLine2(address.getStreet1());
-        if (null != address.getStreet2() && address.getStreet2().length() > 0) {
-            format.setLine3(address.getStreet2());
+        format.setName(address.getName());
+        if (!isEmpty(address.getStreet2())) {
+            format.setAdditional(address.getStreet2());
         }
+        format.setStreet(address.getStreet1());
     }
 
     private static void addCountry(StringBuilder sb, Address address) {
@@ -150,9 +163,9 @@ public final class Formatter {
     }
 
     private static void appendNotNull(StringBuilder sb, String text, String spacer) {
-        if (null != text && text.length() > 0) {
+        if (!isEmpty(text)) {
             sb.append(text);
-            if (null != spacer && spacer.length() > 0) {
+            if (!isEmpty(spacer)) {
                 sb.append(spacer);
             }
         }
@@ -160,6 +173,28 @@ public final class Formatter {
 
     private static void appendNotNull(StringBuilder sb, String text) {
         appendNotNull(sb, text, null);
+    }
+
+    private static boolean isEmpty(String text) {
+        return null == text || 0 == text.length();
+    }
+
+    private static String formatNotNull(String spacer, String... text) {
+        StringBuilder sb = new StringBuilder();
+        for (String tmp : text) {
+            if (!isEmpty(tmp)) {
+                sb.append(tmp);
+                sb.append(spacer);
+            }
+        }
+        if (sb.toString().endsWith(spacer)) {
+            sb.setLength(sb.length() - spacer.length());
+        }
+        return sb.toString();
+    }
+
+    private static String formatNotNull(String text) {
+        return isEmpty(text) ? "" : text;
     }
 
     /**
@@ -202,10 +237,10 @@ public final class Formatter {
     private static void formatStandard(Address address, LineFormat format) {
         formatNameAndStreet(address, format);
         if (null != address.getPostalCode()) {
-            format.setZip(address.getPostalCode());
+            format.setPostalCode(address.getPostalCode());
         }
         if (null != address.getCityName()) {
-            format.setLine4(address.getCityName());
+            format.setCity(address.getCityName());
         }
         if (Country.DE == address.getCountry()) {
             return;
@@ -242,6 +277,13 @@ public final class Formatter {
         sb.append(address.getCityName()); lb(sb);
         sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); lb(sb);
         addCountry(sb, address);
+    }
+
+    private static void formatChina(Address address, LineFormat format) {
+        formatNameAndStreet(address, format);
+        format.setPostalCode(formatNotNull(address.getPostalCode()));
+        format.setCity(formatNotNull(", ", address.getCityName(), address.getStateOrProvince()));
+        formatCountry(address, format);
     }
 
     private static void addChile(StringBuilder sb, Address address) {
