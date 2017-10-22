@@ -77,7 +77,7 @@ public final class PayPalCheckout {
                     // Is suddenly there and visible and then removed
                     new WebDriverWait(driver, 5).until(ExpectedConditions.numberOfElementsToBe(By.id("spinner"), Integer.valueOf(0)));
                 } else {
-                    System.out.println("I am stuck. Please check current page.");
+                    System.out.println("I am stuck. Please check current page. " + driver.findElements(By.id("spinner")) + " " + driver.findElements(By.id("preloaderSpinner")));
                     Thread.sleep(20000);
                     throw new Exception("PayPalCheckout is stuck.");
                 }
