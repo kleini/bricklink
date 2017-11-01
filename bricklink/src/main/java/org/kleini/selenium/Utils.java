@@ -5,7 +5,6 @@
 package org.kleini.selenium;
 
 import java.util.concurrent.Callable;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;

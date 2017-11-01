@@ -5,7 +5,6 @@
 package org.kleini.portokasse;
 
 import static org.kleini.selenium.Utils.chromeClick;
-
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
