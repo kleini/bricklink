@@ -93,6 +93,7 @@ public final class Formatter {
     public static void format(Address address, LineFormat format) throws Exception {
         switch (address.getCountry()) {
         case CN:
+        case HK:
             formatChina(address, format);
             break;
         case BE:
