@@ -1,9 +1,3 @@
-apply plugin: 'java'
-
-repositories {
-    jcenter()
-}
-
 configurations {
     wsimport
 }
@@ -12,9 +6,7 @@ group = 'de.deutschepost.dpdhl.wsprovider'
 version = '3.0'
 
 sourceSets {
-    wsimport {
-        java.srcDir "src/main/generated"
-    }
+    wsimport
     main {
         compileClasspath += wsimport.output
         runtimeClasspath += wsimport.output
@@ -22,20 +14,24 @@ sourceSets {
 }
 
 task wsimport(type:Exec) {
-    ext.destDir = file("${projectDir}/src/main/generated")
+    ext.srcDir = sourceSets.wsimport.java.srcDirs[0]
+    ext.outputDir = sourceSets.wsimport.output.classesDirs[0]
     doFirst {
-        wsimport.destDir.mkdirs()
-        sourceSets.main.output.classesDir.mkdirs()
+        wsimport.srcDir.mkdirs()
+        wsimport.outputDir.mkdirs()
     }
-    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', destDir, '-d', sourceSets.main.output.classesDir, '-keep', '-p', 'de.deutschepost.dpdhl.wsprovider.dataobjects', 'https://prodws.deutschepost.de:8443/ProdWSProvider_1_1/prodws?wsdl', '-Xnocompile'
+    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', srcDir, '-d', outputDir, '-keep', '-p', 'de.deutschepost.dpdhl.wsprovider.dataobjects', 'https://prodws.deutschepost.de:8443/ProdWSProvider_1_1/prodws?wsdl', '-Xnocompile'
+    onlyIf {
+        !wsimport.srcDir.exists()
+    }
 }
-wsimport.outputs.dir wsimport.destDir
-
-sourceSets.main.java.srcDirs.add('src/main/generated')
 
 compileWsimportJava.dependsOn(wsimport)
+compileJava.dependsOn(compileWsimportJava)
 
-compileJava {
-    dependsOn(compileWsimportJava)
-    source sourceSets.wsimport.java, sourceSets.main.java
+jar.from sourceSets.wsimport.runtimeClasspath
+sourcesJar.from sourceSets.wsimport.allJava, sourceSets.main.allJava
+
+clean {
+    delete sourceSets.wsimport.java.srcDirs
 }
