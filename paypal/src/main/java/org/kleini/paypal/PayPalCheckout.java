@@ -68,13 +68,13 @@ public final class PayPalCheckout {
                 new WebDriverWait(driver, 1).until(ExpectedConditions.numberOfElementsToBe(By.id("btnLogin"), Integer.valueOf(1)));
                 break;
             } catch (TimeoutException e) {
-                // No login button. Is this the pre page? 
+                // No login button. Is this the pre page?
                 if (!driver.findElements(By.xpath("//a[contains(text(),'Einloggen')]")).isEmpty()) {
                     WebElement loginButton = driver.findElement(By.xpath("//a[contains(text(),'Einloggen')]"));
                     loginButton.click();
                     // Spinner is first not available at all in DOM. It appears only for very few milliseconds.
                     new WebDriverWait(driver, 5).pollingEvery(0, TimeUnit.MILLISECONDS).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.id("spinner"), Integer.valueOf(0)));
-                    // Is suddenly there and visible and then removed 
+                    // Is suddenly there and visible and then removed
                     new WebDriverWait(driver, 5).until(ExpectedConditions.numberOfElementsToBe(By.id("spinner"), Integer.valueOf(0)));
                 } else {
                     System.out.println("I am stuck. Please check current page.");
