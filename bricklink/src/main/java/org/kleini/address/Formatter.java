@@ -56,6 +56,7 @@ public final class Formatter {
         case IT:
         case NL:
         case NO:
+        case PL:
         case SE:
             // fullname
             // street1
@@ -98,6 +99,7 @@ public final class Formatter {
             break;
         case BE:
         case DE:
+        case PL:
             formatStandard(address, format);
             break;
         default:
@@ -237,17 +239,10 @@ public final class Formatter {
      */
     private static void formatStandard(Address address, LineFormat format) {
         formatNameAndStreet(address, format);
-        if (null != address.getPostalCode()) {
-            format.setPostalCode(address.getPostalCode());
-        }
-        if (null != address.getCityName()) {
-            format.setCity(address.getCityName());
-        }
+        format.setPostalCode(formatNotNull(address.getPostalCode()));
+        format.setCity(formatNotNull(", ", address.getCityName(), address.getStateOrProvince()));
         if (Country.DE == address.getCountry()) {
             return;
-        }
-        if (null != address.getStateOrProvince()) {
-            throw new UnsupportedOperationException("state or province is currently not implemented");
         }
         formatCountry(address, format);
     }
