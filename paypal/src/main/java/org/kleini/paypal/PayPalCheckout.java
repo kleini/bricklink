@@ -62,9 +62,9 @@ public final class PayPalCheckout {
 
     public void checkoutInternal(String login, String password, String host) throws Exception {
         new WebDriverWait(driver, 20).pollingEvery(0, TimeUnit.MILLISECONDS).until(ExpectedConditions.visibilityOfElementLocated(By.id("preloaderSpinner")));
-        new WebDriverWait(driver, 20).until(ExpectedConditions.invisibilityOfElementLocated(By.id("preloaderSpinner")));
         while (true) {
             try {
+                new WebDriverWait(driver, 20).until(ExpectedConditions.invisibilityOfElementLocated(By.id("preloaderSpinner")));
                 new WebDriverWait(driver, 1).until(ExpectedConditions.numberOfElementsToBe(By.id("btnLogin"), Integer.valueOf(1)));
                 break;
             } catch (TimeoutException e) {
