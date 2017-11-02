@@ -190,7 +190,7 @@ public enum Country {
     PG(null),
     PH(null),
     PK(null),
-    PL("Poland"),
+    PL("POL", "Poland"),
     PM(null),
     PN(null),
     PR(null),
