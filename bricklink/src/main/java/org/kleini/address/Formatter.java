@@ -73,6 +73,7 @@ public final class Formatter {
         case MX:
         case MY:
         case US:
+        case VN:
         case ZA:
             // fullname
             // street1
@@ -95,10 +96,13 @@ public final class Formatter {
         switch (address.getCountry()) {
         case CN:
         case HK:
+        case VN:
             formatChina(address, format);
             break;
+        case AT:
         case BE:
         case DE:
+        case NO:
         case PL:
             formatStandard(address, format);
             break;
@@ -179,7 +183,7 @@ public final class Formatter {
     }
 
     private static boolean isEmpty(String text) {
-        return null == text || 0 == text.length();
+        return null == text || 0 == text.length() || "-".equals(text);
     }
 
     private static String formatNotNull(String spacer, String... text) {
