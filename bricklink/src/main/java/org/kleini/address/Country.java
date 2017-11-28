@@ -240,7 +240,7 @@ public enum Country {
     TV(null),
     TW("Taiwan"),
     TZ(null),
-    UA(null),
+    UA("UKR", "Ukraine"),
     UG(null),
     UK("United Kingdom"),
     UM(null),
