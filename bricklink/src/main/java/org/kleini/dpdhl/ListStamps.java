@@ -5,7 +5,14 @@
 package org.kleini.dpdhl;
 
 import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Binding;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.Handler;
@@ -70,7 +77,7 @@ public class ListStamps {
         new ListStamps(configuration).printProducts();
     }
 
-    private void printProducts() {
+    private void printProducts() throws DatatypeConfigurationException {
         GetProductListRequestType prodListType = new GetProductListRequestType();
         prodListType.setDedicatedProducts(true);
         prodListType.setMandantID(configuration.getProperty("org.kleini.prodws.mandantId"));
@@ -78,6 +85,18 @@ public class ListStamps {
         // complete list if not defined
         // prodListType.setOnlyChanges(false);
 //        prodListType.setReferenceDate(value);
+        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Berlin"), Locale.GERMANY);
+        cal.set(Calendar.YEAR, 2018);
+        cal.set(Calendar.MONTH, 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE, cal.getActualMinimum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND, cal.getActualMinimum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getActualMinimum(Calendar.MILLISECOND));
+        XMLGregorianCalendar xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+        if (false) {
+            prodListType.setReferenceDate(xcal);
+        }
 
         GetProductListResponseType response = port.getProductList(prodListType).getResponse();
         System.out.println("Basisprodukte");
