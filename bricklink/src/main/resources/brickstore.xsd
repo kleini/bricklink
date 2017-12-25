@@ -78,12 +78,14 @@
   <xs:element name="GuiState">
     <xs:complexType>
       <xs:sequence>
+        <xs:element minOccurs="0" ref="DifferenceMode"/>
         <xs:element ref="ItemView"/>
       </xs:sequence>
       <xs:attribute name="Application" use="required" type="xs:NCName"/>
       <xs:attribute name="Version" use="required" type="xs:integer"/>
     </xs:complexType>
   </xs:element>
+  <xs:element name="DifferenceMode" type="xs:string"/>
   <xs:element name="ItemView">
     <xs:complexType>
       <xs:sequence>
