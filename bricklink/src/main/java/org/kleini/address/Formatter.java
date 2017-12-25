@@ -11,6 +11,8 @@ package org.kleini.address;
  */
 public final class Formatter {
 
+    private static String LINE_FEED = "\n";
+
     private Formatter() {
         super();
     }
@@ -94,16 +96,22 @@ public final class Formatter {
 
     public static void format(Address address, LineFormat format) throws Exception {
         switch (address.getCountry()) {
-        case CN:
-        case HK:
-        case VN:
-            formatChina(address, format);
-            break;
         case AT:
         case BE:
+        case CN:
         case DE:
+        case HK:
         case NO:
         case PL:
+        case US:
+        case VN:
+            /**
+             * fullname
+             * street1
+             * (street2)
+             * (postalCode )(city), (stateOrProvince)
+             * COUNTRY
+             */
             formatStandard(address, format);
             break;
         default:
@@ -115,7 +123,7 @@ public final class Formatter {
     private static void compare(LineFormat format, String test) {
         StringBuilder sb = new StringBuilder();
         sb.append(format.getName()); lb(sb);
-        appendNotNull(sb, format.getAdditional()); lb(sb);
+        appendNotNull(sb, format.getAdditional(), LINE_FEED);
         sb.append(format.getStreet());
         if (!isEmpty(format.getHouseNo())) {
             space(sb); sb.append(format.getHouseNo());
@@ -162,7 +170,7 @@ public final class Formatter {
     }
 
     private static void lb(StringBuilder sb) {
-        sb.append('\n');
+        sb.append(LINE_FEED);
     }
 
     private static void space(StringBuilder sb) {
@@ -237,8 +245,7 @@ public final class Formatter {
      * fullname
      * street1
      * (street2)
-     * (postalCode )(city)
-     * (stateOrProvince)
+     * (postalCode )(city), (stateOrProvince)
      * COUNTRY
      */
     private static void formatStandard(Address address, LineFormat format) {
@@ -277,13 +284,6 @@ public final class Formatter {
         sb.append(address.getCityName()); lb(sb);
         sb.append(address.getStateOrProvince()); sb.append(", "); sb.append(address.getPostalCode()); lb(sb);
         addCountry(sb, address);
-    }
-
-    private static void formatChina(Address address, LineFormat format) {
-        formatNameAndStreet(address, format);
-        format.setPostalCode(formatNotNull(address.getPostalCode()));
-        format.setCity(formatNotNull(", ", address.getCityName(), address.getStateOrProvince()));
-        formatCountry(address, format);
     }
 
     private static void addChile(StringBuilder sb, Address address) {

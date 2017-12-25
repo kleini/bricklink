@@ -244,7 +244,7 @@ public enum Country {
     UG(null),
     UK("United Kingdom"),
     UM(null),
-    US("United States of America"),
+    US("USA", "United States of America"),
     UY(null),
     UZ(null),
     VA(null),
