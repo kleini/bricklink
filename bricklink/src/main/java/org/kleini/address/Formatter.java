@@ -251,9 +251,10 @@ public final class Formatter {
     private static void formatStandard(Address address, LineFormat format) {
         formatNameAndStreet(address, format);
         format.setPostalCode(formatNotNull(address.getPostalCode()));
-        format.setCity(formatNotNull(", ", address.getCityName(), address.getStateOrProvince()));
         if (Country.DE == address.getCountry()) {
-            return;
+            format.setCity(address.getCityName());
+        } else {
+            format.setCity(formatNotNull(", ", address.getCityName(), address.getStateOrProvince()));
         }
         formatCountry(address, format);
     }
