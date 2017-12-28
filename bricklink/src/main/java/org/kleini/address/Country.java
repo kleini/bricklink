@@ -68,7 +68,7 @@ public enum Country {
     CX(null),
     CY(null),
     CZ("Czech Republic"),
-    DE("Germany"),
+    DE("DEU", "Germany"),
     DJ(null),
     DK("Denmark"),
     DM(null),
