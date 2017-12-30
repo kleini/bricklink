@@ -100,6 +100,7 @@ public final class Formatter {
         case BE:
         case CN:
         case DE:
+        case FR:
         case HK:
         case NO:
         case PL:

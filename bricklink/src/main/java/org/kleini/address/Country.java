@@ -86,7 +86,7 @@ public enum Country {
     FK(null),
     FM(null),
     FO(null),
-    FR("France"),
+    FR("FRA", "France"),
     GA(null),
     GB("United Kingdom"),
     GD(null),
