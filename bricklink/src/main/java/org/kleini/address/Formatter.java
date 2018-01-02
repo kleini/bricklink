@@ -102,6 +102,7 @@ public final class Formatter {
         case DE:
         case FR:
         case HK:
+        case NL:
         case NO:
         case PL:
         case US:
@@ -254,6 +255,8 @@ public final class Formatter {
         format.setPostalCode(formatNotNull(address.getPostalCode()));
         if (Country.DE == address.getCountry()) {
             format.setCity(address.getCityName());
+        } else if (Country.HK == address.getCountry() && isEmpty(address.getCityName())) {
+            format.setCity("Hong Kong");
         } else {
             format.setCity(formatNotNull(", ", address.getCityName(), address.getStateOrProvince()));
         }

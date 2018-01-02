@@ -177,7 +177,7 @@ public enum Country {
     NF(null),
     NG(null),
     NI(null),
-    NL("Netherlands"),
+    NL("NLD", "Netherlands"),
     NO("NOR", "Norway"),
     NP(null),
     NR(null),
