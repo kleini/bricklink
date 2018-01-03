@@ -81,7 +81,7 @@ public enum Country {
     ER(null),
     ES("Spain"),
     ET(null),
-    FI("Finland"),
+    FI("FIN", "Finland"),
     FJ(null),
     FK(null),
     FM(null),

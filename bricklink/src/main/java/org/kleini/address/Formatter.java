@@ -100,6 +100,7 @@ public final class Formatter {
         case BE:
         case CN:
         case DE:
+        case FI:
         case FR:
         case HK:
         case NL:
@@ -160,6 +161,7 @@ public final class Formatter {
         if (!isEmpty(address.getStreet2())) {
             format.setAdditional(address.getStreet2());
         }
+        // TODO longer than 50 characters, split on commas if street2 is empty
         format.setStreet(address.getStreet1());
     }
 
