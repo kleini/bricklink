@@ -97,6 +97,7 @@ public final class Formatter {
     public static void format(Address address, LineFormat format) throws Exception {
         switch (address.getCountry()) {
         case AT:
+        case AU:
         case BE:
         case CN:
         case DE:
