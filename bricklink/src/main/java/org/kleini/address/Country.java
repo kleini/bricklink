@@ -24,7 +24,7 @@ public enum Country {
     AR("Argentina"),
     AS("American Samoa"),
     AT("AUT", "Austria"),
-    AU("Australia"),
+    AU("AUS", "Australia"),
     AW("Aruba"),
     AX(null),
     AZ("Azerbaijan"),
