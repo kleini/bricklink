@@ -1,9 +1,3 @@
-apply plugin: 'java'
-
-repositories {
-    jcenter()
-}
-
 configurations {
     jaxws
     wsimport
@@ -17,9 +11,7 @@ group = 'de.dpag'
 version = '3.0'
 
 sourceSets {
-    wsimport {
-        java.srcDir "src/main/generated"
-    }
+    wsimport
     main {
         compileClasspath += wsimport.output
         runtimeClasspath += wsimport.output
@@ -27,16 +19,15 @@ sourceSets {
 }
 
 task wsimport {
-    ext.destDir = file("${projectDir}/src/main/generated")
     doLast {
         ant {
-            sourceSets.main.output.classesDir.mkdirs()
-            destDir.mkdirs()
+            sourceSets.wsimport.output.classesDir.mkdirs()
+            sourceSets.wsimport.java.srcDirs[0].mkdirs()
             taskdef(name: 'wsimport', classname: 'com.sun.tools.ws.ant.WsImport', classpath: configurations.jaxws.asPath)
             wsimport(
                 keep: true,
-                destdir: sourceSets.main.output.classesDir,
-                sourcedestdir: destDir,
+                destdir: sourceSets.wsimport.output.classesDir,
+                sourcedestdir: sourceSets.wsimport.java.srcDirs[0],
                 package: "de.dpag.oneclickforapp.webservice",
                 xnocompile: "true",
                 wsdl: 'https://internetmarke.deutschepost.de/OneClickForAppV3/OneClickForAppServiceV3?wsdl'
@@ -44,13 +35,15 @@ task wsimport {
         }
     }
 }
-wsimport.outputs.dir wsimport.destDir
 
-sourceSets.main.java.srcDirs.add('src/main/generated')
+wsimport.outputs.dir sourceSets.wsimport.java.srcDirs[0]
 
 compileWsimportJava.dependsOn(wsimport)
+compileJava.dependsOn(compileWsimportJava)
 
-compileJava {
-    dependsOn(compileWsimportJava)
-    source sourceSets.wsimport.java, sourceSets.main.java
+jar.from sourceSets.wsimport.runtimeClasspath
+sourcesJar.from sourceSets.wsimport.allJava, sourceSets.main.allJava
+
+clean {
+    delete sourceSets.wsimport.java.srcDirs
 }
