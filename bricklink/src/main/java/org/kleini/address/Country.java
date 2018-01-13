@@ -133,7 +133,7 @@ public enum Country {
     KM(null),
     KN(null),
     KP(null),
-    KR("South Korea"),
+    KR("KOR", "South Korea"),
     KW(null),
     KY(null),
     KZ(null),
