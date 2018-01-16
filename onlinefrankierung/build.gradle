@@ -1,40 +1,31 @@
-apply plugin: 'java'
-
-repositories {
-    jcenter()
-}
-
 configurations {
     jaxws
     wsimport
 }
 
 dependencies {
-    jaxws 'com.sun.xml.ws:jaxws-tools:2.1.4'
+    jaxws 'com.sun.xml.ws:jaxws-tools:2.2.10'
 }
 
 group = 'de.dhl'
 version = '2.0'
 
 sourceSets {
-    wsimport {
-        java.srcDir "src/main/generated"
-    }
+    wsimport
     main {
         compileClasspath += wsimport.output
         runtimeClasspath += wsimport.output
     }
 }
 
-task wsimport2(type:Exec) {
+task wsimport(type:Exec) {
     ext.destDir = file("${projectDir}/src/main/generated")
     doFirst {
-        wsimport2.destDir.mkdirs()
-        sourceSets.main.output.classesDir.mkdirs()
+        sourceSets.wsimport.java.srcDirs[0].mkdirs()
+        sourceSets.wsimport.output.classesDir.mkdirs()
     }
-    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', destDir, '-d', sourceSets.main.output.classesDir, '-keep', '-p', 'de.dhl.onlinefrankierung.webservice', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/2.0/privatkundenversand-api-2.0.wsdl', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/popws/2.0/popws-2.0.xsd', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/poppdb/2.0/poppdb-2.0.xsd', '-Xnocompile', '-XadditionalHeaders'
+    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', sourceSets.wsimport.java.srcDirs[0], '-d', sourceSets.wsimport.output.classesDir, '-keep', '-p', 'de.dhl.onlinefrankierung.webservice', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/2.0/privatkundenversand-api-2.0.wsdl', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/popws/2.0/popws-2.0.xsd', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/poppdb/2.0/poppdb-2.0.xsd', '-Xnocompile', '-XadditionalHeaders'
 }
-wsimport2.outputs.dir wsimport2.destDir
 
 def download(url, File dest) {
     if (!dest.exists()) {
@@ -42,45 +33,37 @@ def download(url, File dest) {
     }
 }
 
-task download {
-    ext.wsdlDir = new File(projectDir, "/src/main/wsdl")
+task wsimport2 {
     doLast {
-        wsdlDir.mkdirs()
-        download('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/2.0/privatkundenversand-api-2.0.wsdl', new File(wsdlDir, "privatkundenversand-api-2.0.wsdl"))
-        download('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/popws/2.0/popws-2.0.xsd', new File(wsdlDir, 'popws-2.0.xsd'))
-        download('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/poppdb/2.0/poppdb-2.0.xsd', new File(wsdlDir, 'poppdb-2.0.xsd'))
-    }
-}
-
-task wsimportBroken {
-    dependsOn download
-    ext.destDir = file("${projectDir}/src/main/generated")
-    doLast {
+        download('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/2.0/privatkundenversand-api-2.0.wsdl', new File(projectDir, "privatkundenversand-api-2.0.wsdl"))
+        download('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/popws/2.0/popws-2.0.xsd', new File(projectDir, 'popws-2.0.xsd'))
+        download('https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/poppdb/2.0/poppdb-2.0.xsd', new File(projectDir, 'poppdb-2.0.xsd'))
+        sourceSets.wsimport.output.classesDir.mkdirs()
+        sourceSets.wsimport.java.srcDirs[0].mkdirs()
         ant {
-            sourceSets.main.output.classesDir.mkdirs()
-            destDir.mkdirs()
             taskdef(name: 'wsimport', classname: 'com.sun.tools.ws.ant.WsImport', classpath: configurations.jaxws.asPath)
             wsimport(
                 keep: true,
-                destdir: sourceSets.main.output.classesDir,
-                sourcedestdir: destDir,
+                destdir: sourceSets.wsimport.output.classesDir,
+                sourcedestdir: sourceSets.wsimport.java.srcDirs[0],
                 package: "de.dhl.onlinefrankierung.webservice",
                 xnocompile: "true",
                 wsdl: 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/2.0/privatkundenversand-api-2.0.wsdl'
             ) {
-                binding(file:'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/popws/2.0/popws-2.0.xsd')
-                binding(file:'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/poppdb/2.0/poppdb-2.0.xsd')
+                binding(dir:projectDir, includes:'popws-2.0.xsd,poppdb-2.0.xsd')
             }
         }
     }
 }
 
-sourceSets.main.java.srcDirs.add('src/main/generated')
+wsimport.outputs.dir sourceSets.wsimport.java.srcDirs[0]
 
-compileWsimportJava.dependsOn(wsimport2)
+compileWsimportJava.dependsOn(wsimport)
+compileJava.dependsOn(compileWsimportJava)
 
-compileJava {
-    // dependsOn(wsimport2)
-    dependsOn(compileWsimportJava)
-    source sourceSets.wsimport.java, sourceSets.main.java
+jar.from sourceSets.wsimport.runtimeClasspath
+sourcesJar.from sourceSets.wsimport.allJava, sourceSets.main.allJava
+
+clean {
+    delete sourceSets.wsimport.java.srcDirs
 }
