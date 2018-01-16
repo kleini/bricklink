@@ -5,6 +5,7 @@
 package org.kleini.paypal;
 
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -62,9 +63,17 @@ public final class PayPalCheckout {
 
     public void checkoutInternal(String login, String password, String host) throws Exception {
         new WebDriverWait(driver, 20).pollingEvery(0, TimeUnit.MILLISECONDS).until(ExpectedConditions.visibilityOfElementLocated(By.id("preloaderSpinner")));
+        String lastHandle = null;
         while (true) {
             try {
                 new WebDriverWait(driver, 20).until(ExpectedConditions.invisibilityOfElementLocated(By.id("preloaderSpinner")));
+                List<WebElement> iframe = driver.findElements(By.cssSelector("iframe[name=injectedUl]"));
+                if (!iframe.isEmpty()) {
+                    // Login in iframe ...
+                    System.out.println("Found PayPal in iframe");
+                    lastHandle = driver.getWindowHandle();
+                    driver.switchTo().frame(iframe.get(0));
+                }
                 new WebDriverWait(driver, 1).until(ExpectedConditions.numberOfElementsToBe(By.id("btnLogin"), Integer.valueOf(1)));
                 break;
             } catch (TimeoutException e) {
@@ -77,7 +86,8 @@ public final class PayPalCheckout {
                     // Is suddenly there and visible and then removed
                     new WebDriverWait(driver, 5).until(ExpectedConditions.numberOfElementsToBe(By.id("spinner"), Integer.valueOf(0)));
                 } else {
-                    System.out.println("I am stuck. Please check current page. " + driver.findElements(By.id("spinner")) + " " + driver.findElements(By.id("preloaderSpinner")));
+                    System.out.println("I am stuck. Please check current page. " + driver.findElements(By.id("spinner")) + " " + driver.findElements(By.id("preloaderSpinner")) +
+                        " " + driver.findElements(By.id("btnLogin")));
                     Thread.sleep(20000);
                     throw new Exception("PayPalCheckout is stuck.");
                 }
@@ -90,16 +100,22 @@ public final class PayPalCheckout {
         passwordInput.clear();
         passwordInput.sendKeys(password);
         driver.findElement(By.id("btnLogin")).click();
+        if (null != lastHandle) {
+            driver.switchTo().window(lastHandle);
+        }
 
         System.out.println("Check error");
         new WebDriverWait(driver, 20).pollingEvery(0, TimeUnit.MILLISECONDS).until(ExpectedConditions.or(
                 ExpectedConditions.visibilityOfElementLocated(By.cssSelector("p.notification.notification-critical")),
-                ExpectedConditions.visibilityOfElementLocated(By.id("preloaderSpinner"))));
+                ExpectedConditions.visibilityOfElementLocated(By.id("preloaderSpinner")),
+                ExpectedConditions.visibilityOfElementLocated(By.id("spinner"))));
         if (!driver.findElements(By.cssSelector("p.notification.notification-critical")).isEmpty()) {
             throw new Exception("Login failed.");
         }
         System.out.println("Second after login");
-        new WebDriverWait(driver, 20).until(ExpectedConditions.invisibilityOfElementLocated(By.id("preloaderSpinner")));
+        new WebDriverWait(driver, 20).until(ExpectedConditions.and(
+            ExpectedConditions.invisibilityOfElementLocated(By.id("preloaderSpinner")),
+            ExpectedConditions.invisibilityOfElementLocated(By.id("spinner"))));
 
         WebElement confirmButton = new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(By.id("confirmButtonTop")));
 //        System.out.println("" + confirmButton.isDisplayed());
