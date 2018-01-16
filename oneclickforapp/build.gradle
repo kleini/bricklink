@@ -20,9 +20,9 @@ sourceSets {
 
 task wsimport {
     doLast {
+        sourceSets.wsimport.output.classesDirs[0].mkdirs()
+        sourceSets.wsimport.java.srcDirs[0].mkdirs()
         ant {
-            sourceSets.wsimport.output.classesDirs[0].mkdirs()
-            sourceSets.wsimport.java.srcDirs[0].mkdirs()
             taskdef(name: 'wsimport', classname: 'com.sun.tools.ws.ant.WsImport', classpath: configurations.jaxws.asPath)
             wsimport(
                 keep: true,
