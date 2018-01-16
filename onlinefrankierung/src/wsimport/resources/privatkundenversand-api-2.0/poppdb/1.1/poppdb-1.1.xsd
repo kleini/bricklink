@@ -1,0 +1,1120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:pdb="https://www.dhl.de/popweb/gw/ws/schema/2.0/poppdb"
+	targetNamespace="https://www.dhl.de/popweb/gw/ws/schema/2.0/poppdb"
+	xmlns:base="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+	xmlns:ws="https://www.dhl.de/popweb/gw/ws/schema/1.0/popws"
+
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+		schemaLocation="../../popbase/1.1/popbase-1.1.xsd" />
+	<import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popws"
+		schemaLocation="../../popws/1.1/popws-1.1.xsd" />
+
+
+	<complexType name="ProductInfoRequestType">
+		<annotation>
+			<documentation>
+
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="ws:WsRequestType">
+
+				<sequence>
+					<element name="Filter" type="pdb:ProductInfoFilterType"
+						maxOccurs="1" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="ProductInfoResponseType">
+		<annotation>
+			<documentation>
+
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="ws:WsResponseType">
+				<sequence>
+
+					<element name="MarketplaceProducts" type="pdb:MarketplaceProductsType"
+						maxOccurs="1" minOccurs="0"></element>
+				</sequence>
+
+			</extension>
+		</complexContent>
+	</complexType>
+	<element name="ProductInfoRequest" type="pdb:ProductInfoRequestType" />
+	<element name="ProductInfoResponse" type="pdb:ProductInfoResponseType" />
+
+	<complexType name="ProductInfoFilterType">
+		<annotation>
+			<documentation>Filtern des Responses.</documentation>
+		</annotation>
+		<attribute name="countryFilter" type="string">
+			<annotation>
+				<documentation>
+					Wenn gesetzt ein Filter auf das Land als ISO3 alpha
+					Land (z.B. DEU). Es kann auch ein
+					Matcher-Filter-Ausdruck angegeben werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="productGroupFilter" type="string">
+			<annotation>
+				<documentation>
+					Wenn gesetzt ein Filter auf die Produktgruppe (z.B.
+					STANDARD). Es kann auch ein Matcher-Filter-Ausdruck
+					angegeben werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="productFilter" type="string">
+			<annotation>
+				<documentation>
+					Wenn gesetzt ein Filter auf die Produkt-ID, (z.B.
+					PAK10.SPERR.DEU). Es kann auch ein
+					Matcher-Filter-Ausdruck angegeben werden. Achtung:
+					Bei Auslandssendungen kann das Land auch ein
+					syntetisches sein.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="viewEKP" type="boolean" use="optional" default="false">
+			<annotation>
+				<documentation>Boolean true / false ob die EKP-Nummer mit ausgegeben werden soll.</documentation>
+			</annotation></attribute>
+		<attribute name="viewAdditionalAttributes" type="boolean" use="optional" default="false">
+			<annotation>
+				<documentation>
+					Boolean true / false ob zusätzliche Attribute im
+					Element ProductDesc mit ausgegeben
+					werden sollen.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="viewPrice" type="boolean" default="true">
+			<annotation>
+				<documentation>
+					Sollen auch Preise angezeigt werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="viewFuturePrices" type="boolean" use="optional"
+			default="false">
+			<annotation>
+				<documentation>
+					Sollen - falls vorhanden - auch Preise angezeigt
+					werden, die in der Zukunft aktiv werden bzw. in der
+					Vergangenheit gültig waren.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="viewDisplayText" type="boolean"
+			default="false">
+			<annotation>
+				<documentation>
+					Sollen die in POP verwendeten Oberflächentexte mit
+					ausgegeben werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="viewDimension" type="boolean"
+			default="false">
+			<annotation>
+				<documentation>
+					Sollen die Maximal-Dimensionen ausgegeben werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="viewFeatures" type="boolean" default="false">
+			<annotation>
+				<documentation>
+					Sollen die Features und Produktattribute mit
+					ausgegeben werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="viewTransitions" type="boolean"
+			default="false">
+			<annotation>
+				<documentation>
+					Gebe die Übergangsinformationen aus. So wird zu
+					einem Produkt wie z.B. PAK10.SPERR.DEU eine Liste
+					von von weiteren Services zu dem Basisprodukt
+					ausgegeben werden, die in der Oberfläche ausgegeben
+					werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="noXmlCompression" type="boolean"
+			use="optional">
+			<annotation>
+				<documentation>
+					Unterdrückt die interne XML-Kompression über id und
+					idref. Achtung: Responses können SEHR gross werden,
+					falls dies auf true gesetzt wird. Attribute darf nur
+					in Absprache mit DHL auf true gesetzt werden.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="maxWeigth" type="int" use="optional">
+			<annotation>
+				<documentation>
+					Wenn gesetzt nur die Produkte, die maximal das
+					Gewicht abdecken.
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+
+	<complexType name="MarketplaceProductsType">
+		<annotation>
+			<documentation>PartnerID aka Marktplatz. Ist identisch aus dem
+				Request.</documentation>
+		</annotation>
+		<sequence>
+			<element name="ProductGroup" type="pdb:ProductGroupType"
+				maxOccurs="unbounded" minOccurs="0">
+				<annotation>
+					<documentation>Produktgruppen.</documentation>
+				</annotation>
+			</element>
+		</sequence>
+		<attribute name="partnerId" type="string" use="required"></attribute>
+		<attribute name="configTime" type="string" use="required">
+			<annotation>
+				<documentation>Virtuelle Konfigurationszeit.
+					Dieser Wert wird nur für Analysezwecke ausgegeben und kann ignoriert
+					werden.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="popConfigId" type="string" use="required">
+			<annotation>
+				<documentation>ID der PopConfig.
+					Dieser Wert wird nur für Analysezwecke ausgegeben und kann ignoriert
+					werden.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="defaultGroup" type="string" use="optional">
+			<annotation>
+				<documentation>Standard Produktgruppe.</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+
+	<complexType name="ProductGroupType">
+		<annotation>
+			<documentation>Eine Produktgruppe fasst eine Gruppe von Produkten
+				zusammen.
+</documentation>
+		</annotation>
+		<sequence minOccurs="0">
+			<element name="CountryProducts" type="pdb:CountryProductsType"
+				maxOccurs="unbounded" minOccurs="0">
+				<annotation>
+					<documentation>
+						Mögliche Zielländer für Sendungen.
+					</documentation>
+				</annotation>
+			</element>
+			<element name="Collection" type="pdb:CollectionType"
+				maxOccurs="unbounded" minOccurs="0">
+				<annotation>
+					<documentation>Mögliche dazubuchbare Abholungsservices mit Preisen.
+					</documentation>
+				</annotation>
+			</element>
+		</sequence>
+		<attribute name="name" type="string" use="required">
+			<annotation>
+				<documentation>Interner Name der Produktgruppe.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="displayText" type="string" use="optional">
+			<annotation>
+				<documentation>Text der Produktgruppe in der Oberfläche.
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+
+	<complexType name="CountryProductsType">
+		<annotation>
+			<documentation>Produkte für ein Land.
+				Attribute name in NamedReference
+				enthält Alphanumerisches ISO3 Kennung des
+				Landes.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:NamedReferenceType">
+				<sequence>
+					<element name="BaseProduct" type="pdb:BaseProductType"
+						maxOccurs="unbounded" minOccurs="0">
+						<annotation>
+							<documentation>Liste von Basisprodukten, die in dem Land
+								verfügbar sind.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				<attribute name="isSyntetic" type="boolean" use="optional"
+					default="false">
+					<annotation>
+						<documentation>true ist das Land kein reelles Land, sondern ein
+							synthetisches, wie z.B. EU.
+</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="iso2" type="string" use="optional">
+					<annotation>
+						<documentation>ISO alpha Notation eines Landes</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="iso3num" type="int" use="optional">
+					<annotation>
+						<documentation>Numerische 3stellige Kennzeichnung des Landes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="displayName" type="string" use="optional">
+					<annotation>
+						<documentation>Name des Landes, wie es in der Oberfläche verwendet
+							wird.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="defaultBaseProduct" type="string" use="optional">
+					<annotation>
+						<documentation>In der gewählten Produktgruppe und Land das
+							Standard Basisprodukt, das initial ausgewählt ist.
+						</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="BaseProductType">
+		<annotation>
+			<documentation>
+				Informationen über ein Basisprodukt. Ein Basisprodukt
+				ist ein Produkt ohne Services.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:NamedReferenceType">
+				<sequence>
+					<element name="Prices" type="pdb:PricesType"
+						maxOccurs="unbounded" minOccurs="0">
+						<annotation>
+							<documentation>
+								Preis(e) des Produktes.
+
+								Hat das Basisprodukt mehrere Levels
+								werden mehrere Prices-Strukturen
+								ausgegeben.
+							</documentation>
+						</annotation>
+					</element>
+					<element name="BaseProductDesc"
+						type="pdb:BaseProductDescType" maxOccurs="1" minOccurs="0">
+						<annotation>
+							<documentation>
+								Technische Beschreibung des
+								Basisproduktes.
+							</documentation>
+						</annotation>
+					</element>
+					<element name="Product" type="pdb:ProductType"
+						maxOccurs="unbounded" minOccurs="0">
+						<annotation>
+							<documentation>
+								Produkte zu diesem Basisprodukt
+							</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				<attribute name="defaultProduct" type="string"
+					use="optional">
+					<annotation>
+						<documentation>
+							Welches Produkt soll standardmäßig gewählt
+							werden. I.d.R. ist dies das Basisprodukt
+							ohne Services.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="ekp" type="string">
+					<annotation>
+						<documentation>EKP des Basisproduktes.</documentation>
+					</annotation></attribute>
+				<attribute name="priceLevels" type="boolean"
+					use="optional" default="false">
+					<annotation>
+						<documentation>
+							Wenn true, hat dieses Basisprodukt Preise
+							abhängig vom Volumen. Es kann dann mehrere
+							Prices Elemente enthalten.
+						</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="PricesType">
+		<annotation>
+			<documentation>
+				Enthält eine Liste von Preisen. Der erste in der Liste
+				ist hierbei der derzeitig gültige Preis.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:ReferenceType">
+				<sequence>
+					<element name="Price" type="pdb:PriceType" maxOccurs="unbounded"
+						minOccurs="0">
+						<annotation>
+							<documentation>
+								Preise werden nur ausgegeben, wenn im
+								Filter
+								viewPrice auf true gesetzt ist.
+							</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				<attribute name="level" type="int" use="optional">
+					<annotation>
+						<documentation>Falls es sich um einen mengen- oder
+							volumenabhängiger Preis handelt, hier die minale Menge oder
+							Volumen.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="BaseProductDescType">
+		<annotation>
+			<documentation>
+				Beschreibung des Basisproduktes
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:ProductServiceDescBaseType">
+				<attribute name="hidden" type="boolean" use="optional"
+					default="false">
+					<annotation>
+						<documentation>
+							Produkt ist nicht sichtbar.
+						</documentation>
+					</annotation>
+				</attribute>
+
+				<attribute name="symbols" type="string"
+					use="optional">
+					<annotation>
+						<documentation>
+							Label: Kommasperariert Liste von
+							Label-Symbolen.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="orderKey" type="string">
+					<annotation>
+						<documentation>Sortierschlüssel.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="cp71limit" type="double">
+					<annotation>
+						<documentation>Das Limit, ab welchem Warenwert ein Hinweis auf CP71 notwendig ist</documentation>
+					</annotation></attribute>
+				<attribute name="cn2223limit" type="double">
+					<annotation>
+						<documentation>Gibt an ab welchem Warenwert ein Wechsel von CN22 auf CN23 notwendig ist.</documentation>
+					</annotation></attribute>
+				<attribute name="sendCountry" type="string">
+					<annotation>
+						<documentation>
+							ISO3-Land des Absenderlandes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxLength" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximale Länge des Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxWidth" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximale Breite des Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxDepth" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximale Tiefe des Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxWeight" type="int">
+					<annotation>
+						<documentation>
+							Wert in Gramm. Maximales Gewicht des
+							Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxGurtmass" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximales Hurtmass des
+							Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				
+				<attribute name="maxDiameter" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Maximaler Durchmesser bei Rollensendungen.
+            </documentation>
+          </annotation>
+        </attribute>
+				
+				<attribute name="minLength" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimale Länge des Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minWidth" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimale Breite des Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minDepth" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimale Tiefe des Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minWeight" type="int">
+          <annotation>
+            <documentation>
+              Wert in Gramm. Minimales Gewicht des
+              Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minGurtmass" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimales Gurtmass des
+              Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        
+        <attribute name="minDiameter" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimaler Durchmesser bei Rollensendungen.
+            </documentation>
+          </annotation>
+        </attribute>
+
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ProductType">
+		<annotation>
+			<documentation>Ein Produkt ist die Kombination eines Basisproduktes
+				mit einem spezifischen Set an Services.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:NamedReferenceType">
+				<sequence>
+					<element name="ProductDesc" type="pdb:ProductDescType"
+						maxOccurs="1" minOccurs="0">
+					</element>
+					<element name="Service" type="pdb:ServiceType" maxOccurs="unbounded"
+						minOccurs="0">
+						<annotation>
+							<documentation>Die Services, die mit diesem Produkt verknüpft
+								sind.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				<attribute name="collectionServices" type="string">
+					<annotation>
+						<documentation>Kommaseperierte Liste der Abholservices.
+						</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ProductDescType">
+		<annotation>
+			<documentation>Beschreibung des Produktes.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:ProductServiceDescBaseType">
+
+				<attribute name="hidden" use="optional" type="boolean"
+					default="false" />
+
+				<attribute name="maxLength" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximale Länge des Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxWidth" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximale Breite des Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxDepth" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximale Tiefe des Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxWeight" type="int">
+					<annotation>
+						<documentation>
+							Wert in Gramm. Maximales Gewicht des
+							Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxGurtmass" type="int">
+					<annotation>
+						<documentation>
+							Wert in cm. Maximales Hurtmass des
+							Packstückes.
+						</documentation>
+					</annotation>
+				</attribute>
+				
+				<attribute name="maxDiameter" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Maximaler Durchmesser bei Rollensendungen.
+            </documentation>
+          </annotation>
+        </attribute>
+				
+				<attribute name="minLength" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimale Länge des Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minWidth" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Miniimale Breite des Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minDepth" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimale Tiefe des Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minWeight" type="int">
+          <annotation>
+            <documentation>
+              Wert in Gramm. Minimales Gewicht des
+              Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="minGurtmass" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. minimales Gurtmass des
+              Packstückes.
+            </documentation>
+          </annotation>
+        </attribute>
+        
+        <attribute name="minDiameter" type="int">
+          <annotation>
+            <documentation>
+              Wert in cm. Minimaler Durchmesser bei Rollensendungen.
+            </documentation>
+          </annotation>
+        </attribute>
+				
+				<attribute name="noPackstation" use="optional"
+					type="boolean" default="false">
+					<annotation>
+						<documentation>
+							Für dieses Produkt ist eine Einlieferung in
+							eine Packstation nicht möglich.
+						</documentation>
+					</annotation>
+				</attribute>
+
+				<attribute name="licencePlateType" use="optional"
+					type="string">
+					<annotation>
+						<documentation>
+							Typ des Sendungsidentifizierer. Mögliche
+							Werte sind: LP für LicencePlate und IDC für
+							Identcode
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="routingCodeType" use="optional"
+					type="string">
+					<annotation>
+						<documentation>
+							Typ des Routingcodes. Mögliche Werte sind:
+							RC für internationaler Routingcode und LC
+							für Postspezifischen Leitcode.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="productKey" use="optional"
+					type="string">
+					<annotation>
+						<documentation>Produktschlüssel.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="leitcodeProductCode" use="optional"
+					type="string">
+					<annotation>
+						<documentation>
+							Produktschlüssel, wie er im Leitcode
+							verwendet wird.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="numberRangeName" use="optional"
+					type="string">
+					<annotation>
+						<documentation>
+							Interner Name des Nummerbereiches, der für
+							die Generierung des Sendungsidentifizierers
+							verwendet wird.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="svgtLabel" use="optional"
+					type="string">
+					<annotation>
+						<documentation>
+							Interner Name des Label.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="amselProductKey" use="optional"
+					type="string">
+					<annotation>
+						<documentation>
+							Produktschlüssel für die Beauftragung bei
+							AMSEL.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="sendCountry" use="optional"
+					type="string">
+					<annotation>
+						<documentation>Absenderland.</documentation>
+					</annotation>
+				</attribute>
+				<anyAttribute></anyAttribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="PriceType">
+		<annotation>
+			<documentation>Ein einzelner Preis.
+</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:ReferenceType">
+				<attribute name="bruttoPrice" type="base:AmountType">
+					<annotation>
+						<documentation>Brutto Preis</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="vat" type="base:VatType">
+					<annotation>
+						<documentation>
+							Enthaltene Prozent (i.d.R. 0 oder 19)
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="name" type="string">
+					<annotation>
+						<documentation>
+							Interner Name des Preises. I.d.R. identisch
+							zum
+							internen Namen des zugrundeliegenden
+							Produktes.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="pk" type="long">
+					<annotation>
+						<documentation>
+							Interner Primary Key des Preises.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="country" type="string">
+					<annotation>
+						<documentation>
+							Land oder syntetisches Land für den Preis.
+							Kann auch
+							leer sein, falls der Preis für
+							alle Länder gilt.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="startTime" type="dateTime" use="optional">
+					<annotation>
+						<documentation>Falls vorhanden ein Startzeitpunkt des Preises
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="endTime" type="dateTime" use="optional">
+					<annotation>
+						<documentation>Falls vorhanden Ende des Preises</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ReferenceType">
+		<annotation>
+			<documentation>Basisstruktur der referenzierbaren Elemente.
+			</documentation>
+		</annotation>
+		<attribute name="id" type="ID" use="optional">
+			<annotation>
+				<documentation>XML ID der Node.
+					Diese ID wird bei jedem Call neu
+					vergeben und wird nur für die Auflösung
+					der idref benötigt.
+				</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="idref" type="IDREF" use="optional">
+			<annotation>
+				<documentation>Wenn gesetzt, ist die eigentliche Information dieses
+					Element in dem Element mit der entsprechenden id zu finden.
+				</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+
+	<complexType name="NamedReferenceType">
+		<annotation>
+			<documentation>Referenzierbares Element mit einem Namen.
+				Der Name ist ein POP-Interner Name.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:ReferenceType">
+				<attribute name="name" type="string" use="required"></attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ServiceType">
+		<annotation>
+			<documentation>
+				Ein Service, der einem Produkt zugeordnet ist.
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:NamedReferenceType">
+				<sequence>
+					<element name="ServiceDesc"
+						type="pdb:ServiceDescType">
+						<annotation>
+							<documentation>
+								Beschreibung des Services
+							</documentation>
+						</annotation>
+					</element>
+					<element name="Prices" type="pdb:PricesType"
+						maxOccurs="unbounded" minOccurs="0">
+						<annotation>
+							<documentation>
+								Preise des Services
+							</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				<attribute name="priceLevels" type="boolean"
+					use="optional" default="false">
+					<annotation>
+						<documentation>
+							Wenn true, hat dieser Service Preise
+							abhängig vom Volumen oder anderen Kritieren.
+							Es kann dann mehrere Prices Elemente
+							enthalten.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="selected" type="boolean"
+					default="true">
+					<annotation>
+						<documentation>
+							Services, die NICHT dem Produkt zugeordnet
+							sind, haben selected false. Services mit
+							selected false werden nur dann mit
+							ausgegeben, wenn viewTransitions im
+							ProductInfoFilterType gesetzt ist.
+
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="ekp" type="string">
+					<annotation>
+						<documentation>EKP des Services.</documentation>
+					</annotation></attribute>
+				<attribute name="disabled" type="boolean"
+					default="false">
+					<annotation>
+						<documentation>
+							Service wird zwar angezeigt, jedoch ist
+							nicht für den Benutzer auswählbar, da
+							ansonsten eine ungültige
+							Produkt-Service-Kombination entsteht.
+						</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ServiceDescType">
+		<annotation>
+			<documentation>Beschreibung des Services.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:ProductServiceDescBaseType">
+				<attribute name="orderKey" type="string">
+					<annotation>
+						<documentation>Sortierschlüssel</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="serviceGroup" type="string" use="optional">
+					<annotation>
+						<documentation>Wenn der Service einer Servicegruppe zugehörig ist,
+							der interne Name der Service-Gruppe.
+							Service-Gruppen werden gebildet, wenn eine Reihe von gleichartigen Services als
+							Auswahlfeld (Dropdownliste oder Radioboxen) dargestellt werden
+							sollen.
+							Beispiel sind Versicherungsservices mit verschiedenen
+							Versicherungsdeckungen.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="serviceGroupDefault" type="boolean"
+					default="false">
+					<annotation>
+						<documentation>true falls diese Service in einer Servicegruppe ist
+							und bei einer Auswahl für Nicht ausgewählt steht.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="syntetic" type="boolean" default="false">
+					<annotation>
+						<documentation>Service ist intern und wird intern dem Produkt
+							zugewiesen.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="ProductServiceDescBaseType">
+		<annotation>
+			<documentation>
+				Beschreibung von Produkten oder Services
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:NamedReferenceType">
+				<attribute name="features" type="string">
+					<annotation>
+						<documentation>
+							Features sind eine mit Kommas seperierte
+							Liste von String, die das Produkt/Service
+							mit einer Produkteigenschaft kennzeichnet.
+							Siehe auch TODO (Link auf Wiki).
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="attributes" type="string">
+					<annotation>
+						<documentation>
+							Features sind eine kommaseperarierte Liste
+							von Schlüssel=Wert Paaren, die das
+							Produkt/Service mit einer Produkteigenschaft
+							kennzeichnet. Siehe auch TODO (Link auf
+							Wiki).
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="displayName" type="string">
+					<annotation>
+						<documentation>
+							Name des Produktes oder Services. ACHTUNG:
+							Beschreibung kann HTML enthalten.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="displayDescription" type="string">
+					<annotation>
+						<documentation>
+							Beschreibung des Produktes oder Services.
+							Bei POP wird diese in einem Popup
+							dargestellt. ACHTUNG: Beschreibung kann HTML
+							enthalten.
+						</documentation>
+					</annotation>
+				</attribute>
+
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="CollectionType">
+		<annotation>
+			<documentation>Stellt eine Abholung dar. Attribute name in
+				NamedReference enthält POP-interne Kennung des Abholservices.
+				(ALB,AZF,EAO,TAS)</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="pdb:NamedReferenceType">
+				<sequence>
+					<element name="CollectionDesc" type="pdb:CollectionDescType" maxOccurs="1" minOccurs="0">  
+						<annotation>
+							<documentation>Textuelle Beschreibung des Abholservices.
+							</documentation>
+						</annotation>
+					</element>
+					<element name="Prices" type="pdb:PricesType" maxOccurs="unbounded"
+						minOccurs="0">
+						<annotation>
+							<documentation>Preise des Abholservices. Enthält Level und Preis.
+								Kann auch zukünftige Preise enthalten.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+				<attribute name="type" type="string">
+					<annotation>
+						<documentation>
+							Typ der Abholung. Es werden gleiche Werte
+							verwendet
+							wie im Attribut collectionServices
+							im Product-Element.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="nonWorkingWeekDays" type="string">
+					<annotation>
+						<documentation>
+							Auflistung der Tage, an welchen keine
+							Abholung
+							möglich ist. Mögliche Werte
+							MO,DI,MI,DO,FR,SA,SO. Bei mehreren
+							Tagen
+							wird durch Kommata (,) separiert. z.B. SA,SO
+
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="earliestPickupOffset" type="int">
+					<annotation>
+						<documentation>Benötigter Vorlauf in Tagen damit die Abholung
+							gebucht werden kann.
+							bei earliestPickupOffset=1 kann die Abholung frühestens erst am
+							nächsten (gültigen) Tag nach dem Buchungsdatum erfolgen
+							bei earliestPickupOffset=0 kann die Abholung noch am Buchungstag
+							erfolgen. (unter Berücksichtigung des Attributes pickupTimeLimit)
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="pickupTimeLimit" type="string">
+					<annotation>
+						<documentation>Uhrzeit eines Tages in HH:MM.
+							Stellt den Zeitpunkt dar, bis zur welchen Uhrzeit der heutige Tag als
+							Buchungstag (nicht Abholtag) gewertet werden kann.
+							Sollte der Buchungszeitpunkt hinter dem pickupTimeLimit liegen wird
+							erst der nächste gültige Tag als Buchungstag gewertet.
+
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="maxCollectableItems" type="int">
+					<annotation>
+						<documentation>
+							Anzahl der Packstücke, welche maximal pro
+							Auftrag
+							erlaubt sind.
+						</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="timeWindows" type="string">
+					<annotation>
+						<documentation>Mögliche kommaseparierte Zeitfenster der Abholung.
+Format ist HH:MM-HH:MM(,HH:MM-HH:MM)*
+z.B. "08:00-20:00" Abholung möglich von 8 bis 20 Uhr.
+oder "9:00-12:00,12:00-15:30,15:30-19:30 " Abholung möglich von 
+9 bis 12 Uhr, 12 bis 15:30 Uhr und 15:30 bis 19:30 Uhr.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="allowStandalone" type="boolean">
+					<annotation>
+						<documentation>
+							true oder false, bei true darf man den
+							Abholservice produktunabhängig buchen. Der Abholservice darf also alleine
+							gebucht	werden. 
+							Es müssen sich daher keine abholfähigen Produkte im	Warenkorb befinden.
+						</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+
+
+
+	<complexType name="CollectionDescType">
+		<complexContent>
+			<extension base="pdb:ProductServiceDescBaseType">
+				<sequence>
+				</sequence>
+				<attribute name="pickupFreeHint" type="string"></attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+</schema>

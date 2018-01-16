@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by NONO (NONO) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:base="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+ xmlns:ps="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps" targetNamespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps" elementFormDefault="qualified"
+ attributeFormDefault="unqualified">
+
+ <import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase" schemaLocation="../../popbase/2.0/popbase-2.0.xsd" />
+ <!--
+ <complexType name="ProductOrServiceInfoBaseType">
+  <sequence>
+   <element name="Price" type="base:PriceComponentType">
+    <annotation>
+     <documentation>Einzelpreis des Basisproduktes oder Services</documentation>
+    </annotation>
+   </element>
+  </sequence>
+  <attribute name="bpsId" type="base:ProductIdType">
+   <annotation>
+    <documentation>Produkt oder Service ID</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="displayName" type="string">
+   <annotation>
+    <documentation>Kurzname des Produktes oder Service für GUI</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="displayDescription" type="string">
+   <annotation>
+    <documentation>
+     Langebeschreibung des Produktes/Services.
+
+     Diese Langbeschreibung kann auch HTML-Enthalten.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="priceable" type="boolean" />
+ </complexType>
+ <complexType name="BaseProductInfoType">
+  <annotation>
+   <documentation>Informationen über ein Basisprodukt</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ps:ProductOrServiceInfoBaseType" />
+  </complexContent>
+ </complexType>
+
+ <complexType name="ProductServiceInfoType">
+  <annotation>
+   <documentation>Informationen zu einem Service</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ps:ProductOrServiceInfoBaseType">
+    <attribute name="enabled" type="boolean" use="required">
+     <annotation>
+      <documentation>Ist true wenn Service selektierbar bzw. deselektierbar ist.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="selected" type="boolean" use="required">
+     <annotation>
+      <documentation>Ist true wenn Service ausgewählt ist.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="serviceGroupId" type="string" use="optional">
+     <annotation>
+      <documentation>Wenn gesetzt, ist dieser Service Bestandteil einer Service-Gruppe.</documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+
+ <complexType name="ProductInfoType">
+  <annotation>
+   <documentation>Informationen zu einem Produkt (Basisprodukt + Services)</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ps:ProductOrServiceInfoBaseType">
+    <sequence>
+     <element name="BaseProduct" type="ps:BaseProductInfoType" />
+     <element name="MaxDimension" type="base:ShipmentDimensionType">
+      <annotation>
+       <documentation>Maximale Dimension, die dieses Produkt abdecken kann.</documentation>
+      </annotation>
+     </element>
+     <element name="Service" type="ps:ProductServiceInfoType" minOccurs="0" maxOccurs="unbounded">
+      <annotation>
+       <documentation>Services, die zu diesem Produkt dazugehören</documentation>
+      </annotation>
+     </element>
+    </sequence>
+    <attribute name="recvPhone" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Telefonnummer am Empfänger</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="sendPhone" type="boolean" use="optional" default="false" />
+    <attribute name="recvEmail" type="boolean" use="optional" default="false" />
+    <attribute name="sendEmail" type="boolean" use="optional" default="false" />
+    <attribute name="reqWeight" type="boolean" use="optional" default="false" />
+    <attribute name="reqCN22" type="boolean" use="optional" default="false" />
+    <attribute name="reqCN23" type="boolean" use="optional" default="false" />
+    <attribute name="reqDimension" type="boolean" use="optional" default="false" />
+    <attribute name="CN2223Limit" type="base:AmountType" use="optional">
+     <annotation>
+      <documentation>
+       Ist sowohl reqCN22, wie auch reqCN23 gesetzt muss bei Überschreitung einer Warenwertssumme von CN22 auf CN23
+       geschaltet werden.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="reqPreAdvice" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Dieses Produkt benötigt eine Vorausverfügung.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="reqEAO" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Wenn dieses Produkt im WK muss auch eine EAO-Abholung gebucht werden</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="reqEAOOpt" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Wenn dieses Produkt im WK muss eine optionale Abholung eine EAO-Abholung sein.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="reqTAS" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Wenn dieses Produkt im WK muss auch eine EAO-Abholung gebucht werden.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="reqTASOpt" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Wenn dieses Produkt im WK muss eine optionale Abholung eine TAS-Abholung sein.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="TASForFree" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Wenn dieses Produkt im WK ist, wird eine optionale TAS-Abholung kostenfrei.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="EAOForFree" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>Wenn dieses Produkt im WK ist, wird eine optionale EAO-Abholung kostenfrei.</documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+ -->
+<complexType name="CouponSetInfoType">
+  <annotation>
+   <documentation>Informationen zu einem CouponSet</documentation>
+  </annotation>
+  <sequence maxOccurs="1" minOccurs="1">
+   <element name="UsageContext" type="ps:VoucherUsageContextType" maxOccurs="unbounded" minOccurs="1"></element>
+   <element name="Chunk" type="ps:CouponSetChunkInfoType" maxOccurs="unbounded" minOccurs="0"></element>
+   <element name="EncashProduct" type="base:ProductIdType" maxOccurs="unbounded" minOccurs="1"></element>
+  </sequence>
+  <attribute name="symbolName" type="base:ProductIdType">
+   <annotation>
+    <documentation>Interner eindeutiger symbolischer Name für den Couponset</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="maxUsageCounter" type="integer">
+   <annotation>
+    <documentation>Wie oft Coupons dieses Typs eingelöst werden dürfen. Der Wert 0 bedeutet unendlich oft.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="creditAbs" type="base:AmountType" use="optional">
+   <annotation>
+    <documentation>Gutschriftsbetrag (alternativ zum Attribut creditRel)</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="creditRel" type="integer" use="optional">
+   <annotation>
+    <documentation>Ermäßigung auf die abgedeckten Produktkomponenten in Prozent (alternativ zum Attribut creditAbs)</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="description" type="string" use="optional">
+   <annotation>
+    <documentation>Beschreibung des Coupontyps</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="screenName" type="string" use="optional">
+   <annotation>
+    <documentation>In der Oberfläche darstellbarer Name</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+ <simpleType name="VoucherUsageContextType">
+  <annotation>
+   <documentation>Beschreibung, über welche Mechanismen ein Coupontyp instantiiert werden kann</documentation>
+  </annotation>
+  <restriction base="string">
+   <enumeration value="PUBLIC"><annotation><documentation>Der Coupon kann vom Kunden gekauft werden.</documentation></annotation></enumeration>
+   <enumeration value="SUPPORT"><annotation><documentation>Der Kundensupport legt Coupons dieses Typs an.</documentation></annotation></enumeration>
+   <enumeration value="STORNO"><annotation><documentation>Coupons dieses Typs können als Gutschrift bei einer Stornierung verwendet werden.</documentation></annotation></enumeration>
+   <enumeration value="INTERNAL"><annotation><documentation>Z.B. ein Promotions Coupon</documentation></annotation></enumeration>
+  </restriction>
+ </simpleType>
+
+ <complexType name="CouponInfoType">
+  <annotation>
+   <documentation>
+    Information zu einem (Einzel-) Coupon.
+
+    Diese Struktur wird später um evtl. um weitere Informationen ergänzt
+   </documentation>
+  </annotation>
+  <sequence>
+   <element name="CouponSet" type="ps:CouponSetInfoType" maxOccurs="1" minOccurs="0" />
+  </sequence>
+  <attribute name="couponCode" type="base:CouponCodeType">
+   <annotation>
+    <documentation>Der Couponcode, der für die Einlösung verwendet werden kann</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="validUntil" type="dateTime">
+   <annotation>
+    <documentation>Gültigkeitsdatum des Coupons.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="usageCounter" type="integer">
+   <annotation>
+    <documentation>Wie oft der Coupon bereits verwendet wurde</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="createComment" type="string" use="optional">
+   <annotation>
+    <documentation>Kommentar des Erzeugers beim Instantiieren des Coupons</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="createdAt" type="dateTime">
+   <annotation>
+    <documentation>Zeitpunkt der Coupon Erzeugung</documentation>
+   </annotation>
+  </attribute>
+
+ </complexType>
+
+
+ <complexType name="CouponSetChunkInfoType">
+  <annotation>
+   <documentation>
+    Informationen zu einer Stückelung eines Couponsets. Siehe auch
+    <link>CouponSetInfoType</link>
+    .
+   </documentation>
+  </annotation>
+  <attribute name="chunkSize" type="int">
+   <annotation>
+    <documentation>Stückelung eines Couponsets</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="amount" type="base:AmountType">
+   <annotation>
+    <documentation>Bruttopreis des Couponsets</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+</schema>

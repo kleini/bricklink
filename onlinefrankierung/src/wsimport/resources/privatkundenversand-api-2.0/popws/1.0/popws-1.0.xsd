@@ -1,0 +1,377 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ws="https://www.dhl.de/popweb/gw/ws/schema/1.0/popws"
+ xmlns:sc="https://www.dhl.de/popweb/gw/ws/schema/1.0/popsc" xmlns:ps="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps"
+ xmlns:base="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+ targetNamespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popws" elementFormDefault="qualified"
+ attributeFormDefault="unqualified">
+
+
+ <import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popsc"
+         schemaLocation="../../popsc/1.0/popsc-1.0.xsd" />
+ <import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps"
+         schemaLocation="../../popps/1.0/popps-1.0.xsd" />
+ <import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+         schemaLocation="../../popbase/1.0/popbase-1.0.xsd" />
+
+ <element name="ShoppingCartValidateRequest" type="ws:ShoppingCartValidateRequestType" />
+ <element name="ShoppingCartValidateResponse" type="ws:ShoppingCartValidateResponseType" />
+ <element name="ShoppingCartCheckoutViaPaymentRequest" type="ws:ShoppingCartCheckoutViaPaymentRequestType" />
+ <element name="ShoppingCartCheckoutViaPaymentResponse" type="ws:ShoppingCartCheckoutViaPaymentResponseType" />
+ <element name="LoadBuyedShoppingCartRequest" type="ws:LoadBuyedShoppingCartRequestType" />
+ <element name="LoadBuyedShoppingCartResponse" type="ws:LoadBuyedShoppingCartResponseType" />
+
+ <complexType name="WsRequestType" abstract="true">
+  <annotation>
+   <documentation>
+    Basistyp für Web-Requests.
+
+    Teile von
+    <link>AuthType</link>
+    müssen mitgesendet werden.
+   </documentation>
+
+  </annotation>
+  <sequence>
+   <element name="Auth" type="ws:AuthType" maxOccurs="1" minOccurs="1"></element>
+  </sequence>
+  <attribute name="detailFlags" type="long" use="optional">
+   <annotation>
+    <documentation>
+     Flags about the detail level of information requested.
+
+     If 0 default.
+
+     Some detail level may not available for all web service users.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="version" type="base:VersionType" use="required">
+   <annotation>
+    <documentation>
+     Version des Requests.
+
+     Siehe
+     <link>VersionType</link>
+    </documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+ <complexType name="WsResponseType" abstract="true">
+  <annotation>
+   <documentation>
+    Basis Typ für alle Web-Responses.
+
+    Es muss immer
+    <link>WsResponseStatus</link>
+    mit den Status-Informationen gesetzt sein.
+
+    Alle anderen Dokumentenanteile sind abhängig vom Erfolg des Web-Service Aufrufs.
+   </documentation>
+  </annotation>
+  <sequence>
+
+   <element name="Status" type="ws:WsResponseStatus"></element>
+  </sequence>
+  <attribute name="version" type="base:VersionType" use="required">
+   <annotation>
+    <documentation>
+     Version des Responses.
+
+     Siehe
+     <link>VersionType</link>
+    </documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+ <complexType name="ShoppingCartValidateResponseType">
+  <annotation>
+   <documentation>
+    Ergebnis einer Warenkorbvalidierung.
+
+    Reflektiert den kompletten Warenkorb inklusive der Preise der Einzelposition und Preisbestandteile (Basisprodukt,
+    Services) zurück.
+
+    Der ResponseStatus reflektiert nur grundsätzliche Werte:
+
+    - Warenkorb OK.
+
+    - Warenkorb enthält Warnungen, ist aber kaufbar.
+
+    - Warenkorb enthält Kaufverhindernde Fehler.
+
+    Die einzelnen Validierungsfehler sind über die
+    <link>ItemErrorsType</link>
+    verfügbar.
+
+    Siehe auch
+    <link>ShoppingCartValidateRequestType</link>
+    .
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ws:WsResponseType">
+    <sequence>
+     <element name="ShoppingCart" type="sc:BuyShoppingCartType" minOccurs="0" maxOccurs="1" />
+    </sequence>
+   </extension>
+  </complexContent>
+ </complexType>
+
+
+ <complexType name="ShoppingCartValidateRequestType">
+  <annotation>
+   <documentation>
+    Validiert einen Warenkorb.
+
+    Siehe auch:
+    <link>ShoppingCartValidateResponseType</link>
+    .
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ws:WsRequestType">
+    <sequence>
+     <element name="ShoppingCart" type="sc:BuyShoppingCartType">
+      <annotation>
+       <documentation>Der zu validierende Warenkorb.</documentation>
+      </annotation>
+     </element>
+    </sequence>
+    <attribute name="persist" type="boolean" default="false">
+     <annotation>
+      <documentation>
+       Die Persistierung des Warenkorbes wird zur Zeit noch nicht unterstützt und ignoriert.
+
+       Wenn true wird der Warenkorb bei erfolgreicher Validierung persistiert. In diesem Falle ist innerhalb des
+       Response ShoppingCartType.shoppingCartId gesetzt.
+      </documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+
+
+
+ <complexType name="ShoppingCartCheckoutBaseRequestType">
+  <annotation>
+   <documentation>
+    Siehe auch:
+    <link>ShoppingCartCheckoutViaPaymentResponseType</link>
+    .
+
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ws:WsRequestType">
+    <sequence>
+    	<choice>
+    		<element name="ShoppingCartIdentification"
+    			type="sc:ShoppingCartIdentificationType">
+    		</element>
+    		<element name="BuyShoppingCart"
+    			type="sc:BuyShoppingCartType">
+    		</element>
+    	</choice>
+    	<element name="DirectLabelInfo" type="ws:DirectLabelInfoType" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+   </extension>
+  </complexContent>
+ </complexType>
+
+
+ <complexType name="LoadBuyedShoppingCartRequestType">
+  <annotation>
+   <documentation>
+    Lädt einen gekauften Warenkorb.
+
+    Siehe auch
+    <link>LoadBuyedShoppingCartResponseType</link>
+    .
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ws:WsRequestType">
+    <sequence>
+    	<element name="ShoppingCartIdentification" type="sc:ShoppingCartIdentificationType"/>
+    	<element name="DirectLabelInfo" type="ws:DirectLabelInfoType" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+   </extension>
+  </complexContent>
+ </complexType>
+
+ <complexType name="LoadBuyedShoppingCartResponseType">
+  <annotation>
+   <documentation>
+    Siehe auch
+    <link>LoadBuyedShoppingCartRequestType</link>
+    .
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ws:WsResponseType">
+    <sequence>
+     <element name="DownloadShoppingCart" type="sc:DownloadShoppingCartType" minOccurs="0" maxOccurs="1">
+      <annotation>
+       <documentation>Element kann fehlen, falls Warenkorb nicht erstellt werden konnte</documentation>
+      </annotation>
+     </element>
+    </sequence>
+   </extension>
+  </complexContent>
+ </complexType>
+
+
+
+
+
+
+
+
+
+
+ <complexType name="AuthType">
+  <annotation>
+   <documentation>Authentifizierung eines Calls</documentation>
+  </annotation>
+  <attribute name="partnerId" type="string" use="required">
+   <annotation>
+    <documentation>Partner-ID, aka Marktplatz</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="subPartnerId" type="string" use="required">
+   <annotation>
+    <documentation>Kennung für die Quelle der Anfrage</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="user" type="string" use="optional">
+   <annotation>
+    <documentation>Wenn gesetzt, muss gültiger loginName eines AdminUser sein.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="password" type="string" use="optional">
+   <annotation>
+    <documentation>Wenn gesetzt, muss gültiges Passwort für ein AdminUser sein</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="sessionAuth" type="boolean" use="optional" default="false">
+   <annotation>
+    <documentation>
+     Wenn true, wird die Authentifizierung über Session versucht.
+
+     Die Session wird über die übliche Methoden (jsession in URL oder über Cookie) wieder aufgenommen.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="accountId" type="string" use="optional">
+   <annotation>
+    <documentation>
+     Aka Mandant.
+
+     Dieses muss nicht unbedingt gesetzt sein, wenn durch
+     <code>user/password</code>
+     der Mandant identifiziert werden kann.
+    </documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+ <complexType name="WsResponseStatus">
+  <annotation>
+   <documentation>
+    Ein Webservice liefert bei erfolgreichem Empfang eines Webservice-Request immer eine Antwort.
+   </documentation>
+  </annotation>
+  <attribute name="status" type="int">
+   <annotation>
+    <documentation>
+     Grundsätzlich ist der statusCode folgendermaßen aufgeteilt.
+     <ul>
+      <li>0 : Erfolgreiche Abarbeitung</li>
+      <li>1 - 99. Technischer Fehler.</li>
+      <li>100 - 199. Allgemeine Fehler</li>
+      <li>200 - 999. Webservice spezifische Fehler</li>
+      <li>1000 - 1099. Allgemeine Warnung. Der Webservice liefert eine Antwort , jedoch enthält eine Warnung.</li>
+      <li>1100 - 2000. Servicespezifische Warnungen.</li>
+     </ul>
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="errorMessage">
+   <annotation>
+    <documentation>
+     Wenn status != 0 enthält eine Fehlermeldung.
+
+     Der Text sollte nur für eine Fehleranalyse verwendet. D.h. der Inhalt von errorMessage sollte weder
+     programmtechnisch ausgewertet, noch direkt in Oberflächen für Endkunden angezeigt werden.
+
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string"></restriction>
+   </simpleType>
+  </attribute>
+ </complexType>
+
+
+
+ <complexType name="ShoppingCartCheckoutViaPaymentRequestType">
+  <annotation>
+   <documentation>Ein Warenkorb wird über einen Redirect über eine externe Bezahlplattform bezahlt</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ws:ShoppingCartCheckoutBaseRequestType">
+    <sequence>
+     <element name="PartnerBackLinks" type="sc:PartnerBackLinksType" minOccurs="1" maxOccurs="1"></element>
+    </sequence>
+   </extension>
+  </complexContent>
+ </complexType>
+
+
+ <complexType name="ShoppingCartCheckoutViaPaymentResponseType">
+  <annotation>
+   <documentation>Antwort eines Warenkorbes.
+    Die Antwort.
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="ws:WsResponseType">
+    <sequence>
+      <annotation>
+       <documentation>
+        Im Erfolgsfall wird ein PaymentForwardShoppingCartType und BuyShoppingCart zurückgeliefert. Im Fehlerfall nur BuyShoppingCart.
+       </documentation>
+      </annotation>
+      <element name="PaymentForwardShoppingCart" type="sc:PaymentForwardShoppingCartType" minOccurs="0" maxOccurs="1">
+       <annotation>
+        <documentation>Element kann fehlen, falls Warenkorb nicht erstellt werden konnte.</documentation>
+       </annotation>
+      </element>
+      <element name="BuyShoppingCart" type="sc:BuyShoppingCartType" minOccurs="0" maxOccurs="1"></element>
+    </sequence>
+   </extension>
+  </complexContent>
+ </complexType>
+
+
+
+
+
+ <element name="DirectLabelInfo" type="ws:DirectLabelInfoType"/>
+
+ <complexType name="DirectLabelInfoType">
+        <annotation>
+        	<documentation>Enthält das gewünschte Format von BASE64-encodierten binären Labeldaten im Response, aktuell wird nur "pdf" unterstützt.
+
+Wenn nicht angegeben, werden keine binären Labeldaten im Response geliefert.</documentation>
+        </annotation>
+        <attribute name="format" use="optional" default="pdf">
+    		<simpleType>
+    		<restriction base="string">
+    			<enumeration value="pdf"/>
+    		</restriction>
+    		</simpleType>
+    	</attribute>
+</complexType>
+
+</schema>

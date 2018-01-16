@@ -1,0 +1,1373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sc="https://www.dhl.de/popweb/gw/ws/schema/1.0/popsc"
+ xmlns:base="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+ xmlns:ps="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps"
+ targetNamespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popsc" elementFormDefault="qualified"
+ attributeFormDefault="unqualified">
+
+ <import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps"
+         schemaLocation="../../popps/1.0/popps-1.0.xsd" />
+ <import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+         schemaLocation="../../popbase/1.0/popbase-1.0.xsd" />
+
+ <complexType name="BaseLabelAddressType">
+  <annotation>
+   <documentation>Standard Address Format.</documentation>
+  </annotation>
+
+  <attribute name="name1" use="optional">
+   <annotation>
+    <documentation>
+     Erste Namenszeile.
+
+     Bei Angabe einer Label-Adresse muss diese befüllt werden.
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <minLength value="0" />
+     <maxLength value="50" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="name2" use="optional">
+   <annotation>
+    <documentation>Zweite Namenszeile. Optional.</documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <maxLength value="50" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="street" use="optional">
+   <annotation>
+    <documentation>Strassenamen. Muss bei bei deutschen Produkten angeben werden.</documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <maxLength value="35" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="houseNumber" use="optional">
+   <annotation>
+    <documentation>
+     Die Hausnummer muss für deutsche Adressen - für eine korrekte Leitcodierung - übergeben werden.
+
+     Bei einigen Services, wie etwa Abholung, muss die Adresse leitcodierbar sein.
+
+     Undocumented: Nur aus Rückwärtskompatibilitätsgründen wird auch eine Übermittlung der Hausnummer zusammen mit der
+     Straße im Attribut street unterstützt. Da jedoch intern nicht in allen Fällen eine korrekte nachträgliche
+     Abtrennung der Hausnummer von Strasse+Hausnummer möglich ist, ist die explizite Übergabe der Hausnummer in diesem
+     Attribut strengstens empfohlen.
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <maxLength value="17" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="postalCode" use="optional">
+   <annotation>
+    <documentation>
+     Bei deutschen Adressen muss dies eine gültige PLZ mit 5 Stellen sein. Es sind also auch führende 0en anzugeben.
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <maxLength value="17" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="city" use="optional">
+   <annotation>
+    <documentation>Name der Stadt.</documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <minLength value="0" />
+     <maxLength value="35" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="countryCode" type="base:CountryCodeType" use="optional">
+
+   <annotation>
+    <documentation>ISO3 Alpha Code für Land</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="email" type="base:EmailType" use="optional">
+   <annotation>
+    <documentation>Email.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="phoneNumber" type="base:PhoneNumberType" use="optional">
+   <annotation>
+    <documentation>Telefonnummer</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="smsNumber" type="base:PhoneNumberType" use="optional">
+   <annotation>
+    <documentation>Handynummer um sms optinal eine sms zu versenden.</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+ <complexType name="ShipmentItemType">
+  <annotation>
+   <documentation>Basistyp für Shipments</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:ItemType">
+    <sequence>
+     <element name="SenderAddress" type="sc:BaseLabelAddressType">
+      <annotation>
+       <documentation>Absenderadresse.</documentation>
+      </annotation>
+     </element>
+     <element name="ReceiverAddress" type="sc:BaseLabelAddressType">
+      <annotation>
+      	<documentation>Empfängeraddresse.
+
+Es ist möglich eine Packstation oder Postfiliale zu adressieren.
+In diesem Fall muss als name1 "Packstation" oder "Postfiliale" (ohne "-Zeichen) angegeben werden.
+Das Attribut houseNumber muss mit einer, für den postalCode  gültigen, Packstations- oder Postfilialnummer belegt werden.
+Sollte eine Packstation oder Postfiliale adressiert werden ist es zwingend erforderlich im name2 Attribut eine gültige Postnummer  anzugeben.
+Postnummerformat: nummerisch , mindestens 6 Stellen </documentation>
+      </annotation>
+     </element>
+     <element name="Dimension" type="base:ShipmentDimensionType" minOccurs="0">
+      <annotation>
+       <documentation>
+        Dimensionen der Sendung.
+
+        Wenn die Dimensionen einer Sendung übergeben werden, werden die gegen die für das Produkt gültige
+        Maximaldimensionen geprüft.
+
+        Für einige Produkte/Zielländer ist zumindest die Angabe des Gewichtes notwendig (CP71).
+
+        Für generischen Maxitransporte ist vollständige die Angabe der Dimensionen notwendig.
+       </documentation>
+      </annotation>
+     </element>
+    </sequence>
+    <attribute name="productId" type="base:ProductIdType">
+     <annotation>
+      <documentation>
+       Interne Produkt-ID aus Basisprodukt, Service und synthetischem Land.
+
+       Alternativ kann auch ein ISOS-Code übermittelt werden. Bei der Rückgabe wird jedoch immer der interne POP
+       Produktbezeichner geliefert.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="shipmentId" use="optional">
+     <annotation>
+      <documentation>Erst bei gekauften SC befüllt. Entweder IDC oder LP</documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <minLength value="0" />
+       <maxLength value="39" />
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="routingCode" use="optional">
+     <annotation>
+      <documentation>Erst bei gekauften SC befüllt. Entweder Leitcode oder RoutingCode.</documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <minLength value="0" />
+       <maxLength value="30" />
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="airwayBillNumber" type="string" use="optional">
+     <annotation>
+      <documentation>
+       Ist nur bei einem gekauften Warenkorb gesetzt.
+
+      </documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+
+ <complexType name="ShoppingCartBaseType">
+  <annotation>
+   <documentation>Basistyp für Warenkorb</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:ShoppingCartIdentificationType">
+    <sequence>
+     <element name="ItemError" type="sc:ItemErrorsType" minOccurs="0" maxOccurs="1">
+      <annotation>
+       <documentation>Warenkorb globale ItemErrors</documentation>
+      </annotation>
+     </element>
+     <element name="Orderer" type="sc:BaseLabelAddressType" minOccurs="0" maxOccurs="1">
+      <annotation>
+       <documentation>
+        Auftraggeber.
+
+        Bei Kauf muss zumindest email immer gesetzt sein.
+       </documentation>
+      </annotation>
+     </element>
+     <sequence minOccurs="0" maxOccurs="99">
+      <annotation>
+       <documentation>Normale Warenkorbpositionen.</documentation>
+      </annotation>
+      <choice>
+       <element name="LabelItem" type="sc:LabelItemType" />
+       <element name="MTItem" type="sc:MTItemType">
+         <annotation>
+           <documentation>Fuer echte Multicollie-Maxitransporte den Typ mit xsi:type="sc_2_0:MTItemMulticollieType ueberschreiben</documentation>
+         </annotation>
+       </element>
+       <element name="CouponSetItem" type="sc:CouponSetItemType" />
+      </choice>
+     </sequence>
+     <element name="PickupItem" type="sc:PickupItemType" minOccurs="0" maxOccurs="1">
+      <annotation>
+       <documentation>Die Abholung für den Warenkorb.</documentation>
+      </annotation>
+     </element>
+    </sequence>
+   </extension>
+  </complexContent>
+ </complexType>
+
+ <complexType name="LabelItemType">
+  <annotation>
+   <documentation>Ein Paket/Päckchen</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:ShipmentItemType">
+    <sequence>
+     <element name="CnDeclaration" type="sc:Cn22Type" minOccurs="0">
+      <annotation>
+       <documentation>Optional bei internationalen Sendungungen benötigt</documentation>
+      </annotation>
+     </element>
+      <element name="DirectLabel" type="sc:DirectLabelType" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+    <attribute name="printedAt" type="dateTime" use="optional">
+     <annotation>
+      <documentation>
+       Nur bei gekauften SC. Zeitstempel, an dem das Label (zuletzt) gedruckt wurde.
+
+       Wird zur Zeit noch nicht unterstützt.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="labelId" type="string">
+     <annotation>
+      <documentation>Nur bei gekauften SC. Systemweite ID für das Label.</documentation>
+     </annotation>
+    </attribute>
+    <attribute name="pdfDownloadUrl" type="string" use="optional">
+     <annotation>
+      <documentation>
+       Nur bei gekauften SCs. Produkte die kein PDF unterstützen, ist dieses Attribute nicht gesetzt.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="preAdviceType" type="base:PreAdviceType" use="optional">
+     <annotation>
+      <documentation>
+       Interner Bezeichner für die Art der Vorausverfügung. Kann zur Zeit - PA_DESTROY oder PA_RETURN enthalten.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="recomandCode" type="base:RecomandCodeType" use="optional">
+     <annotation>
+      <documentation>
+       Enthält den Einschreibencode bei Produkten mit Einschreibenservice.
+
+       Nur bei gekauften Warenkorb.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="awtDownloadUrl" type="string" use="optional">
+     <annotation>
+      <documentation>
+       Link zu einem Applet um das einzelne Label zu drucken.
+
+       Ist nur in einem gekauften Warenkorb gesetzt.
+      </documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+
+ <complexType name="ItemType">
+  <annotation>
+   <documentation>Basis Typ für Warenkorb-Items</documentation>
+  </annotation>
+  <sequence>
+   <element name="Price" type="sc:ItemPriceType" minOccurs="0">
+    <annotation>
+     <documentation>
+      Preise der Position. Wird von POP im Response befüllt.
+
+      Bei einem noch nicht gekauften Warenkorb werden die Preise pro Basisprodukt und Service geliefert.
+
+      Bei einem gekauften Warenkorb werden die Preise nach MwSt. summiert dargestellt, analog zu der Rechnungsanzeige.
+     </documentation>
+    </annotation>
+   </element>
+   <element name="ItemError" type="sc:ItemErrorsType" minOccurs="0">
+    <annotation>
+     <documentation>Validierungs-Fehler des SC-Item. Wird von POP im Response befüllt.</documentation>
+    </annotation>
+   </element>
+  </sequence>
+  <attribute name="couponCode" type="base:CouponCodeType" use="optional">
+   <annotation>
+    <documentation>
+     Falls auf der SC-Position ein Coupon eingelöst werden soll enthält dieses Feld den CouponCode.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="itemId" type="int">
+   <annotation>
+    <documentation>Interne ID des Items.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="customerReference" use="optional">
+   <annotation>
+    <documentation>
+     Partner-Spezifische Identifizierung des Items.
+
+     Es dürfen keine Umlaute oder Sonderzeichen verwendet werden.
+
+     Wenn durch POP selbst Positionen hinzugefügt werden (Über Oberfläche oder ggf. implizit, da z.B. eine Abholung
+     dazugebucht wird), ist dieses Attribute nicht gesetzt.
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <minLength value="0"></minLength>
+     <maxLength value="35"></maxLength>
+    </restriction>
+   </simpleType>
+  </attribute>
+      <attribute name="cancelReason" type="string">
+ 				<annotation>
+ 					<documentation>
+ 						Vom Supportmitarbeiter angegebener Grund für
+ 						die Stornierung.
+ 					</documentation>
+ 				</annotation>
+ 			</attribute>
+ 			<attribute name="canceledAt" type="dateTime">
+ 				<annotation>
+ 					<documentation>
+ 						Zeitpunkt der Stornierung für diese Position.
+ 						Position ist nicht storniert wenn
+ 						Stornierungszeitpunkt nicht gesetzt.
+ 					</documentation>
+ 				</annotation>
+ 			</attribute>
+ 			<attribute name="cancelAmount" type="double">
+ 				<annotation>
+ 					<documentation>
+ 						Betrag welcher für diese Position erstattet wurde.
+ 					</documentation>
+ 				</annotation>
+ 			</attribute>
+ </complexType>
+ <complexType name="CouponSetItemType">
+  <annotation>
+   <documentation>
+    Ein Couponset zum Kauf.
+
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:ItemType">
+    <sequence maxOccurs="unbounded" minOccurs="1">
+     <element name="Coupon" type="ps:CouponInfoType" minOccurs="0">
+      <annotation>
+       <documentation>Nur bei gekauften Warenkörbe die einzelnen Coupon Codes des CouponSets.</documentation>
+      </annotation>
+     </element>
+    </sequence>
+    <attribute name="couponTypeId" use="required">
+     <annotation>
+      <documentation>Interne eindeutige ID des Coupon Sets.</documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <minLength value="3" />
+       <maxLength value="60" />
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="chunkSize" type="int" use="required">
+     <annotation>
+      <documentation>Gewählte Stückelung</documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+ <complexType name="PickupItemType">
+  <annotation>
+   <documentation>Enthält eine Abholung.</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:ItemType">
+    <sequence>
+     <element name="address" type="sc:BaseLabelAddressType" maxOccurs="1" minOccurs="1">
+      <annotation>
+       <documentation>Die Abholadresse</documentation>
+      </annotation>
+     </element>
+     <element name="curPickupTime" type="sc:PickupTimeType" maxOccurs="1" minOccurs="1"></element>
+     <element name="availablePickupTimes" type="sc:PickupTimeType" maxOccurs="unbounded" minOccurs="0">
+      <annotation>
+       <documentation>Wird zur Zeit nicht unterstützt.</documentation>
+      </annotation>
+     </element>
+    </sequence>
+    <attribute name="pickupItemCount" use="optional">
+     <annotation>
+      <documentation>Anzahl der Sendungen, die abgeholt werden sollen</documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="integer">
+       <minExclusive value="0" />
+      </restriction>
+     </simpleType>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+ <complexType name="MTItemType">
+  <annotation>
+   <documentation>
+    Ein Maxitransport Item.
+
+    Auftragsadresse ist immer vom Warenkorb.
+
+    Alternativ kann xsi:type="sc_2_0:MTItemMulticollieType verwendet werden fuer echte Multicollie-Sendungen.
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:ShipmentItemType">
+    <!-- Es gibt nur eine orderer adress pro sc -->
+    <attribute name="shipmentDescription" use="optional">
+     <annotation>
+      <documentation>
+       Wenn ein generischer Maxitransport gewählt ist, muss shipmentDescription gefüllt sein
+      </documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <maxLength value="55" />
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="gplOrderNo" type="string">
+     <annotation>
+      <documentation>
+       Enthält die Order-Nummer des GPL-Systems.
+
+       Nur nach dem Kauf verfügbar.
+      </documentation>
+     </annotation>
+    </attribute>
+
+    <attribute name="pickupDate" type="dateTime" use="required">
+     <annotation>
+      <documentation>Abholdatum Maxitransport</documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+
+ <attribute name="productId">
+  <simpleType>
+   <restriction base="string">
+    <minLength value="2" />
+    <maxLength value="30" />
+   </restriction>
+  </simpleType>
+ </attribute>
+
+ <complexType name="Cn22Type">
+  <annotation>
+   <documentation>
+    Daten für ein CN22 und CN23 Formular.
+
+    Wird in einem
+    <link>LabelItemType</link>
+    verwendet.
+   </documentation>
+  </annotation>
+  <sequence>
+   <element name="TypeOfGoods" maxOccurs="5" minOccurs="1">
+    <annotation>
+     <documentation>
+      Beschreibt die Art der Sendung. Es muss mindest eine Art der Sendung angegeben werden.
+     </documentation>
+    </annotation>
+    <simpleType>
+     <annotation>
+      <documentation>Beschreibt die Art der Sendung. Es muss mindest ein Art der Sendung definiert sein.</documentation>
+     </annotation>
+     <restriction base="string">
+      <enumeration value="GESCHENK" />
+      <enumeration value="DOKUMENTE" />
+      <enumeration value="WARENMUSTER" />
+      <enumeration value="SONSTIGES" />
+      <enumeration value="WARENRUECKSENDUNG" />
+     </restriction>
+    </simpleType>
+   </element>
+   <element name="CnLine" type="sc:Cn2223LineType" maxOccurs="6" minOccurs="1">
+    <annotation>
+     <documentation>
+      Zeilen des CN22 und CN23 Formulars.
+
+      Bei eine CN22-Formalar können dies max. 3 Zeilen bei CN23-Formular max. 6 Zeilen sein.
+     </documentation>
+    </annotation>
+   </element>
+  </sequence>
+  <attribute name="cn23" default="false" type="boolean" />
+  <attribute name="currency" default="EUR">
+   <annotation>
+    <documentation>3-Zeichen Währungsangabe, nach ISO 4217 , Default ist EUR</documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <length value="3" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="bruttoWeight" type="int">
+   <annotation>
+    <documentation>
+     Summe von der deklarierten Gegenständen + Verpackungsgewicht in Gramm.
+
+     Dieses Gewicht darf nicht kleiner als die Summe über alle Gegenstände sein! Wird es weggelessen, so wird es
+     automatisch berechnet.
+
+     Bei Angabe muss der Wert 100 (Gramm) oder höher sein.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="typeOtherDeclaration" type="string">
+   <annotation>
+    <documentation>
+     Bei CN23 Kann man eine zusätzliche Angabe zu der Warenart machen.
+
+     Falls TypeOfGoods SONSTIGES muss hier eine Beschreibung ausgefüllt werden.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="billnumber" type="string">
+   <annotation>
+    <documentation>Rechnung (CN23)</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="approval" type="string">
+   <annotation>
+    <documentation>Genehmigungen (CN23)</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="certificate" type="string">
+   <annotation>
+    <documentation>Bescheinigung (CN23)</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="otherDeclarations" type="string">
+   <annotation>
+    <documentation>Bemerkungen (CN23)</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+ <complexType name="Cn2223LineType">
+  <annotation>
+   <documentation>Für eine CN22 oder CN23-Formular eine Zeile der Zollinhaltserklärung</documentation>
+  </annotation>
+  <attribute name="description">
+   <annotation>
+    <documentation>Inhaltsbeschreibung</documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <minLength value="1" />
+     <maxLength value="35" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="weight" type="int">
+   <annotation>
+    <documentation>
+     Inhaltsgewicht in Gramm. Bei addieren wird die gesamtsumme auf 100 Gramm gerundet. Minimale Angabe ist 100 Gramm.
+    </documentation>
+   </annotation>
+   <!--
+    <simpleType>
+    <restriction base="int">
+    <minInclusive value="100" />
+    </restriction>
+    </simpleType>
+   -->
+  </attribute>
+
+  <attribute name="value" type="decimal">
+   <annotation>
+    <documentation>
+     Wert des Inhalts in currency. Wird eine Nachkommastelle verarbeitet. Der Rest wird ignoriert.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="tarifCode">
+   <simpleType>
+    <restriction base="string">
+     <maxLength value="6" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="originCountryCode">
+   <simpleType>
+    <restriction base="string">
+     <maxLength value="3" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="count" type="int" default="1">
+   <annotation>
+    <documentation>Anzahl des im Inhalt enthaltene Gegendstände</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+ <complexType name="ItemErrorType">
+  <annotation>
+   <documentation>Ein Fehler</documentation>
+  </annotation>
+  <attribute name="itemId" type="int"></attribute>
+  <attribute name="printable" type="boolean" />
+  <attribute name="i18nkey" type="string">
+   <annotation>
+    <documentation>Internationalisierungsschlüssel</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="detailed" type="boolean">
+   <annotation>
+    <documentation>
+     Wenn true ist diese Message eine Detail-Message und bezieht sich auf ein einzelnes Feld
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="messageType">
+   <annotation>
+    <documentation>BLOCKINGERROR verhindern Kauf</documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <enumeration value="ERROR" />
+     <enumeration value="WARNING" />
+     <enumeration value="BLOCKINGERROR" />
+    </restriction>
+   </simpleType>
+  </attribute>
+  <!--  <attribute name="escapeArgs" type="boolean" /> -->
+  <attribute name="message" type="string">
+   <annotation>
+    <documentation>Message in Deutsch</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+ <complexType name="ItemBaseType">
+  <annotation>
+   <documentation>Basistyp für Warenkorbelemente.</documentation>
+  </annotation>
+  <attribute name="itemId" type="int">
+   <annotation>
+    <documentation>Interne id des Warenkorbelementes</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+ <complexType name="ItemErrorsType">
+  <annotation>
+   <documentation>List von Fehlerbeschreibungen.</documentation>
+  </annotation>
+  <sequence>
+   <element name="ItemError" type="sc:ItemErrorType" maxOccurs="unbounded" />
+  </sequence>
+ </complexType>
+ <complexType name="ItemPriceType">
+  <annotation>
+   <documentation>
+    Preis. Setzt sich aus mehreren Preiskomponenten zusammen, wobei jedes Preiselement eine eigene MwSt. hat.
+   </documentation>
+  </annotation>
+  <sequence minOccurs="0" maxOccurs="unbounded">
+   <element name="PriceComponents" type="base:PriceComponentType" />
+  </sequence>
+ </complexType>
+
+ <attribute name="amount" type="base:AmountType" />
+ <complexType name="PaymentForwardShoppingCartType">
+  <attribute name="paymentUrl" type="string">
+   <annotation>
+    <documentation>
+     Damit der Anwender den Warenkorb bezahlen kann, muss der Browser mit einem Redirect zu dieser URL gesendet werden.
+     Die Bestimmungen der Bezahlplattformen erlauben in der Regel nicht, dass die Seite innerhalb eines Frames angezeigt
+     wird.
+    </documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+ <complexType name="DownloadShoppingCartType">
+ 	<complexContent>
+ 		<extension base="sc:ShoppingCartBaseType">
+ 			<sequence>
+ 				<element name="PaymentInfo" type="sc:PaymentInfoType" />
+ 			</sequence>
+ 			<attribute name="downloadPageUrl" type="string">
+ 				<annotation>
+ 					<documentation>
+ 						URL unter der die POP eigene Download-Html-Page
+ 						zu diesem Warenkorb aufgerufen werden kann.
+ 					</documentation>
+ 				</annotation>
+ 			</attribute>
+ 			<attribute name="appletUrl" type="string">
+ 				<annotation>
+ 					<documentation>
+ 						URL unter der das Druckerapplet für diesen
+ 						Warenkorb aufgerufen werden kann.
+ 					</documentation>
+ 				</annotation>
+ 			</attribute>
+ 			<attribute name="cancelSumAmount" type="double">
+ 				<annotation>
+ 					<documentation>Gesamtsumme des ersattenen Geldbetrages für diesen Warenkorb. Besteht aus allen positionsbasierten Stornierungen + alle sonstigen Erstattungen (nicht positionsbasiert)</documentation></annotation></attribute>
+ 					    <attribute name="invoiceUrl" type="string">
+     <annotation>
+      <documentation>
+       URL unter der nach dem Kauf eines Warenkorbes eine Maske verfügbar ist, von der aus
+       man sich eine Rechnung zusenden kann.
+
+       Dieser Parameter wird nur bei den Services
+       <link>ShoppingCartOpenRequestType</link>
+          und
+       <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+       ausgewertet, wenn dort der Parameter <code>getInvoiceURL=true</code>
+       im umschliessenden Request Element gesetzt wird.
+      </documentation>
+     </annotation>
+    </attribute>
+
+      <attribute name="notifyUrlExt" type="string" use="optional">
+     <annotation>
+      <documentation>
+		Optionale URL für Partner je nach Partner um nach der Bezahlung diverse Informationen zu liefern.
+      </documentation>
+     </annotation>
+    </attribute>
+
+ 		</extension>
+ 	</complexContent>
+ </complexType>
+ <complexType name="BuyShoppingCartType">
+  <annotation>
+   <documentation>Warenkorb für den Kauf</documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:ShoppingCartBaseType">
+    <sequence>
+     <!-- <element name="ShoppingCartPrice" type="sc:ShoppingCartPriceType" minOccurs="0">
+      <annotation>
+      <documentation>
+      Preis des Warenkorbes. I.d.R. wird dieses Element bei Requests von Parnter nicht gesetzt.
+      </documentation>
+      </annotation>
+      </element>
+     -->
+     <choice>
+      <annotation>
+       <documentation>Es muss eine der folgenden Paymentarten gesetzt werden.</documentation>
+      </annotation>
+
+      <element name="PaymentNullpay" type="sc:PaymentNullpayType" />
+      <element name="PaymentGiropay" type="sc:PaymentGiropayType" />
+      <element name="PaymentPartner" type="sc:PaymentPartnerpayType">
+       <annotation>
+        <documentation>Falls eine Partner-Payment verwendet werden soll.</documentation>
+       </annotation>
+      </element>
+      <element name="PaymentCreditcard" type="sc:PaymentCreditcardType" />
+      <element name="PaymentPaypal" type="sc:PaymentPaypalType" />
+      <element name="PaymentDHLCheckout" type="sc:PaymentDHLCheckoutType" />
+      <element name="PaymentPostpay" type="sc:PaymentPostpayType" />
+     </choice>
+    </sequence>
+    <attribute name="acceptAgb" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>
+       Wenn der Endkunde die AGB von POP bereits akzeptiert hat.
+
+       Dies muss auf
+       <code>true</code>
+       gesetzt sein, möchte man ohne Anzeige der POP-Warenkorbseite einen Warenkorb über einen Webservice kaufen.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="notifyUrl" type="string">
+     <annotation>
+      <documentation>
+       URL unter der nach dem Kauf die Notification gesendet wird.
+
+       Dieser Parameter wird nur bei den Services
+       <link>ShoppingCartOpenRequestType</link>
+       ,
+       <link>ShoppingCartCheckoutDirectRequestType</link>
+       und
+       <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+       ausgewertet.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="sendUserEmail" type="boolean" use="optional" default="false">
+     <annotation>
+      <documentation>
+       Wenn auf
+       <code>true</code>
+       gesetzt, wird eine Kaufbestätigung an den Kunden gesendet.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="sendMaptosRSET" type="boolean" default="false">
+     <annotation>
+      <documentation>
+       Wenn auf
+       <code>true</code>
+       gesetzt, wird an die Marktplatz hinterlegte URL ein Maptos-PSET gesendet.
+
+       Dies ist nur zur Rückwärtskompatiblität gedacht. Zukünftig sollten Partner den Service
+       <link>ShoppingCartOpenRequestType</link>
+       implementieren, da diese detailliertere Informationen zu einem Warenkorb liefert.
+      </documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+ <complexType name="PaymentBaseType">
+  <attribute name="paymentId" type="string">
+   <annotation>
+    <documentation>Interne ID/Bezeichner der Bezahlschnittstelle.</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+ <complexType name="PaymentGiropayType">
+  <annotation>
+   <documentation>
+    Wird für die Bezahlplattform GIROPAY verwendet. Für einen direkten Sprung auf die Bezahlplattform über
+    <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+    wird auch das Attribute blz benötigt.
+
+    Diese Bezahlung kann nur über
+    <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+    ausgeführt werden.
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:PaymentBaseType">
+    <attribute name="blz" type="string" use="required">
+     <annotation>
+      <documentation>
+       Bankleitzahl.
+
+       Bei
+       <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+       wird überprüft, das die Bank an Giropay teilnimmt.
+      </documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+ <complexType name="PaymentCreditcardType">
+  <annotation>
+   <documentation>
+    Bezahlung über Kreditkarte.
+
+    Diese Bezahlung kann nur über
+    <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+    ausgeführt werden.
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:PaymentBaseType" />
+  </complexContent>
+ </complexType>
+ <complexType name="PaymentPaypalType">
+  <annotation>
+   <documentation>
+    Bezahlung über PayPal.
+
+    Ist das Attribute payPalBillingAgreementId gesetzt, muss die Bezahlung über den
+    <link>ShoppingCartCheckoutDirectRequestType</link>
+    ausgeführt werden.
+
+    Ansonsten muss die
+    <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+    verwendet werden.
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:PaymentBaseType">
+    <attribute name="payPalBillingAgreementId" type="string" use="optional">
+     <annotation>
+      <documentation>
+       Dieses Attribute die Authorisierung für Reference Transaction API von PayPal (REFERENCEID).
+      </documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+ <complexType name="PaymentNullpayType">
+  <annotation>
+   <documentation>
+    NULLPAY darf nur verwendet werden, wenn die Warenkorbsumme 0 ist.
+
+    Die Warenkorbposition müssen kostenfrei oder über Coupons komplett abgeckt sein.
+
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:PaymentBaseType" />
+  </complexContent>
+ </complexType>
+
+ <complexType name="PaymentDHLCheckoutType">
+  <annotation>
+   <documentation>
+	Veraltet. Bitte <link>PaymentPostpayType</link> verwenden.
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:PaymentBaseType" />
+  </complexContent>
+ </complexType>
+
+
+  <complexType name="PaymentPostpayType">
+  <annotation>
+   <documentation>
+    Bezahlung über POSTPAY
+
+    Diese Bezahlung kann nur über
+    <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+    ausgeführt werden.
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:PaymentBaseType" />
+  </complexContent>
+ </complexType>
+
+ <complexType name="PaymentPartnerpayType">
+  <annotation>
+   <documentation>
+    Enthält Daten für ein partnerseitige Implementierung des Accounting.
+
+    Die einzelnen Felder sind Transparent und können von der Partner-Bezahlschnittstelle verwendet werden.
+
+    Auf dem Testsystem ist als Partner DUMMYPAY (paymentId muss auf DUMMYPAY gesetzt sein).
+
+    Für DHL-Interne Zwecke und entsprechenden Rechten kann als Partner auch EFIALEPAY verwendet werden.
+
+    Siehe auch
+    <link>ShoppingCartCheckoutViaPaymentRequestType</link>
+    und
+    <link>ShoppingCartCheckoutDirectRequestType</link>
+    .
+   </documentation>
+  </annotation>
+  <complexContent>
+   <extension base="sc:PaymentBaseType">
+    <attribute name="userId1">
+     <annotation>
+      <documentation>
+       Eingabeparameter.
+
+       Abhängig von der Payment-Schnittstelle.
+      </documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <minLength value="0"></minLength>
+       <maxLength value="60"></maxLength>
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="userId2">
+     <annotation>
+      <documentation>
+       Eingabeparameter.
+
+       Abhängig von der Payment-Schnittstelle.
+      </documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <maxLength value="60"></maxLength>
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="paymentAccount" type="string">
+     <annotation>
+      <documentation>
+       Eingabeparameter.
+
+       Abhängig von der Payment-Schnittstelle.
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="paymentTx1">
+     <annotation>
+      <documentation>
+       Ausgabeparameter.
+
+       Abhängig von der Payment-Schnittstelle.
+      </documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <maxLength value="60"></maxLength>
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="paymentTx2">
+     <annotation>
+      <documentation>
+       Ausgabeparameter.
+
+       Abhängig von der Payment-Schnittstelle.
+      </documentation>
+     </annotation>
+     <simpleType>
+      <restriction base="string">
+       <maxLength value="60"></maxLength>
+      </restriction>
+     </simpleType>
+    </attribute>
+    <attribute name="maxBruttoAmount" type="base:AmountType">
+     <annotation>
+      <documentation>
+       Maximalbetrag, mit der die Bezahlung über Parnter-Payment vorgenommen werden kann.
+
+       Wenn nicht gesetzt, können beliebige Beträge über die Bezahlschnittstelle bezahlt werden.
+
+       <i>Anmerkung: POP R3V2: Dieser Wert wird z.Z. nicht ausgewertet.</i>
+      </documentation>
+     </annotation>
+    </attribute>
+    <attribute name="minBruttoAmount" type="base:AmountType">
+     <annotation>
+      <documentation>
+       Minimalbetrag, mit der die Bezahlung über Parnter-Payment vorgenommen werden kann.
+
+       Wenn nicht gesetzt, können beliebige Beträge über die Bezahlschnittstelle bezahlt werden.
+
+       <i>Anmerkung: POP R3V2: Dieser Wert wird z.Z. nicht ausgewertet.</i>
+      </documentation>
+     </annotation>
+    </attribute>
+   </extension>
+  </complexContent>
+ </complexType>
+
+ <complexType name="ShoppingCartIdentificationType">
+  <annotation>
+   <documentation>
+    Identifiziert einen Warenkorb.
+
+    customerReferenz ist optional.
+
+
+
+   </documentation>
+  </annotation>
+  <attribute name="shoppingCartId" type="string">
+   <annotation>
+    <documentation>Interne Nummer für die eindeutige Identifizierung eines Warenkorbes.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="customerReference" use="optional">
+   <annotation>
+    <documentation>
+     Die Referenz einer Warenkorbposition ist nur gültig im  Zusammenhang eines Marktplatzes (Partner-ID)
+     und einem Webservice Benutzerkonto (user). Siehe
+     <link>AuthType</link>
+
+     Wird nach einer nach customerReferenz gesucht und die Suche ergibt mehr als ein Treffer, wird ein Fehler
+     zurückgegeben (Der Partner hat also innerhalb seiner zugewiesenen Partner-ID und dem Webservice Benutzerkonto für eine
+     Eindeutigkeit zu sorgen.
+
+     Weiterhin wird bei der Suche nach customerReferenz immer nach der letzten ShoppingCart gesucht (also
+     nextShoppingCartId ist nicht gesetzt).
+
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <minLength value="1"></minLength>
+     <maxLength value="35"></maxLength>
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="nextShoppingCartId" type="string" use="optional">
+   <annotation>
+    <documentation>
+     Dieses Feld ist dann gesetzt, wenn der Warenkorb einen Nachfolger hat. Dies ist der Fall, wenn ein Warenkorb
+     versucht wurde zu bezahlen, diese jedoch scheitert. Danach muss der Warenkorb aus Sicherheitsgründen eine neue
+     Warenkorb-Nummer erhalten.
+     <i>Anmerkung: POP R3V2: nextShoppingCartId wird noch nicht unterstützt.</i>
+    </documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+ <complexType name="PickupTimeType">
+  <attribute name="pickupType" use="required">
+   <annotation>
+    <documentation>
+     Typ der Abholung.
+
+     TAS Tagesgenau.
+
+     EAO Express Zeitfenster.
+
+     AZF Amsel Zeitfenster.
+
+     ALB Label wird durch Abholer mitgebracht. Der Warenkorb muss ein ALB-faehiges Label und keines, dass nicht ALB-faehig ist, enthalten.
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string">
+     <enumeration value="TAS"></enumeration>
+     <enumeration value="EAO"></enumeration>
+     <enumeration value="AZF"></enumeration>
+     <enumeration value="ALB"></enumeration>
+    </restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="pickupDate" type="dateTime" use="required">
+   <annotation>
+    <documentation>Zeitpunkt der Abholung</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="pickupWindowId" type="string" use="optional">
+   <annotation>
+    <documentation>
+     Wird nur verwendet, wenn
+     <code>pickupType=EAO</code>
+     .
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="pickupFromTime" type="time" use="optional">
+   <annotation>
+    <documentation>
+     Wird nur verwendet, wenn
+     <code>pickupType=EAO</code>
+     .
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="pickupToTime" type="time" use="optional">
+   <annotation>
+    <documentation>
+     Wird nur verwendet, wenn
+     <code>pickupType=EAO</code>
+     .
+    </documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+ <complexType name="PaymentInfoType">
+  <annotation>
+   <documentation>Informationen zu einem Bezahlstatus. (Intern: siehe PaymentResultDO)</documentation>
+  </annotation>
+  <sequence minOccurs="0" maxOccurs="unbounded">
+  	<element name="PaymentResults" type="sc:PaymentResultsType"/>
+  </sequence>
+  <attribute name="status" use="optional">
+   <annotation>
+    <documentation>
+     Statustext, der entweder von POP oder auch von der Paymentplattform. Wird nur für Analysezwecke verwendet und
+     sollte dem Endanwender nicht angezeigt werden.
+    </documentation>
+   </annotation>
+   <simpleType>
+    <restriction base="string"></restriction>
+   </simpleType>
+  </attribute>
+  <attribute name="transactionId1" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, eine Transaktions-ID</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="transactionId2" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, eine weitere Transaktions-ID</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="userEmail" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, eine Email-Kennung von der Paymentplattform.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="userId" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, eine User-Kennung von der Paymentplattform</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="accountNumber" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, ein Konto</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="bankCode" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, ein BLZ</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="paymentCode" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, ein Statuscode von der Paymentplattform.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="paymentMessage" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden, eine Meldungstext von der Paymentplattform.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="paymentRC" type="string" use="optional">
+   <annotation>
+    <documentation>Falls vorhanden ein result code von der Paymentplattform.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="statusDate" type="dateTime">
+   <annotation>
+    <documentation>Zeit der letzten Statusänderung.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="paymentId" type="string">
+
+  </attribute>
+  <attribute name="paymentLongMessage" type="string">
+   <annotation>
+    <documentation>Falls vorhanden, ein Langtext von der Paymentplattform.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="confirmStatus" type="string">
+   <annotation>
+    <documentation>Enthaelt UNKNOKN, PAID, CANCEL, FAILED, INTERNALERROR.</documentation>
+   </annotation>
+  </attribute>
+  <attribute name="paymentMethod" type="string">
+   <annotation>
+    <documentation>Interner Bezeichner der zuletzt ausgeführten Bezahlfunktion.</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+
+<complexType name="PaymentResultType">
+	<annotation>
+		<documentation>
+			Einzelner PaymentResult Key/Value Paar
+		</documentation>
+	</annotation>
+	<attribute name="key" type="string" use="required">
+		<annotation>
+			<documentation>
+				PaymentResult Key. Wird nur übermittelt, wenn der WS entsprechend konfiguriert wurde.
+			</documentation>
+		</annotation>
+	</attribute>
+	<attribute name="value" type="string" use="required">
+		<annotation>
+			<documentation>
+				PaymentResult Key. Wird nur übermittelt, wenn der entsprechender key konfiguriert wurde.
+			</documentation>
+		</annotation>
+	</attribute>
+</complexType>
+
+<complexType name="PaymentResultsType">
+<annotation>
+	<documentation>
+		Payment Results werden als key/value Paare übermittelt. Aber nur dann, wenn der Webservice entsprechend konfiguriert wurde.
+	</documentation>
+</annotation>
+  <sequence minOccurs="1" maxOccurs="unbounded">
+  	<element name="PaymentResult" type="sc:PaymentResultType"/>
+  </sequence>
+</complexType>
+
+
+ <complexType name="PartnerBackLinksType">
+  <annotation>
+   <documentation>Wird bei für den Rücksprung auf die Partnerseite verwendet.</documentation>
+  </annotation>
+  <attribute name="paymentAcceptedUrl" type="string" use="required">
+   <annotation>
+    <documentation>
+     URL, nach der Erfolgreichen Bezahlung angesprungen wird. Achtung: Da diese Rücksprung auch gefakt werden kann,
+     immer den Warenkorb mit LoadBuyedShoppingCart validieren.
+    </documentation>
+   </annotation>
+  </attribute>
+  <attribute name="paymentRejectedUrl" type="string" use="required">
+   <annotation>
+    <documentation>URL, zu der nach fehlgeschlagener Bezahlung angesprungen wird.</documentation>
+   </annotation>
+  </attribute>
+ </complexType>
+
+
+ <complexType name="DirectLabelType">
+  <annotation>
+     <documentation>
+		Enthält abhängig davon ob im Request angefragt wurde, base64 kodierte Label Daten.
+     </documentation>
+    </annotation>
+ 	<sequence>
+ 		<element name="Base64Label" type="sc:Base64LabelType" minOccurs="0" maxOccurs="1"/>
+ 	</sequence>
+ </complexType>
+
+ <complexType name="Base64LabelType">
+ <annotation>
+     <documentation>
+		base64 kodierte Label Daten.
+     </documentation>
+  </annotation>
+ 	<sequence>
+ 		<element name="Base64Data" type="string"/>
+ 	</sequence>
+ </complexType>
+</schema>

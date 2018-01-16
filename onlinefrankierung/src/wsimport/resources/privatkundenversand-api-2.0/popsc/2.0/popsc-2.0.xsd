@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:sc="https://www.dhl.de/popweb/gw/ws/schema/1.0/popsc"
+	xmlns:sc_1_1="https://www.dhl.de/popweb/gw/ws/schema/1.1/popsc"
+	xmlns:sc_2_0="https://www.dhl.de/popweb/gw/ws/schema/2.0/popsc"
+	xmlns:base="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase"
+	xmlns:ps="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps"
+	targetNamespace="https://www.dhl.de/popweb/gw/ws/schema/2.0/popsc"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popsc" schemaLocation="../../popsc/1.0/popsc-1.0.xsd" />
+	<import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.1/popsc" schemaLocation="../../popsc/1.1/popsc-1.1.xsd" />
+	<import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popps" schemaLocation="../../popps/1.0/popps-1.0.xsd" />
+	<import namespace="https://www.dhl.de/popweb/gw/ws/schema/1.0/popbase" schemaLocation="../../popbase/1.0/popbase-1.0.xsd" />
+
+	<complexType name="MTItemMulticollieType">
+		<annotation>
+			<documentation>
+				Maxitransport mit optionaler Liste von Collies fuer
+				echte Multicolli-Sendungen
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sc:MTItemType">
+				<sequence>
+					<element name="MTCollie" minOccurs="0" maxOccurs="999">
+						<annotation>
+							<documentation>Einzelner Collie ab der 2. Position
+							</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element name="Description">
+									<simpleType>
+										<restriction base="string">
+											<minLength value="0" />
+											<maxLength value="50" />
+										</restriction>
+									</simpleType>
+								</element>
+								<element name="Dimension" type="base:ShipmentDimensionType">
+									<annotation>
+										<documentation>Ausmasse des Maxitransport-Collies
+										</documentation>
+									</annotation>
+								</element>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+</schema>
