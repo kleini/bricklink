@@ -1,10 +1,5 @@
 configurations {
-    jaxws
     wsimport
-}
-
-dependencies {
-    jaxws 'com.sun.xml.ws:jaxws-tools:2.2.10'
 }
 
 group = 'de.dhl'
@@ -18,36 +13,14 @@ sourceSets {
     }
 }
 
-task wsimport2(type:Exec) {
+task wsimport(type:Exec) {
     doFirst {
         sourceSets.wsimport.java.srcDirs[0].mkdirs()
-        sourceSets.wsimport.output.classesDir.mkdirs()
+        sourceSets.wsimport.output.classesDirs[0].mkdirs()
     }
-    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', sourceSets.wsimport.java.srcDirs[0], '-d', sourceSets.wsimport.output.classesDir, '-keep', '-p', 'de.dhl.onlinefrankierung.webservice', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/2.0/privatkundenversand-api-2.0.wsdl', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/popws/2.0/popws-2.0.xsd', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/poppdb/2.0/poppdb-2.0.xsd', '-Xnocompile', '-XadditionalHeaders'
-}
-
-task wsimport {
-    doLast {
-        sourceSets.wsimport.output.classesDir.mkdirs()
-        sourceSets.wsimport.java.srcDirs[0].mkdirs()
-        ant {
-            taskdef(name: 'wsimport', classname: 'com.sun.tools.ws.ant.WsImport', classpath: configurations.jaxws.asPath)
-            wsimport(
-                keep: true,
-                destdir: sourceSets.wsimport.output.classesDir,
-                sourcedestdir: sourceSets.wsimport.java.srcDirs[0],
-                extension: true,
-                verbose: true,
-                quiet: false,
-                xnocompile: true,
-                xendorsed: true,
-                package: "de.dhl.onlinefrankierung.webservice",
-                wsdl: "${projectDir}/src/wsimport/resources/privatkundenversand-api-2.0/2.0/privatkundenversand-api-2.0.wsdl"
-            ) {
-                binding(dir:"${projectDir}/src/wsimport/resources/privatkundenversand-api-2.0",
-                    includes:"poppdb/2.0/poppdb-2.0.xsd,popws/2.0/popws-2.0.xsd")
-            }
-        }
+    commandLine 'wsimport', '-J-Djavax.xml.accessExternalSchema=all', '-s', sourceSets.wsimport.java.srcDirs[0], '-d', sourceSets.wsimport.output.classesDirs[0], '-keep', '-p', 'de.dhl.onlinefrankierung.webservice', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/2.0/privatkundenversand-api-2.0.wsdl', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/popws/2.0/popws-2.0.xsd', '-b', 'https://cig.dhl.de/cig-wsdls/com/dpdhl/wsdl/privatkundenversand-api/poppdb/2.0/poppdb-2.0.xsd', '-Xnocompile', '-XadditionalHeaders'
+    onlyIf {
+        !sourceSets.wsimport.java.srcDirs[0].exists()
     }
 }
 
