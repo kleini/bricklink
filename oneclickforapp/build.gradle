@@ -21,12 +21,12 @@ sourceSets {
 task wsimport {
     doLast {
         ant {
-            sourceSets.wsimport.output.classesDir.mkdirs()
+            sourceSets.wsimport.output.classesDirs[0].mkdirs()
             sourceSets.wsimport.java.srcDirs[0].mkdirs()
             taskdef(name: 'wsimport', classname: 'com.sun.tools.ws.ant.WsImport', classpath: configurations.jaxws.asPath)
             wsimport(
                 keep: true,
-                destdir: sourceSets.wsimport.output.classesDir,
+                destdir: sourceSets.wsimport.output.classesDirs[0],
                 sourcedestdir: sourceSets.wsimport.java.srcDirs[0],
                 package: "de.dpag.oneclickforapp.webservice",
                 xnocompile: "true",
