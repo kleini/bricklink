@@ -67,7 +67,28 @@ public class TopUpPostage {
             }
         } while (failed);
 
-        WebElement inputElement = new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='amount']")));
+        charge(amount);
+    }
+
+    public void execute(String login, String password, BigDecimal amount) throws Exception {
+        driver.get("https://portokasse.deutschepost.de");
+        WebElement email = new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
+        email.clear();
+        email.sendKeys(login);
+        WebElement passElement = driver.findElement(By.id("password"));
+        passElement.clear();
+        passElement.sendKeys(password);
+        WebElement loginButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        loginButton.click();
+
+        WebElement chargeButton = new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(By.id("btnCharge")));
+        chargeButton.click();
+
+        charge(amount);
+    }
+
+    private void charge(BigDecimal amount) throws Exception {
+        WebElement inputElement = new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(By.id("amount")));
         inputElement.clear();
         inputElement.sendKeys(amount.setScale(2, RoundingMode.HALF_DOWN).toString().replace('.', ','));
         chromeClick(driver, driver.findElement(By.cssSelector("label[for='flap-radio-paypal']")));
@@ -76,6 +97,11 @@ public class TopUpPostage {
         do {
             Thread.sleep(100);
         } while (driver.getCurrentUrl().contains("https://portokasse.deutschepost.de"));
+    }
+
+    public void logout() {
+        WebElement logoutButton = new WebDriverWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(By.id("btnLogout")));
+        logoutButton.click();
     }
 
     private static String createInput(String name, String value) {
