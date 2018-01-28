@@ -8,12 +8,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * {@link Entry}
+ * {@link SubsetEntry}
  *
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 @JsonIgnoreProperties({"is_counterpart"})
-public final class Entry {
+public final class SubsetEntry {
 
     /**
      * An object representation of the item that is included in the specified item
@@ -40,7 +40,7 @@ public final class Entry {
      */
     private boolean alternate;
 
-    public Entry() {
+    public SubsetEntry() {
         super();
     }
 

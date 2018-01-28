@@ -12,7 +12,7 @@ import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.api.SubsetsRequest;
 import org.kleini.bricklink.api.SubsetsResponse;
 import org.kleini.bricklink.data.Condition;
-import org.kleini.bricklink.data.Entry;
+import org.kleini.bricklink.data.SubsetEntry;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.data.Subset;
 import org.kleini.brickstore.BrickStoreDeSerializer;
@@ -49,7 +49,7 @@ public final class PartOut {
             for (Subset subset : response.getSubsets()) {
                 System.out.println(subset);
                 boolean counterParts = subset.getEntries().size() > 1;
-                for (Entry entry : subset.getEntries()) {
+                for (SubsetEntry entry : subset.getEntries()) {
                     Item item = new Item();
                     item.setStatus("I");
                     item.setItemID(entry.getItem().getIdentifier());
