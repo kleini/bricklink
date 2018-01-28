@@ -23,7 +23,7 @@ public final class Subset {
     /**
      * A list of the items included in the specified item
      */
-    private List<Entry> entries;
+    private List<SubsetEntry> entries;
 
     public Subset() {
         super();
@@ -40,12 +40,12 @@ public final class Subset {
     }
 
     @JsonProperty("entries")
-    public List<Entry> getEntries() {
+    public List<SubsetEntry> getEntries() {
         return entries;
     }
 
     @JsonProperty("entries")
-    public void setEntries(List<Entry> entries) {
+    public void setEntries(List<SubsetEntry> entries) {
         this.entries = entries;
     }
 

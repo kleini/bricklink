@@ -80,10 +80,19 @@ task setValues(type: JavaExec) {
   }
 }
 
+task contained(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main 'org.kleini.bricklink.Contained'
+  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
+  if (null != System.getProperty("exec.args")) {
+    args System.getProperty("exec.args") .split()
+  }
+}
+
 task colorsAndCategories(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main 'org.kleini.bricklink.tools.ColorsAndCategories'
-  systemProperties = [ configurationFile: 'src/main/resources/mybricklink.properties' ]
+  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
 }
 
 task info4LEGOarticles(type: JavaExec) {
