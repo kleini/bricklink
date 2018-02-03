@@ -4,7 +4,7 @@
 
 package org.kleini.address;
 
-import java.math.BigDecimal;
+import org.kleini.bricklink.data.Order;
 
 /**
  * Interface for loose coupling of address loading
@@ -13,6 +13,6 @@ import java.math.BigDecimal;
  */
 public interface AddressLoader {
 
-    Address findAddress(int orderId, BigDecimal amount) throws Exception;
+    Address findAddress(Order order) throws Exception;
 
 }
