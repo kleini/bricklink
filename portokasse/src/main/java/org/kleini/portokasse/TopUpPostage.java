@@ -27,8 +27,8 @@ import de.dpag.oneclickforapp.webservice.PartnerSignature;
  */
 public class TopUpPostage {
 
-    private static final String SUCCESS_URL = "https://portokasse.deutschepost.de/portokasse/#/payment-success";
-    private static final String CANCEL_URL = "https://www.bricklink.com/myMsg.asp";
+    private static final String SUCCESS_URL = "https://kleini.org/portokasse.html?payment-success";
+    private static final String CANCEL_URL = "https://kleini.org/portokasse.html?payment-failed";
 
     private final WebDriver driver;
 
@@ -42,7 +42,7 @@ public class TopUpPostage {
         do {
             System.out.println("Next try");
             failed = false;
-            driver.get("https://portokasse.deutschepost.de");
+            driver.get("https://kleini.org/portokasse.html");
 
             // Use userToken, that we require for 1C4A to login into Portokasse
             StringBuilder html = new StringBuilder();
