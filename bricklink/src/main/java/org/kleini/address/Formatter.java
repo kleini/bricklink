@@ -99,6 +99,7 @@ public final class Formatter {
         case AT:
         case AU:
         case BE:
+        case CH:
         case CN:
         case DE:
         case FI:
