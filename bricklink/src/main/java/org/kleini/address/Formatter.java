@@ -102,6 +102,7 @@ public final class Formatter {
         case CH:
         case CN:
         case DE:
+        case ES:
         case FI:
         case FR:
         case HK:
