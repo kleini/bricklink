@@ -33,6 +33,7 @@ public final class Formatter {
             addFinland(sb, address);
             break;
         case GB:
+        case UK:
             addUnitedKingdom(sb, address);
             break;
         case SG:
@@ -104,12 +105,15 @@ public final class Formatter {
         case DE:
         case ES:
         case FI:
+        case GB:
+        case HU:
         case FR:
         case HK:
         case KR:
         case NL:
         case NO:
         case PL:
+        case UK:
         case US:
         case VN:
             /**
