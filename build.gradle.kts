@@ -1,16 +1,21 @@
 subprojects {
 
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
+    plugins {
+        java
+        `maven-publish`
+    }
 
     repositories {
         jcenter()
     }
 
-    group = 'org.kleini'
-    sourceCompatibility = '1.8';
-    targetCompatibility = '1.8';
+    group = "org.kleini"
 
+    configure<JavaPluginConvention> {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+/*
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
             options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
@@ -31,4 +36,5 @@ subprojects {
             }
         }
     }
+*/
 }
