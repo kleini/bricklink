@@ -8,8 +8,13 @@ language: java
 
 jobs:
   include:
-    - script:
-        - gradle check
+    - before_install:
+        - sudo add-apt-repository ppa:cwchien/gradle -y
+        - sudo apt-get update -q
+        - sudo apt-get install gradle -y
+      install: skip
+      script:
+        - /usr/bin/gradle check
     - stage: automation
       addons:
         chrome: stable
@@ -28,7 +33,7 @@ jobs:
         - echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
         - export DATE=$(date +%Y%m%d)
-        - gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
+        - /usr/bin/gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
         - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
       if: type IN (cron)
     - stage: automation
@@ -36,5 +41,5 @@ jobs:
         - echo org.kleini.prodws.mandantId=$PRODWS_MANDANTID >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.login=$PRODWS_LOGIN >>bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.password=$PRODWS_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
-        - gradle bricklink:listStamps
+        - /usr/bin/gradle bricklink:listStamps
       if: type IN (cron)
