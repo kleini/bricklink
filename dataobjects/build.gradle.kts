@@ -1,19 +1,25 @@
-configurations {
-    wsimport
-}
+val wsimport = configurations.register("wsimport")
 
-group = 'de.deutschepost.dpdhl.wsprovider'
-version = '3.0'
+group = "de.deutschepost.dpdhl.wsprovider"
+version = "3.0"
 
 sourceSets {
+    register("wsimport")
+    getByName("main") {
+        compileClasspath += sourceSets.getByName("wsimport").output
+        runtimeClasspath += sourceSets.getByName("wsimport").output
+    }
+}
+
+/*sourceSets {
     wsimport
     main {
         compileClasspath += wsimport.output
         runtimeClasspath += wsimport.output
     }
-}
+}*/
 
-task wsimport(type:Exec) {
+/*task wsimport(type:Exec) {
     ext.srcDir = sourceSets.wsimport.java.srcDirs[0]
     ext.outputDir = sourceSets.wsimport.output.classesDirs[0]
     doFirst {
@@ -35,3 +41,4 @@ sourcesJar.from sourceSets.wsimport.allJava, sourceSets.main.allJava
 clean {
     delete sourceSets.wsimport.java.srcDirs
 }
+*/
