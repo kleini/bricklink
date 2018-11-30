@@ -1,3 +1,5 @@
+
+/*
 buildscript {
     repositories {
         jcenter()
@@ -11,13 +13,40 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
-}
+}*/
 
-version = '0.8.5'
+/*repositories {
+    maven {
+        url = uri("https://jitpack.io")
+    }
+}*/
 
-apply plugin: 'org.junit.platform.gradle.plugin'
+version = "0.8.5"
+
+//apply plugin: 'org.junit.platform.gradle.plugin'
 
 dependencies {
+    compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.8.1")
+    compile(group = "oauth.signpost", name = "signpost-commonshttp4", version = "1.2.1.2")
+    compile(group = "net.sf.opencsv", name = "opencsv", version = "2.3")
+    compile(group = "commons-io", name = "commons-io", version = "2.5")
+    compile(group = "org.seleniumhq.selenium", name = "selenium-java", version = "3.6.0") {
+        exclude(group = "org.seleniumhq.selenium", module = "selenium-ie-driver")
+        exclude(group = "org.seleniumhq.selenium", module = "selenium-safari-driver")
+        exclude(group = "org.seleniumhq.selenium", module = "selenium-opera-driver")
+        exclude(group = "org.seleniumhq.selenium", module = "selenium-edge-driver")
+    }
+    compile(group = "com.github.detro", name = "ghostdriver", version = "2.1.0") {
+        repositories {
+            maven {
+                url = uri("https://jitpack.io")
+            }
+        }
+    }
+    compile(project(":dataobjects"))
+}
+
+/*dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
     compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
     compile 'net.sf.opencsv:opencsv:2.3'
@@ -118,3 +147,4 @@ task listStamps(type: JavaExec) {
   main 'org.kleini.dpdhl.ListStamps'
   systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
 }
+*/

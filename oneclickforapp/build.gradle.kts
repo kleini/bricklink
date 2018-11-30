@@ -1,3 +1,4 @@
+/*
 configurations {
     jaxws
     wsimport
@@ -47,3 +48,4 @@ sourcesJar.from sourceSets.wsimport.allJava, sourceSets.main.allJava
 clean {
     delete sourceSets.wsimport.java.srcDirs
 }
+*/

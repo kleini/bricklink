@@ -1,3 +1,5 @@
+
+/*
 version = '0.1.0'
 
 repositories {
@@ -16,3 +18,4 @@ dependencies {
     exclude group: 'org.seleniumhq.selenium', module: 'selenium-edge-driver'
   }
 }
+*/

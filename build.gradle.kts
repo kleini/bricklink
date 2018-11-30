@@ -1,8 +1,10 @@
+import org.gradle.api.plugins.JavaPluginConvention
+
 subprojects {
 
-    plugins {
-        java
-        `maven-publish`
+    apply {
+        plugin("java")
+        plugin("maven-publish")
     }
 
     repositories {
@@ -15,26 +17,27 @@ subprojects {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-/*
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+
+    tasks.withType(JavaCompile::class.java).configureEach {
+        options.apply {
+            compilerArgs = mutableListOf("-Xlint:unchecked", "-Xlint:deprecation")
         }
     }
 
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allJava
+    val sourcesJar = tasks.register("sourcesJar", Jar::class.java) {
+        classifier = "sources"
+        val javaMainSourceSet : SourceDirectorySet? = this.convention.findByType(JavaPluginConvention::class.java)?.sourceSets?.get("main")?.allJava
+        if (null != javaMainSourceSet) {
+            this.from(javaMainSourceSet)
+        }
     }
 
-    publishing {
+    configure<PublishingExtension> {
         publications {
-            mavenJava(MavenPublication) {
-                from components.java
-
-                artifact sourcesJar
+            register("mavenJava", MavenPublication::class) {
+                from(components.getByName("java"))
+                artifact(sourcesJar.get())
             }
         }
     }
-*/
 }
