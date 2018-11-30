@@ -1,21 +1,54 @@
-val wsimport = configurations.register("wsimport")
+import com.github.gmazzo.gradle.plugins.tasks.DownloadWSDL
+import com.github.gmazzo.gradle.plugins.tasks.WsImport
+
+plugins {
+    id("com.github.gmazzo.wsdl") version "0.2"
+}
 
 group = "de.deutschepost.dpdhl.wsprovider"
 version = "3.0"
 
-sourceSets {
-    register("wsimport")
+/*sourceSets {
     getByName("main") {
         compileClasspath += sourceSets.getByName("wsimport").output
         runtimeClasspath += sourceSets.getByName("wsimport").output
     }
-}
+}*/
 
 /*sourceSets {
     wsimport
     main {
         compileClasspath += wsimport.output
         runtimeClasspath += wsimport.output
+    }
+}*/
+
+wsdl {
+    getByName("main") {
+        register("prodws") {
+            //argument("")
+            forcePackage("de.deutschepost.dpdhl.wsprovider.dataobjects")
+        }
+    }
+}
+
+val download = tasks.register("downloadWSDLs", DownloadWSDL::class.java) {
+    into("src/main/wsdl")
+    from("prodws", "https://prodws.deutschepost.de:8443/ProdWSProvider_1_1/prodws?wsdl")
+}
+
+val wsimport = tasks.withType(WsImport::class.java) {
+    dependsOn(download)
+}
+
+tasks.getByName("sourceJar").dependsOn(wsimport)
+
+/*val wsimport = tasks.register("wsimport", Exec::class.java) {
+    // ext.set("srcDir", sourceSets.getByName("wsimport").allJava.sourceDirectories)
+    // ext.set("outputDir", sourceSets.getByName("wsimport").output.classesDirs)
+    doFirst {
+        sourceSets.getByName("wsimport").allJava.sourceDirectories.onEach { it.mkdirs() }
+        sourceSets.getByName("wsimport").output.classesDirs.onEach { it.mkdirs() }
     }
 }*/
 

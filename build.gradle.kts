@@ -24,19 +24,16 @@ subprojects {
         }
     }
 
-    val sourcesJar = tasks.register("sourcesJar", Jar::class.java) {
+    val sourceJar = tasks.create<Jar>("sourceJar") {
         classifier = "sources"
-        val javaMainSourceSet : SourceDirectorySet? = this.convention.findByType(JavaPluginConvention::class.java)?.sourceSets?.get("main")?.allJava
-        if (null != javaMainSourceSet) {
-            this.from(javaMainSourceSet)
-        }
+        this.from(project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getByName("main").allSource)
     }
 
     configure<PublishingExtension> {
         publications {
-            register("mavenJava", MavenPublication::class) {
+            register<MavenPublication>("mavenJava") {
                 from(components.getByName("java"))
-                artifact(sourcesJar.get())
+                artifact(sourceJar)
             }
         }
     }
