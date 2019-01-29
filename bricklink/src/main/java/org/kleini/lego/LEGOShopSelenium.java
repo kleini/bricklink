@@ -7,7 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.kleini.selenium.Utils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -20,7 +22,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  */
 public class LEGOShopSelenium implements Closeable {
 
-    private static final String URL = "https://shop.lego.com/de-DE/creator-3-in-1-sets?cc=de&count=1000&do=json-db&lang=de&showRetired=false";
+    private static final String URL = "https://shop.lego.com/de-DE";
 
     private final WebDriver driver;
 
@@ -42,31 +44,61 @@ public class LEGOShopSelenium implements Closeable {
     }
 
     private static final Pattern pattern = Pattern.compile("([\\d\\,]+) €");
+    private static final Pattern shownNumber = Pattern.compile("ANZEIGE: (\\d+) VON (\\d+)\n.*", Pattern.MULTILINE);
 
-    public List<Set> getAvailableSets() {
+    public List<Set> getAvailableSets() throws Exception {
         driver.get(URL);
-        return readSetsFromPage();
+        driver.findElement(By.cssSelector("button[data-test='cookie-banner-normal-button']")).click();
+        driver.findElement(By.cssSelector("button[data-test='menu-bar-item']")).click();
+        List<WebElement> categories = driver.findElements(By.cssSelector("a[data-test='theme-dropdown-item']"));
+        List<String> urls = new LinkedList<String>();
+        for (WebElement a : categories) {
+            urls.add(a.getAttribute("href"));
+        }
+        List<Set> retval = new LinkedList<Set>();
+        for (String url : urls) {
+            driver.get(url);
+            System.out.print("Category: " + (url.substring(url.lastIndexOf('/') + 1)) + " ");
+            List<WebElement> all = driver.findElements(By.cssSelector("button[data-test='pagination-show-all']"));
+            if (!all.isEmpty()) {
+                try {
+                    all.get(0).click();
+                    WebElement endButton = driver.findElement(By.cssSelector("button[class^='Scrollstyles__Button']"));
+                    boolean finished = false;
+                    do {
+                        Utils.scrollTo(driver, endButton);
+                        Matcher matcher = shownNumber.matcher(endButton.getText());
+                        if (matcher.matches()) {
+                            finished = matcher.group(1).equals(matcher.group(2));
+                        }
+                    } while (!finished);
+                } catch (StaleElementReferenceException | InterruptedException e) {
+                    // if button is not attached to page, we have less than 15 elements
+                }
+            }
+            List<Set> found = readSetsFromPage();
+            System.out.println(found.size());
+            retval.addAll(found);
+        }
+        return retval;
     }
 
     private List<Set> readSetsFromPage() {
         List<Set> retval = new LinkedList<Set>();
-        List<WebElement> products = driver.findElements(By.cssSelector("div[data-test='product-leaf-group'] > div[data-test^='product-leaf-']"));
+        List<WebElement> products = driver.findElements(By.cssSelector("div[data-test='product-leaf']"));
         for (WebElement product : products) {
-            WebElement setNummerE = product.findElement(By.cssSelector("div > span[data-test='product-leaf-id']"));
+            WebElement setNummerE = product.findElement(By.cssSelector("div > div > span[data-test='product-leaf-product-code']"));
             int setNummer = Integer.parseInt(setNummerE.getText());
             Set set = new Set(setNummer);
 
-            WebElement spanWithName = product.findElement(By.cssSelector("div > h2[data-test='product-leaf-title'] > a[data-test='product-leaf-link-title'] > span"));
+            WebElement spanWithName = product.findElement(By.cssSelector("div > div > a[data-test='product-leaf-title-link'] > h2[data-test='product-leaf-title'] > span"));
             String name = spanWithName.getText();
             set.setName(name);
 
             final WebElement priceElement;
-            List<WebElement> saleElements = product.findElements(By.cssSelector("div > div[data-test='product-leaf-pricing'] > div > div[data-test='sale-price'] > span[data-test='formatted-value']"));
-            List<WebElement> elements = product.findElements(By.cssSelector("div > div[data-test='product-leaf-pricing'] > div > div[data-test='list-price'] > span[data-test='list-pricing']"));
+            List<WebElement> saleElements = product.findElements(By.cssSelector("div > div > div[data-test='product-leaf-price'] > div > span > span"));
             if (!saleElements.isEmpty()) {
                 priceElement = saleElements.get(0);
-            } else if (!elements.isEmpty()) {
-                priceElement = elements.get(0);
             } else {
                 System.out.println("No retail price for Set " + setNummer);
                 continue;
