@@ -14,6 +14,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * set nummer span[class='item-code']
@@ -43,9 +45,6 @@ public class LEGOShopSelenium implements Closeable {
         driver.close();
     }
 
-    private static final Pattern pattern = Pattern.compile("([\\d\\,]+) €");
-    private static final Pattern shownNumber = Pattern.compile("ANZEIGE: (\\d+) VON (\\d+)\n.*", Pattern.MULTILINE);
-
     public List<Set> getAvailableSets() throws Exception {
         driver.get(URL);
         driver.findElement(By.cssSelector("button[data-test='cookie-banner-normal-button']")).click();
@@ -59,29 +58,57 @@ public class LEGOShopSelenium implements Closeable {
         for (String url : urls) {
             driver.get(url);
             System.out.print("Category: " + (url.substring(url.lastIndexOf('/') + 1)) + " ");
-            List<WebElement> all = driver.findElements(By.cssSelector("button[data-test='pagination-show-all']"));
-            if (!all.isEmpty()) {
-                try {
-                    all.get(0).click();
-                    WebElement endButton = driver.findElement(By.cssSelector("button[class^='Scrollstyles__Button']"));
-                    boolean finished = false;
-                    do {
-                        Utils.scrollTo(driver, endButton);
-                        Matcher matcher = shownNumber.matcher(endButton.getText());
-                        if (matcher.matches()) {
-                            finished = matcher.group(1).equals(matcher.group(2));
-                        }
-                    } while (!finished);
-                } catch (StaleElementReferenceException | InterruptedException e) {
-                    // if button is not attached to page, we have less than 15 elements
-                }
+            final List<Set> found;
+            if (false) {
+                found = allSetsOnOnePage();
+            } else {
+                found = allSetsByPagination();
             }
-            List<Set> found = readSetsFromPage();
             System.out.println(found.size());
             retval.addAll(found);
         }
         return retval;
     }
+
+    private List<Set> allSetsByPagination() {
+        List<Set> retval = new LinkedList<Set>();
+        retval.addAll(readSetsFromPage());
+        List<WebElement> nextButton = driver.findElements(By.cssSelector("button[data-test='pagination-next']"));
+        while (!nextButton.isEmpty() && nextButton.get(0).getAttribute("disabled") == null) {
+            nextButton.get(0).click();
+            new WebDriverWait(driver, 10).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div[data-test='product-leaf']"), 0));
+            retval.addAll(readSetsFromPage());
+            nextButton = driver.findElements(By.cssSelector("button[data-test='pagination-next']"));
+        }
+        return retval;
+    }
+
+    private static final Pattern shownNumber = Pattern.compile("ANZEIGE: (\\d+) VON (\\d+)\n.*", Pattern.MULTILINE);
+
+    private List<Set> allSetsOnOnePage() throws Exception {
+        List<WebElement> all = driver.findElements(By.cssSelector("button[data-test='pagination-show-all']"));
+        if (!all.isEmpty()) {
+            try {
+                all.get(0).click();
+                WebElement endButton = driver.findElement(By.cssSelector("button[class^='Scrollstyles__Button']"));
+                boolean finished = false;
+                do {
+                    Utils.scrollTo(driver, endButton);
+                    Matcher matcher = shownNumber.matcher(endButton.getText());
+                    if (matcher.matches()) {
+                        finished = matcher.group(1).equals(matcher.group(2));
+                    } else {
+                        throw new Exception("Text for testing scrolling and article loading was not found.");
+                    }
+                } while (!finished);
+            } catch (StaleElementReferenceException | InterruptedException e) {
+                // if button is not attached to page, we have less than 15 elements
+            }
+        }
+        return readSetsFromPage();
+    }
+
+    private static final Pattern pattern = Pattern.compile("([\\d\\,]+) €");
 
     private List<Set> readSetsFromPage() {
         List<Set> retval = new LinkedList<Set>();
