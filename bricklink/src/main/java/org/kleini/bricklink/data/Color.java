@@ -211,7 +211,20 @@ public enum Color {
     BA_DARK_GRAY_RUBBER(204, "BA Dark Gray Rubber"),
     BA_GUNMETAL_RUBBER(205, "BA Gunmetal Rubber"),
     BA_SILVER_RUBBER(206, "BA Silver Rubber"),
-    BA_BLACK_RUBBER(207, "BA Black Rubber");
+    BA_BLACK_RUBBER(207, "BA Black Rubber"),
+    BA_GLOW_IN_DARK(208, "BA Glow In Dark"),
+    BA_CHROME(209, "BA Chrome"),
+    MX_FOIL_DARK_GRAY(210, "Mx Foil Dark Gray"),
+    MX_FOIL_LIGHT_GRAY(211, "Mx Foil Light Gray"),
+    MX_FOIL_DARK_GREEN(212, "Mx Foil Dark Green"),
+    MX_FOIL_LIGHT_GREEN(213, "Mx Foil Light Green"),
+    MX_FOIL_DARK_BLUE(214, "Mx Foil Dark Blue"),
+    MX_FOIL_LIGHT_BLUE(215, "Mx Foil Light Blue"),
+    MX_FOIL_VIOLET(216, "Mx Foil Violet"),
+    MX_FOIL_RED(217, "Mx Foil Red"),
+    MX_FOIL_YELLOW(218, "Mx Foil Yellow"),
+    MX_FOIL_ORANGE(219, "Mx Foil Orange"),
+    CORAL(220, "Coral");
 
     private final int identifier;
 
