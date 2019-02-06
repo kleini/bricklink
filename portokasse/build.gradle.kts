@@ -1,21 +1,13 @@
+version = "0.1.0"
 
-/*
-version = '0.1.0'
-
+// TODO: Needed because of ghostdriver dependency of bricklink. This needs to be decoupled better.
 repositories {
-  maven {
-    url 'https://jitpack.io'
-  }
+    maven {
+        url = uri("https://jitpack.io")
+    }
 }
 
 dependencies {
-  compile project(':bricklink')
-  compile project(':oneclickforapp')
-  compile(group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.6.0') {
-    exclude group: 'org.seleniumhq.selenium', module: 'selenium-ie-driver'
-    exclude group: 'org.seleniumhq.selenium', module: 'selenium-safari-driver'
-    exclude group: 'org.seleniumhq.selenium', module: 'selenium-opera-driver'
-    exclude group: 'org.seleniumhq.selenium', module: 'selenium-edge-driver'
-  }
+    compile(project(":bricklink"))
+    compile(project(":oneclickforapp"))
 }
-*/

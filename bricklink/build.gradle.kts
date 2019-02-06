@@ -36,13 +36,13 @@ dependencies {
         exclude(group = "org.seleniumhq.selenium", module = "selenium-opera-driver")
         exclude(group = "org.seleniumhq.selenium", module = "selenium-edge-driver")
     }
-    compile(group = "com.github.detro", name = "ghostdriver", version = "2.1.0") {
+    /*compile(group = "com.github.detro", name = "ghostdriver", version = "2.1.0") {
         repositories {
             maven {
                 url = uri("https://jitpack.io")
             }
         }
-    }
+    }*/
     compile(project(":dataobjects"))
 }
 
