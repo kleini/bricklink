@@ -7,18 +7,6 @@ buildscript {
     dependencies {
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.1'
     }
-}
-
-repositories {
-    maven {
-        url 'https://jitpack.io'
-    }
-}*/
-
-/*repositories {
-    maven {
-        url = uri("https://jitpack.io")
-    }
 }*/
 
 version = "0.8.5"
@@ -36,13 +24,6 @@ dependencies {
         exclude(group = "org.seleniumhq.selenium", module = "selenium-opera-driver")
         exclude(group = "org.seleniumhq.selenium", module = "selenium-edge-driver")
     }
-    /*compile(group = "com.github.detro", name = "ghostdriver", version = "2.1.0") {
-        repositories {
-            maven {
-                url = uri("https://jitpack.io")
-            }
-        }
-    }*/
     compile(project(":dataobjects"))
 }
 

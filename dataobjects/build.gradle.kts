@@ -10,6 +10,6 @@ tasks.register("wsimport", uk.co.boothen.gradle.wsimport.WsImport::class.java) {
         extraArg("-J-Djavax.xml.accessExternalDTD=all")
         packageName = "de.deutschepost.dpdhl.wsprovider.dataobjects"
     })
-    setKeep(true)
+    isKeep = true
     setXnocompile(true)
 }

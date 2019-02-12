@@ -1,0 +1,1227 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://oneclickforapp.dpag.de/V3" targetNamespace="http://oneclickforapp.dpag.de/V3">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://oneclickforapp.dpag.de/V3" elementFormDefault="qualified">
+			<xs:simpleType name="VoucherLayout">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="AddressZone"/>
+					<xs:enumeration value="FrankingZone"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="Flag">
+				<xs:annotation>
+					<xs:documentation>Ja/Nein-Entscheidung.</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:boolean"/>
+			</xs:simpleType>
+			<xs:simpleType name="ShippingList">
+				<xs:annotation>
+					<xs:documentation>Versandliste Flag mögliche Werte:	0 = keine Versandliste; 1 = Versandliste ohne Adressen;	2 = Versandliste mit Adressen</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">					
+					<xs:enumeration value="0"/>
+					<xs:enumeration value="1"/>
+					<xs:enumeration value="2"/>					
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="PageFormatId">
+				<xs:annotation>
+					<xs:documentation>ID des Druckformates</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:complexType name="AuthenticateUserRequestType">
+				<xs:annotation>
+					<xs:documentation>Struktur um einen Benutzeraccount zu verifizieren</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="username" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Benutzername (Email) des IM-Benutzers.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="password" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Passwort, das bei der Registrierung des IM-Benutzers vergeben wurde.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="Amount">
+				<xs:annotation>
+					<xs:documentation>Betrag in Cent</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:simpleType name="WalletBalance">
+				<xs:annotation>
+					<xs:documentation>Das aktuelle Guthaben der Portokasse des Kunden in der  PC-Frankierung.</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="tns:Amount"/>
+			</xs:simpleType>
+			<xs:complexType name="AuthenticateUserResponseType">
+				<xs:annotation>
+					<xs:documentation>Struktur mit Benutzer und Wallet Information</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="userToken" type="tns:UserToken">
+						<xs:annotation>
+							<xs:documentation>Token zur Benutzer Indentifizierung
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="walletBalance" type="tns:WalletBalance">
+						<xs:annotation>
+							<xs:documentation>Aktuelles Guthaben der Portokasse in Eurocent
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="showTermsAndConditions" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>TRUE, falls der Benutzer den aktuellen
+AGB's zugestimmt hat, ansonst FALSE
+							</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="infoMessage" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RetrievePreviewVoucherPDFRequestType">
+				<xs:sequence>
+					<xs:element name="productCode" type="tns:ProductCode">
+						<xs:annotation>
+							<xs:documentation>ID die das Produkt innerhalb der PPL identifiziert</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="imageID" type="tns:ImageID" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ID des Motives das am Vorschaubild dargestellt werden soll</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="voucherLayout" type="tns:VoucherLayout">
+						<xs:annotation>
+							<xs:documentation>Layout des Frankiervermerks zB Adressgebunden, Adressungebunden</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="pageFormatId" type="tns:PageFormatId">
+						<xs:annotation>
+							<xs:documentation>ID des Druckformates</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RetrievePreviewVoucherPNGRequestType">
+				<xs:sequence>
+					<xs:element name="productCode" type="tns:ProductCode">
+						<xs:annotation>
+							<xs:documentation>ID die das Produkt innerhalb der PPL identifiziert</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="imageID" type="tns:ImageID" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ID des Motives das am Vorschaubild dargestellt werden soll</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="voucherLayout" type="tns:VoucherLayout">
+						<xs:annotation>
+							<xs:documentation>Layout des Frankiervermerks zB Adressgebunden, Adressungebunden</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RetrievePreviewVoucherResponseType">
+				<xs:sequence>
+					<xs:element name="link" type="tns:Link">
+						<xs:annotation>
+							<xs:documentation>Link auf eine PNG/PDF Datei</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="MotiveLink">
+				<xs:sequence>
+					<xs:element name="link" type="tns:Link">
+						<xs:annotation>
+							<xs:documentation>URL zum Motiv</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="linkThumbnail" type="tns:Link">
+						<xs:annotation>
+							<xs:documentation>URL zum Motiv-Vorschaubild (Thumbnail)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RetrievePrivateGalleryRequestType">
+				<xs:sequence>
+					<xs:element name="userToken" type="tns:UserToken">
+						<xs:annotation>
+							<xs:documentation>ID die den Benutzer eindeutig identifiziert</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RetrievePrivateGalleryResponseType">
+				<xs:sequence>
+					<xs:element name="imageLink" type="tns:MotiveLink" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ShoppingCartResponseType">
+				<xs:annotation>
+					<xs:documentation>Inhalt des Warenkorbs nach dem Kauf.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="link" type="tns:Link">
+						<xs:annotation>
+							<xs:documentation>Ein Link auf die Datei (ZIP Archiv oder PDF) mit den Internetmarken.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="manifestLink" type="tns:Link" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Ein Link auf die Datei (PDF) mit dem Einlieferbeleg / der Versandliste.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="walletBallance" type="tns:WalletBalance">
+						<xs:annotation>
+							<xs:documentation>Portokassenguthaben nach Kauf</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shoppingCart" type="tns:ShoppingCart" minOccurs="0"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ShoppingCart">
+				<xs:annotation>
+					<xs:documentation>Beschreibung der Marken und des Warenkorbs</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="shopOrderId" type="tns:ShopOrderId" minOccurs="0"/>
+					<xs:element name="voucherList" type="tns:VoucherList"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="VoucherList">
+				<xs:annotation>
+					<xs:documentation>Liste von FrankierIds</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="voucher" type="tns:VoucherType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ShoppingCartPNGRequestType">
+				<xs:annotation>
+					<xs:documentation>Inhalt des Warenkorbes</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="userToken" type="tns:UserToken">
+						<xs:annotation>
+							<xs:documentation>Eindeutige Benutzerkennung</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shopOrderId" type="tns:ShopOrderId" minOccurs="0"/>
+					<xs:element name="ppl" type="tns:PPL" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>PPL auf die sich die Produkte im Warenkorb beziehen</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="positions" type="tns:ShoppingCartPosition" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Warenkorbpositionen</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="total" type="tns:ShoppingCartPrice">
+						<xs:annotation>
+							<xs:documentation>Gesamtwert des Warenkorbs</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="createManifest" type="tns:Flag" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Flag, das anzeigt, ob ein Einlieferungsbeleg erstellt werden soll.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="createShippingList" type="tns:ShippingList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Enum, welche festlegt, ob eine Versandliste erstellt werden soll und wenn ja, ob mit oder ohne Adressen.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ShoppingCartPDFRequestType">
+				<xs:annotation>
+					<xs:documentation>Inhalt des Warenkorbes</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="userToken" type="tns:UserToken">
+						<xs:annotation>
+							<xs:documentation>Eindeutige Benutzerkennung</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shopOrderId" type="tns:ShopOrderId" minOccurs="0"/>
+					<xs:element name="pageFormatId" type="tns:PageFormatId">
+						<xs:annotation>
+							<xs:documentation>ID des Druckformates auf das der Ausdruck erfolgt.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ppl" type="tns:PPL" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>PPL auf die sich die Produkte im Warenkorb beziehen</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="positions" type="tns:ShoppingCartPDFPosition" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Warenkorbpositionen</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="total" type="tns:ShoppingCartPrice">
+						<xs:annotation>
+							<xs:documentation>Gesamtwert des Warenkorbs</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="createManifest" type="tns:Flag" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Flag, das anzeigt, ob ein Einlieferungsbeleg erstellt werden soll.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="createShippingList" type="tns:ShippingList" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Enum, welche festlegt, ob eine Versandliste erstellt werden soll und wenn ja, ob mit oder ohne Adressen.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="AuthenticateUserErrorCodes">
+				<xs:annotation>
+					<xs:documentation>Definiert eine feste Liste von ErrorCodes die fachlichen Fehlern bei der Prüfung des Warenkorbs auf den Systemen der PC-Frankierung entsprechen.</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="unkownUser"/>
+					<xs:enumeration value="invalidUser"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="ShoppingCartValidationErrorCodes">
+				<xs:annotation>
+					<xs:documentation>Definiert eine feste Liste von ErrorCodes die fachlichen Fehlern bei der Prüfung des Warenkorbs auf den Systemen der PC-Frankierung entsprechen.</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="invalidUser"/>
+					<xs:enumeration value="invalidPplId"/>
+					<xs:enumeration value="invalidProductcode"/>
+					<xs:enumeration value="invalidTotalAmount"/>
+					<xs:enumeration value="walletBalanceNotEnough"/>
+					<xs:enumeration value="walletNotAvailable"/>
+					<xs:enumeration value="invalidMotive"/>
+					<xs:enumeration value="invalidPageFormat"/>
+					<xs:enumeration value="productExpired"/>
+					<xs:enumeration value="invalidShopOrderId"/>
+					<xs:enumeration value="invalidOrderPositionCount"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:complexType name="ShoppingCartValidationErrorInfo">
+				<xs:annotation>
+					<xs:documentation>Definiert eine einzelne Fehlermeldung bei der Validierung des Warenkorbs</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="id" type="tns:ShoppingCartValidationErrorCodes"/>
+					<xs:element name="message" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="AuthenticateUserException">
+				<xs:annotation>
+					<xs:documentation>Definiert eine einzelne Fehlermeldung bei der Benutzerauthentifizierung</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="id" type="tns:AuthenticateUserErrorCodes"/>
+					<xs:element name="message" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="IdentifyException">
+				<xs:annotation>
+					<xs:documentation>Definiert eine Fehlermeldung bei der Identifikation einer Partnerkennung auf den Systemen der PC-Frankierung</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="message" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="InvalidProductException">
+				<xs:annotation>
+					<xs:documentation>Das Produkt konnte nicht gefunden werden.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="message" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="InvalidPageFormatException">
+				<xs:annotation>
+					<xs:documentation>Das Page-Format konnte nicht gefunden werden.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="message" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="InvalidMotiveException">
+				<xs:annotation>
+					<xs:documentation>Das Motiv konnte nicht gefunden werden.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="message" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="IdentifyException" type="tns:IdentifyException">
+				<xs:annotation>
+					<xs:documentation>Diese Fehlermeldung signalisiert, dass die PC-Frankierung das Partnerkonto keiner Portokasse zuordnen konnte, oder ein Kauf mit dieser Portokasse nicht möglich ist.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:complexType name="ShoppingCartValidationException">
+				<xs:annotation>
+					<xs:documentation>Definiert die Fehlermeldung bei der Validierung des Warenkorbs</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="message" type="xs:string"/>
+					<xs:element name="errors" type="tns:ShoppingCartValidationErrorInfo" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="InvalidPageFormatException" type="tns:InvalidPageFormatException">
+				<xs:annotation>
+					<xs:documentation>Ein ungültiges Page-Format wurde übergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvalidProductException" type="tns:InvalidProductException">
+				<xs:annotation>
+					<xs:documentation>Ein ungültiger Produkt-Code wurde übergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InvalidMotiveException" type="tns:InvalidMotiveException">
+				<xs:annotation>
+					<xs:documentation>Eine ungültige Motiv-ID wurde übergeben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AuthenticateUserException" type="tns:AuthenticateUserException">
+				<xs:annotation>
+					<xs:documentation>Die Fehlermeldung bei der Validierung des Benutzers auftritt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ShoppingCartValidationException" type="tns:ShoppingCartValidationException">
+				<xs:annotation>
+					<xs:documentation>Die Fehlermeldung bei der Validierung des Warenkorbs besteht aus einer Liste von Einzelfehlern</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:complexType name="RetrievePublicGalleryRequestType">
+				<xs:annotation>
+					<xs:documentation>leere Parameterstruktur zum Ermitteln der globalen Motive</xs:documentation>
+				</xs:annotation>
+			</xs:complexType>
+			<xs:complexType name="RetrievePublicGalleryResponseType">
+				<xs:annotation>
+					<xs:documentation>Liefert den globalen Motivkatalog</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="items" type="tns:GalleryItem" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="ProductCode">
+				<xs:annotation>
+					<xs:documentation>ID eines Produktes</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:simpleType name="ProductPrice">
+				<xs:annotation>
+					<xs:documentation>Preis eines Produktes in Eurocent</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:simpleType name="PPL">
+				<xs:annotation>
+					<xs:documentation>PPL (Product Price List)</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:complexType name="ImageItem">
+				<xs:annotation>
+					<xs:documentation>Struktur die ein Bild innerhalb einer
+						Bilderkategorie representiert</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="imageID" type="tns:ImageID">
+						<xs:annotation>
+							<xs:documentation>Name des Motives</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="imageDescription" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Beschreibung des Motives</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="imageSlogan" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Kurzer Slogan zum Bild</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="links" type="tns:MotiveLink">
+						<xs:annotation>
+							<xs:documentation>URL zum Bild</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="GalleryItem">
+				<xs:annotation>
+					<xs:documentation>Element der Motiv Gallerie</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="category" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Motivkategorie</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="categoryDescription" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Motivkategorie Beschreibung</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="categoryId" type="xs:int">
+						<xs:annotation>
+							<xs:documentation>Motivkategorie ID</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="images" type="tns:ImageItem" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Liste aller Bilder innerhalb der Bilderkategorie</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="ImageID">
+				<xs:annotation>
+					<xs:documentation>ID eines Bildes aus der Motivgallery</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:complexType name="Name">
+				<xs:annotation>
+					<xs:documentation>Definition der Namensbestandteile des Empfängers oder Senders</xs:documentation>
+				</xs:annotation>
+				<xs:choice>
+					<xs:element name="personName" type="tns:PersonName"/>
+					<xs:element name="companyName" type="tns:CompanyName"/>
+				</xs:choice>
+			</xs:complexType>
+			<xs:complexType name="PersonName">
+				<xs:annotation>
+					<xs:documentation>Definition des Namensteils einer Privatperson</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="salutation" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Anrede</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="title" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Titel</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="firstname" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Vorname</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="lastname" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Nachname</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="CompanyName">
+				<xs:annotation>
+					<xs:documentation>Definition des Namensteils einer Firma</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="company" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Firmenname</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="personName" type="tns:PersonName" minOccurs="0"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Address">
+				<xs:annotation>
+					<xs:documentation>Definition eine Adresse</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="additional" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Adresszusatz, z.B. Im Hinterhof 2. Tür rechts</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="street" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Straße</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="houseNo" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Hausnummer</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="zip" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Postleitzahl</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="city" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Name des Ortes</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="country" type="xs:string" default="DEU">
+						<xs:annotation>
+							<xs:documentation>3-stelliger ISO-Ländercode</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="NamedAddress">
+				<xs:annotation>
+					<xs:documentation>Struktur für Name und Anschrift</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="name" type="tns:Name"/>
+					<xs:element name="address" type="tns:Address"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ShoppingCartPosition">
+				<xs:annotation>
+					<xs:documentation>Warenposition</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="productCode" type="tns:ProductCode">
+						<xs:annotation>
+							<xs:documentation>ID des Produktes</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="imageID" type="tns:ImageID" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Falls ein Motiv vorhanden, dann ID übergeben</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="address" type="tns:AddressBinding" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Bei adressgebundenen Produkten muss der Sender und Empfänger angegeben werden</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="additionalInfo" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Zusatzinfo zur Bestellposition</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="voucherLayout" type="tns:VoucherLayout">
+						<xs:annotation>
+							<xs:documentation>Bestimmt das Layout des Frankiervermerks.
+					</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="AddressBinding">
+				<xs:annotation>
+					<xs:documentation>Sender und Empfänger Adresse</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="sender" type="tns:NamedAddress"/>
+					<xs:element name="receiver" type="tns:NamedAddress"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="ShoppingCartPrice">
+				<xs:annotation>
+					<xs:documentation>Wert des Warenkorbs in Eurocent</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:simpleType name="Link">
+				<xs:annotation>
+					<xs:documentation>URL zum Druck der Warenkorbpositionen</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+			<xs:simpleType name="UserToken">
+				<xs:annotation>
+					<xs:documentation>Benutzerkennung</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string"/>
+			</xs:simpleType>
+			<xs:element name="RetrievePublicGalleryRequest" type="tns:RetrievePublicGalleryRequestType"/>
+			<xs:element name="RetrievePublicGalleryResponse" type="tns:RetrievePublicGalleryResponseType"/>
+			<xs:element name="CheckoutShoppingCartPNGRequest" type="tns:ShoppingCartPNGRequestType"/>
+			<xs:element name="CheckoutShoppingCartPNGResponse" type="tns:ShoppingCartResponseType"/>
+			<xs:element name="CheckoutShoppingCartPDFRequest" type="tns:ShoppingCartPDFRequestType"/>
+			<xs:element name="CheckoutShoppingCartPDFResponse" type="tns:ShoppingCartResponseType"/>
+			<xs:element name="AuthenticateUserRequest" type="tns:AuthenticateUserRequestType"/>
+			<xs:element name="AuthenticateUserResponse" type="tns:AuthenticateUserResponseType"/>
+			<xs:element name="RetrievePreviewVoucherPDFRequest" type="tns:RetrievePreviewVoucherPDFRequestType"/>
+			<xs:element name="RetrievePreviewVoucherPDFResponse" type="tns:RetrievePreviewVoucherResponseType"/>
+			<xs:element name="RetrievePreviewVoucherPNGRequest" type="tns:RetrievePreviewVoucherPNGRequestType"/>
+			<xs:element name="RetrievePreviewVoucherPNGResponse" type="tns:RetrievePreviewVoucherResponseType"/>
+			<xs:element name="RetrievePrivateGalleryRequest" type="tns:RetrievePrivateGalleryRequestType"/>
+			<xs:element name="RetrievePrivateGalleryResponse" type="tns:RetrievePrivateGalleryResponseType"/>
+			<xs:simpleType name="ShopOrderId">
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+					<xs:maxLength value="18"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="RetrieveOrderErrorCodes">
+				<xs:annotation>
+					<xs:documentation>Definiert eine feste Liste von ErrorCodes die fachlichen Fehlern beim Einstellen und Abfragen von Orders des Frankierbackends entsprechen.</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="unknownShopOrderId"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="RetrieveOrderException" type="tns:RetrieveOrderException">
+				<xs:annotation>
+					<xs:documentation>Diese Fehlermeldung signalisiert einen fachlichen Fehler im Voucher Retoure Management.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:complexType name="RetrieveOrderException">
+				<xs:annotation>
+					<xs:documentation>Diese Fehlermeldung signalisiert einen fachlichen Fehler im Order Management.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="message" type="xs:string"/>
+					<xs:element name="errors" type="tns:RetrieveOrderErrorCodes" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="RetrieveOrderRequestType">
+				<xs:annotation>
+					<xs:documentation>Anfrage zur Abfrage einer bereits getätigten Bestellung</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="userToken" type="tns:UserToken">
+						<xs:annotation>
+							<xs:documentation>Eindeutige Benutzerkennung</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shopOrderId" type="tns:ShopOrderId">
+						<xs:annotation>
+							<xs:documentation>Shop Order-ID.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RetrieveOrderRequest" type="tns:RetrieveOrderRequestType">
+				<xs:annotation>
+					<xs:documentation>Anfragenachricht der Serviceoperation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RetrieveOrderResponse" type="tns:RetrieveOrderResponseType">
+				<xs:annotation>
+					<xs:documentation>Antwortnacht der Serviceoperation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:complexType name="RetrieveOrderResponseType">
+				<xs:annotation>
+					<xs:documentation>Der erzeugte Warenkorb</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="link" type="tns:Link">
+						<xs:annotation>
+							<xs:documentation>Link zum Druck des Warenkorbs</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="manifestLink" type="tns:Link" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Link zum Druck des Einlieferungsbelegs/Versandliste</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shoppingCart" type="tns:ShoppingCart">
+						<xs:annotation>
+							<xs:documentation>Detaillierte Beschreibung des erzeugten Warenkorbs</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="VoucherPosition">
+				<xs:annotation>
+					<xs:documentation>X,Y und Seitenposition der Marke
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexContent>
+					<xs:extension base="tns:Position">
+						<xs:sequence>
+							<xs:element name="page">
+								<xs:annotation>
+									<xs:documentation>Auf welcher Seite befindet sich die Marke
+									</xs:documentation>
+								</xs:annotation>
+  							    <xs:simpleType>
+								    <xs:restriction base="xs:int">
+								      <xs:minInclusive value="1"/>
+								    </xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:complexType name="Position">
+				<xs:annotation>
+					<xs:documentation>Anzahl der X und Y Positionen auf einer Seite
+					</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="labelX">
+					  <xs:simpleType>
+					    <xs:restriction base="xs:int">
+					      <xs:minInclusive value="1"/>
+					    </xs:restriction>
+					  </xs:simpleType>
+					</xs:element>
+					<xs:element name="labelY">
+					  <xs:simpleType>
+					    <xs:restriction base="xs:int">
+					      <xs:minInclusive value="1"/>
+					    </xs:restriction>
+					  </xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ShoppingCartPDFPosition">
+				<xs:complexContent>
+					<xs:extension base="tns:ShoppingCartPosition">
+						<xs:sequence>
+							<xs:element name="position" type="tns:VoucherPosition"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			<xs:element name="CreateShopOrderIdRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="userToken" type="tns:UserToken"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CreateShopOrderIdResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="shopOrderId" type="tns:ShopOrderId"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="VoucherType">
+				<xs:sequence>
+					<xs:element name="voucherId" type="xs:string"/>
+					<xs:element name="trackId" type="xs:string" minOccurs="0"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="RetrievePageFormatsRequest" type="tns:RetrievePageFormatsRequestType">
+				<xs:annotation>
+					<xs:documentation>Anfragenachricht der Serviceoperation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RetrievePageFormatsResponse" type="tns:RetrievePageFormatsResponseType">
+				<xs:annotation>
+					<xs:documentation>Antwortnacht der Serviceoperation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:complexType name="RetrievePageFormatsRequestType">
+				<xs:annotation>
+					<xs:documentation>leere Parameterstruktur zum Ermitteln der Druckformate</xs:documentation>
+				</xs:annotation>
+			</xs:complexType>
+			<xs:complexType name="RetrievePageFormatsResponseType">
+				<xs:annotation>
+					<xs:documentation>Liefert eine Auflistung von erlaubten Druckformaten</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="pageFormat" type="tns:PageFormat" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="PageFormat">
+				<xs:annotation>
+					<xs:documentation>Struktur eines Druckformates</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="id" type="tns:PageFormatId"/>
+					<xs:element name="isAddressPossible" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>ja, wenn mit dem Druckformat Adressen auf die Frankiervermerke gedruckt werden können.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="isImagePossible" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>ja, wenn mit dem Druckformat Motive auf die Frankiervermerke gedruckt werden können.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="name" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Der Name des Druckformats, z.B. DIN A4 Normalpapier oder Brief C5 162 x 229</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="description" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Beschreibung des Druckformats.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="pageType" type="tns:PageType">
+						<xs:annotation>
+							<xs:documentation>Spezifikation des Druckmediums.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="pageLayout">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="size" type="tns:Dimension">
+									<xs:annotation>
+										<xs:documentation>Größe des Druckformates in Millimeter
+										</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="orientation" type="tns:Orientation">
+									<xs:annotation>
+										<xs:documentation>Seitenausrichtung</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="labelSpacing" type="tns:Dimension">
+									<xs:annotation>
+										<xs:documentation>Abstand zwischen den Etiketten in Millimeter
+										</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="labelCount" type="tns:Position">
+									<xs:annotation>
+										<xs:documentation>Anzahl der Labelpositionen in X und Y Richtung</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="margin" type="tns:BorderDimension">
+									<xs:annotation>
+										<xs:documentation>Innerer Randabstand des Druckformates in Millimeter</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="BorderDimension">
+				<xs:annotation>
+					<xs:documentation>Rahmenausprägung</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="top" type="xs:double"/>
+					<xs:element name="bottom" type="xs:double"/>
+					<xs:element name="left" type="xs:double"/>
+					<xs:element name="right" type="xs:double"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Dimension">
+				<xs:annotation>
+					<xs:documentation>X,Y Abmessungen</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="x" type="xs:double"/>
+					<xs:element name="y" type="xs:double"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="Orientation">
+				<xs:annotation>
+					<xs:documentation>Ausrichtung</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="LANDSCAPE"/>
+					<xs:enumeration value="PORTRAIT"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="PageType">
+				<xs:annotation>
+					<xs:documentation>ENUM für alle möglichen Typen von Druckmedien.</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="REGULARPAGE"/>
+					<xs:enumeration value="ENVELOPE"/>
+					<xs:enumeration value="LABELPRINTER"/>
+					<xs:enumeration value="LABELPAGE"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="RetrievePublicGalleryRequest">
+		<wsdl:part name="parameter" element="tns:RetrievePublicGalleryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePublicGalleryResponse">
+		<wsdl:part name="parameter" element="tns:RetrievePublicGalleryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CheckoutShoppingCartPNGRequest">
+		<wsdl:part name="parameter" element="tns:CheckoutShoppingCartPNGRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CheckoutShoppingCartPNGResponse">
+		<wsdl:part name="parameter" element="tns:CheckoutShoppingCartPNGResponse"/>
+	</wsdl:message>
+	<wsdl:message name="CheckoutShoppingCartPDFRequest">
+		<wsdl:part name="parameter" element="tns:CheckoutShoppingCartPDFRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CheckoutShoppingCartPDFResponse">
+		<wsdl:part name="parameter" element="tns:CheckoutShoppingCartPDFResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ShoppingCartValidationException">
+		<wsdl:part name="ShoppingCartValidationException" element="tns:ShoppingCartValidationException"/>
+	</wsdl:message>
+	<wsdl:message name="InvalidPageFormatException">
+		<wsdl:part name="InvalidPageFormatException" element="tns:InvalidPageFormatException"/>
+	</wsdl:message>
+	<wsdl:message name="InvalidProductException">
+		<wsdl:part name="InvalidProductException" element="tns:InvalidProductException"/>
+	</wsdl:message>
+	<wsdl:message name="InvalidMotiveException">
+		<wsdl:part name="InvalidMotiveException" element="tns:InvalidMotiveException"/>
+	</wsdl:message>
+	<wsdl:message name="AuthenticateUserException">
+		<wsdl:part name="AuthenticateUserException" element="tns:AuthenticateUserException"/>
+	</wsdl:message>
+	<wsdl:message name="AuthenticateUserRequest">
+		<wsdl:part name="parameter" element="tns:AuthenticateUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="AuthenticateUserResponse">
+		<wsdl:part name="parameter" element="tns:AuthenticateUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IdentifyException">
+		<wsdl:part name="IdentifyException" element="tns:IdentifyException"/>
+	</wsdl:message>
+	<wsdl:message name="AuthenticateUserFault"/>
+	<wsdl:message name="RetrievePreviewVoucherPDFRequest">
+		<wsdl:part name="parameter" element="tns:RetrievePreviewVoucherPDFRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePreviewVoucherPDFResponse">
+		<wsdl:part name="parameter" element="tns:RetrievePreviewVoucherPDFResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePreviewVoucherPNGRequest">
+		<wsdl:part name="parameter" element="tns:RetrievePreviewVoucherPNGRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePreviewVoucherPNGResponse">
+		<wsdl:part name="parameter" element="tns:RetrievePreviewVoucherPNGResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePrivateGalleryRequest">
+		<wsdl:part name="parameter" element="tns:RetrievePrivateGalleryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePrivateGalleryResponse">
+		<wsdl:part name="parameter" element="tns:RetrievePrivateGalleryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RetrieveOrderException">
+		<wsdl:part name="RetrieveOrderException" element="tns:RetrieveOrderException"/>
+	</wsdl:message>
+	<wsdl:message name="RetrieveOrderRequest">
+		<wsdl:part name="parameter" element="tns:RetrieveOrderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetrieveOrderResponse">
+		<wsdl:part name="parameter" element="tns:RetrieveOrderResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createShopOrderIdRequest">
+		<wsdl:part name="createShopOrderIdRequest" element="tns:CreateShopOrderIdRequest"/>
+	</wsdl:message>
+	<wsdl:message name="createShopOrderIdResponse">
+		<wsdl:part name="parameters" element="tns:CreateShopOrderIdResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePageFormatsRequest">
+		<wsdl:part name="parameter" element="tns:RetrievePageFormatsRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetrievePageFormatsResponse">
+		<wsdl:part name="parameter" element="tns:RetrievePageFormatsResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="OneClickForAppPortTypeV3">
+		<wsdl:operation name="retrievePublicGallery">
+			<wsdl:input message="tns:RetrievePublicGalleryRequest"/>
+			<wsdl:output message="tns:RetrievePublicGalleryResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkoutShoppingCartPDF">
+			<wsdl:input message="tns:CheckoutShoppingCartPDFRequest"/>
+			<wsdl:output message="tns:CheckoutShoppingCartPDFResponse"/>
+			<wsdl:fault name="IdentifyException" message="tns:IdentifyException"/>
+			<wsdl:fault name="ShoppingCartValidationException" message="tns:ShoppingCartValidationException"/>
+		</wsdl:operation>
+		<wsdl:operation name="checkoutShoppingCartPNG">
+			<wsdl:input message="tns:CheckoutShoppingCartPNGRequest"/>
+			<wsdl:output message="tns:CheckoutShoppingCartPNGResponse"/>
+			<wsdl:fault name="IdentifyException" message="tns:IdentifyException"/>
+			<wsdl:fault name="ShoppingCartValidationException" message="tns:ShoppingCartValidationException"/>
+		</wsdl:operation>
+		<wsdl:operation name="authenticateUser">
+			<wsdl:input message="tns:AuthenticateUserRequest"/>
+			<wsdl:output message="tns:AuthenticateUserResponse"/>
+			<wsdl:fault name="AuthenticateUserException" message="tns:AuthenticateUserException"/>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePreviewVoucherPDF">
+			<wsdl:input message="tns:RetrievePreviewVoucherPDFRequest"/>
+			<wsdl:output message="tns:RetrievePreviewVoucherPDFResponse"/>
+			<wsdl:fault name="InvalidProductException" message="tns:InvalidProductException"/>
+			<wsdl:fault name="InvalidMotiveException" message="tns:InvalidMotiveException"/>
+			<wsdl:fault name="InvalidPageFormatException" message="tns:InvalidPageFormatException"/>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePreviewVoucherPNG">
+			<wsdl:input message="tns:RetrievePreviewVoucherPNGRequest"/>
+			<wsdl:output message="tns:RetrievePreviewVoucherPNGResponse"/>
+			<wsdl:fault name="InvalidProductException" message="tns:InvalidProductException"/>
+			<wsdl:fault name="InvalidMotiveException" message="tns:InvalidMotiveException"/>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePrivateGallery">
+			<wsdl:input message="tns:RetrievePrivateGalleryRequest"/>
+			<wsdl:output message="tns:RetrievePrivateGalleryResponse"/>
+			<wsdl:fault name="IdentifyException" message="tns:IdentifyException"/>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveOrder">
+			<wsdl:input message="tns:RetrieveOrderRequest"/>
+			<wsdl:output message="tns:RetrieveOrderResponse"/>
+			<wsdl:fault name="IdentifyException" message="tns:IdentifyException"/>
+			<wsdl:fault name="RetrieveOrderException" message="tns:RetrieveOrderException"/>
+		</wsdl:operation>
+		<wsdl:operation name="createShopOrderId">
+			<wsdl:input message="tns:createShopOrderIdRequest"/>
+			<wsdl:output message="tns:createShopOrderIdResponse"/>
+			<wsdl:fault name="IdentifyException" message="tns:IdentifyException"/>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePageFormats">
+			<wsdl:input name="RetrievePageFormatsRequest" message="tns:RetrievePageFormatsRequest"/>
+			<wsdl:output name="RetrievePageFormatsOutput" message="tns:RetrievePageFormatsResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="OneClickForAppBindingV3" type="tns:OneClickForAppPortTypeV3">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="retrievePageFormats">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePublicGallery">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="checkoutShoppingCartPDF">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="IdentifyException">
+				<soap:fault name="IdentifyException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ShoppingCartValidationException">
+				<soap:fault name="ShoppingCartValidationException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="checkoutShoppingCartPNG">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="IdentifyException">
+				<soap:fault name="IdentifyException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ShoppingCartValidationException">
+				<soap:fault name="ShoppingCartValidationException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="authenticateUser">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AuthenticateUserException">
+				<soap:fault name="AuthenticateUserException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePreviewVoucherPDF">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidProductException">
+				<soap:fault name="InvalidProductException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidMotiveException">
+				<soap:fault name="InvalidMotiveException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidPageFormatException">
+				<soap:fault name="InvalidPageFormatException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePreviewVoucherPNG">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidProductException">
+				<soap:fault name="InvalidProductException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidMotiveException">
+				<soap:fault name="InvalidMotiveException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrievePrivateGallery">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="IdentifyException">
+				<soap:fault name="IdentifyException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="retrieveOrder">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="IdentifyException">
+				<soap:fault name="IdentifyException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="RetrieveOrderException">
+				<soap:fault name="RetrieveOrderException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="createShopOrderId">
+			<soap:operation soapAction=" " style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="IdentifyException">
+				<soap:fault name="IdentifyException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="OneClickForAppServiceV3">
+		<wsdl:port name="OneClickForAppPortV3" binding="tns:OneClickForAppBindingV3">
+			<soap:address location="https://internetmarke.deutschepost.de:443/OneClickForAppV3/OneClickForAppServiceV3"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
