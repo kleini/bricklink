@@ -14,6 +14,8 @@ jobs:
         - sudo apt-get install gradle -y
       install: skip
       script:
+        - wsimport -version
+        - wsimport -help
         - /usr/bin/gradle check
     - stage: automation
       addons:
