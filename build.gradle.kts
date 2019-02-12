@@ -23,7 +23,7 @@ subprojects {
     }
 
     val sourceJar = tasks.create<Jar>("sourceJar") {
-        classifier = "sources"
+        archiveClassifier.set("sources")
         this.from(project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.getByName("main").allSource)
     }
 

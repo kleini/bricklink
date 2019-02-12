@@ -1,12 +1,12 @@
 version = "0.1.0"
 
-// TODO: Needed because of ghostdriver dependency of bricklink. This needs to be decoupled better.
-repositories {
-    maven {
-        url = uri("https://jitpack.io")
-    }
-}
-
 dependencies {
+    compile(group = "com.github.detro", name = "ghostdriver", version = "2.1.0") {
+        repositories {
+            maven {
+                url = uri("https://jitpack.io")
+            }
+        }
+    }
     compile(project(":bricklink"))
 }
