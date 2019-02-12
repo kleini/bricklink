@@ -16,7 +16,7 @@ jobs:
       script:
         - wsimport -version
         - wsimport -help
-        - /usr/bin/gradle check
+        - /usr/bin/gradle check --stacktrace
     - stage: automation
       addons:
         chrome: stable
