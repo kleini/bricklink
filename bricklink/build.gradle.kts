@@ -1,131 +1,71 @@
-
-/*
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.1'
-    }
-}*/
-
 version = "0.8.5"
 
-//apply plugin: 'org.junit.platform.gradle.plugin'
-
 dependencies {
-    compile(group = "com.fasterxml.jackson.core", name = "jackson-databind", version = "2.8.1")
-    compile(group = "oauth.signpost", name = "signpost-commonshttp4", version = "1.2.1.2")
-    compile(group = "net.sf.opencsv", name = "opencsv", version = "2.3")
-    compile(group = "commons-io", name = "commons-io", version = "2.5")
-    compile(group = "org.seleniumhq.selenium", name = "selenium-java", version = "3.6.0") {
-        exclude(group = "org.seleniumhq.selenium", module = "selenium-ie-driver")
-        exclude(group = "org.seleniumhq.selenium", module = "selenium-safari-driver")
-        exclude(group = "org.seleniumhq.selenium", module = "selenium-opera-driver")
-        exclude(group = "org.seleniumhq.selenium", module = "selenium-edge-driver")
+    compile("com.fasterxml.jackson.core", "jackson-databind", "2.8.1")
+    compile("oauth.signpost", "signpost-commonshttp4", "1.2.1.2")
+    compile("net.sf.opencsv", "opencsv", "2.3")
+    compile("commons-io", "commons-io", "2.5")
+    compile("org.seleniumhq.selenium", "selenium-java", "3.6.0") {
+        exclude("org.seleniumhq.selenium", "selenium-ie-driver")
+        exclude("org.seleniumhq.selenium", "selenium-safari-driver")
+        exclude("org.seleniumhq.selenium", "selenium-opera-driver")
+        exclude("org.seleniumhq.selenium", "selenium-edge-driver")
     }
     compile(project(":dataobjects"))
+    testCompile("junit", "junit", "4.12")
+    testRuntime("org.junit.platform", "junit-platform-launcher", "1.4.0")
+    testRuntime("org.junit.jupiter", "junit-jupiter-engine", "5.4.0")
+    testRuntime("org.junit.vintage", "junit-vintage-engine", "5.4.0")
 }
 
-/*dependencies {
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
-    compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
-    compile 'net.sf.opencsv:opencsv:2.3'
-    compile group: 'commons-io', name: 'commons-io', version: '2.5'
-    compile(group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.6.0') {
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-ie-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-safari-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-opera-driver'
-        exclude group: 'org.seleniumhq.selenium', module: 'selenium-edge-driver'
-    }
-    compile group: 'com.github.detro', name: 'ghostdriver', version: '2.1.0'
-    compile project(':dataobjects')
-
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.+'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.0.1'
-    testCompileOnly group: 'org.apiguardian', name: 'apiguardian-api', version: '1.0.0'
-
-    testRuntime group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '4.12.1'
-    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.1'
-    testRuntime group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.9.0'
-    testRuntime group: 'org.apache.logging.log4j', name: 'log4j-jul', version: '2.9.0'
-    testRuntime group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.0.1'
+tasks.register("fatJar", Jar::class.java) {
+    archiveClassifier.set("all")
+    from(configurations.runtime.get().map {
+        if (it.isDirectory) it else zipTree(it)
+    })
+    with(tasks["jar"] as CopySpec)
 }
 
-task fatJar(type: Jar) {
-    baseName = project.name + '-all'
-    from {
-        configurations.compile.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-    }
-    with jar
+tasks.register("partout", JavaExec::class.java) {
+    main = "org.kleini.bricklink.PartOut"
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
 }
 
-task partout(type: JavaExec) {
-  classpath sourceSets.main.runtimeClasspath
-  main 'org.kleini.bricklink.PartOut'
-  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
-  if (null != System.getProperty("exec.args")) {
-    args System.getProperty("exec.args") .split()
-  }
+tasks.register("pgTabs", JavaExec::class.java) {
+    main = "org.kleini.bricklink.PriceGuideTabs"
+    systemProperties = mapOf("configurationFile" to "src/main/resources/myconfiguration.properties", "numTabs" to 10, "browser" to "firefox")
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
 }
 
-task pgTabs(type: JavaExec) {
-  classpath sourceSets.main.runtimeClasspath
-  main 'org.kleini.bricklink.PriceGuideTabs'
-  systemProperties = [ configurationFile: 'src/main/resources/bricklink.properties', numTabs: 10, browser: 'firefox' ]
-  if (null != System.getProperty("exec.args")) {
-    args System.getProperty("exec.args") .split()
-  }
+tasks.register("setValues", JavaExec::class.java) {
+    main = "org.kleini.bricklink.DetermineSetValues"
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
 }
 
-task setValues(type: JavaExec) {
-  classpath sourceSets.main.runtimeClasspath
-  main 'org.kleini.bricklink.DetermineSetValues'
-  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
-  if (null != System.getProperty("exec.args")) {
-    args System.getProperty("exec.args") .split()
-  }
+tasks.register("contained", JavaExec::class.java) {
+    main = "org.kleini.bricklink.Contained"
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
 }
 
-task contained(type: JavaExec) {
-  classpath sourceSets.main.runtimeClasspath
-  main 'org.kleini.bricklink.Contained'
-  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
-  if (null != System.getProperty("exec.args")) {
-    args System.getProperty("exec.args") .split()
-  }
+tasks.register("colorsAndCategories", JavaExec::class.java) {
+    main = "org.kleini.bricklink.tools.ColorsAndCategories"
 }
 
-task colorsAndCategories(type: JavaExec) {
-  classpath sourceSets.main.runtimeClasspath
-  main 'org.kleini.bricklink.tools.ColorsAndCategories'
-  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
+tasks.register("info4LEGOarticles", JavaExec::class.java) {
+    main = "org.kleini.bricklink.Info4LEGOarticles"
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
 }
 
-task info4LEGOarticles(type: JavaExec) {
-  classpath sourceSets.main.runtimeClasspath
-  main 'org.kleini.bricklink.Info4LEGOarticles'
-  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
-  if (null != System.getProperty("exec.args")) {
-    args System.getProperty("exec.args") .split()
-  }
+tasks.register("determineSetValues", JavaExec::class.java) {
+    main = "org.kleini.bricklink.DetermineSetValues"
+    args(project.properties["appArgs"] ?: emptyList())
 }
 
-task determineSetValues(type: JavaExec) {
-  classpath = sourceSets.main.runtimeClasspath
-  main = 'org.kleini.bricklink.DetermineSetValues'
-  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
-  if (project.hasProperty("appArgs")) {
-    args appArgs.split(',')
-  }
+tasks.register("listStamps", JavaExec::class.java) {
+    main = "org.kleini.dpdhl.ListStamps"
 }
 
-task listStamps(type: JavaExec) {
-  classpath sourceSets.main.runtimeClasspath
-  main 'org.kleini.dpdhl.ListStamps'
-  systemProperties = [ configurationFile: 'src/main/resources/myconfiguration.properties' ]
+tasks.withType(JavaExec::class.java) {
+    classpath = sourceSets["main"].runtimeClasspath
+    systemProperties = mapOf("configurationFile" to "src/main/resources/myconfiguration.properties")
 }
-*/

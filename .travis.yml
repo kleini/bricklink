@@ -37,11 +37,9 @@ jobs:
         - export DATE=$(date +%Y%m%d)
         - /usr/bin/gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
         - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
-      if: type IN (cron)
     - stage: automation
       script:
         - echo org.kleini.prodws.mandantId=$PRODWS_MANDANTID >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.login=$PRODWS_LOGIN >>bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.password=$PRODWS_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
         - /usr/bin/gradle bricklink:listStamps
-      if: type IN (cron)
