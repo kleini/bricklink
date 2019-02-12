@@ -1,5 +1,4 @@
-enableFeaturePreview("STABLE_PUBLISHING")
-
+rootProject.name = "bricklink"
 include("bricklink")
 include("dataobjects")
 include("oneclickforapp")

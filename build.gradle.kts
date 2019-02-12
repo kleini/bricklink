@@ -1,5 +1,3 @@
-import org.gradle.api.plugins.JavaPluginConvention
-
 subprojects {
 
     apply {
@@ -13,7 +11,7 @@ subprojects {
 
     group = "org.kleini"
 
-    configure<JavaPluginConvention> {
+    configure<org.gradle.api.plugins.JavaPluginConvention> {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
