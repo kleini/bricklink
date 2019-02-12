@@ -26,11 +26,13 @@ jobs:
             - chromium-chromedriver
             - gradle
             - lftp
-      script:
+      before_script:
         - whereis google-chrome-stable
         - whereis chromedriver
+        - ln --symbolic /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver
         - echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
+      script:
         - export DATE=$(date +%Y%m%d)
         - /usr/bin/gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
         - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
@@ -41,8 +43,9 @@ jobs:
             - sourceline: 'ppa:cwchien/gradle'
           packages:
             - gradle
-      script:
+      before_script:
         - echo org.kleini.prodws.mandantId=$PRODWS_MANDANTID >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.login=$PRODWS_LOGIN >>bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.password=$PRODWS_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
+      script:
         - /usr/bin/gradle bricklink:listStamps
