@@ -8,27 +8,24 @@ language: java
 
 jobs:
   include:
-    - before_install:
-        - sudo add-apt-repository ppa:cwchien/gradle -y
-        - sudo apt-get update -q
-        - sudo apt-get install gradle -y
-      install: skip
+    - addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:cwchien/gradle'
+          packages:
+            - gradle
       script:
-        - wsimport -version
-        - wsimport -help
         - /usr/bin/gradle check --stacktrace
     - stage: automation
       addons:
         chrome: stable
         apt:
+          sources:
+            - sourceline: 'ppa:cwchien/gradle'
           packages:
+            - chromium-chromedriver
+            - gradle
             - lftp
-      install:
-        - wget -N http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip -P ~/
-        - unzip ~/chromedriver_linux64.zip -d ~/
-        - rm ~/chromedriver_linux64.zip
-        - sudo mv -f ~/chromedriver /usr/local/bin/
-        - sudo chmod +x /usr/local/bin/chromedriver
       script:
         - whereis google-chrome-stable
         - whereis chromedriver
@@ -38,6 +35,12 @@ jobs:
         - /usr/bin/gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
         - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
     - stage: automation
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:cwchien/gradle'
+          packages:
+            - gradle
       script:
         - echo org.kleini.prodws.mandantId=$PRODWS_MANDANTID >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.login=$PRODWS_LOGIN >>bricklink/src/main/resources/myconfiguration.properties
