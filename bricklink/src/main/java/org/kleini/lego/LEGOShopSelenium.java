@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.kleini.selenium.Utils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,7 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class LEGOShopSelenium implements Closeable {
 
-    private static final String URL = "https://shop.lego.com/de-DE";
+    private static final String URL = "https://shop.lego.com/de-DE/";
 
     private final WebDriver driver;
 
@@ -38,6 +39,7 @@ public class LEGOShopSelenium implements Closeable {
         } else {
             driver = headlessChrome();
         }
+        driver.manage().window().setSize(new Dimension(1980, 1500));
     }
 
     @Override
