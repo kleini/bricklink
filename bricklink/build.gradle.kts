@@ -20,9 +20,7 @@ dependencies {
 
 tasks.register("fatJar", Jar::class.java) {
     archiveClassifier.set("all")
-    from(configurations.runtime.get().map {
-        if (it.isDirectory) it else zipTree(it)
-    })
+    from(configurations["runtime"].map { if (it.isDirectory) it else zipTree(it) })
     with(tasks["jar"] as CopySpec)
 }
 
@@ -68,4 +66,7 @@ tasks.register("listStamps", JavaExec::class.java) {
 tasks.withType(JavaExec::class.java) {
     classpath = sourceSets["main"].runtimeClasspath
     systemProperties = mapOf("configurationFile" to "src/main/resources/myconfiguration.properties")
+    if (System.getProperties().containsKey("browser")) {
+        systemProperties["browser"] = System.getProperty("browser")
+    }
 }
