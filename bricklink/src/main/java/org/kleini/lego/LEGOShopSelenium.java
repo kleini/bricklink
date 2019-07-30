@@ -49,7 +49,7 @@ public class LEGOShopSelenium implements Closeable {
 
     public List<Set> getAvailableSets() throws Exception {
         driver.get(URL);
-        driver.findElement(By.cssSelector("button[data-test='cookie-banner-normal-button']")).click();
+        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='cookie-banner-normal-button']"))).click();
         driver.findElement(By.cssSelector("button[data-test='menu-bar-item']")).click();
         List<WebElement> categories = driver.findElements(By.cssSelector("a[data-test='theme-dropdown-item']"));
         List<String> urls = new LinkedList<String>();
