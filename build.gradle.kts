@@ -11,12 +11,12 @@ subprojects {
 
     group = "org.kleini"
 
-    configure<org.gradle.api.plugins.JavaPluginConvention> {
+    configure<JavaPluginConvention> {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    tasks.withType(JavaCompile::class.java).configureEach {
+    tasks.withType(JavaCompile::class.java) {
         options.apply {
             compilerArgs = mutableListOf("-Xlint:unchecked", "-Xlint:deprecation")
         }

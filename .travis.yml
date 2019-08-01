@@ -23,13 +23,15 @@ jobs:
           sources:
             - sourceline: 'ppa:cwchien/gradle'
           packages:
-            - chromium-chromedriver
             - gradle
             - lftp
+      install:
+        - wget -N https://chromedriver.storage.googleapis.com/76.0.3809.68/chromedriver_linux64.zip -P /tmp/
+        - unzip /tmp/chromedriver_linux64.zip -d "${HOME}/bin/"
+        - rm /tmp/chromedriver_linux64.zip
       before_script:
-        - whereis google-chrome-stable
-        - whereis chromedriver
-        - ln --symbolic /usr/lib/chromium-browser/chromedriver "${HOME}/bin/chromedriver"
+        - google-chrome-stable --version
+        - chromedriver --version
         - echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
       script:
@@ -49,3 +51,4 @@ jobs:
         - echo org.kleini.prodws.password=$PRODWS_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
       script:
         - /usr/bin/gradle bricklink:listStamps
+

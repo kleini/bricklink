@@ -49,9 +49,9 @@ public class LEGOShopSelenium implements Closeable {
 
     public List<Set> getAvailableSets() throws Exception {
         driver.get(URL);
-        driver.findElement(By.cssSelector("button[data-test='cookie-banner-normal-button']")).click();
-        driver.findElement(By.cssSelector("button[data-test='menu-bar-item']")).click();
-        List<WebElement> categories = driver.findElements(By.cssSelector("a[data-test='theme-dropdown-item']"));
+        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='cookie-banner-normal-button']"))).click();
+        driver.findElement(By.cssSelector("button[data-analytics-title='themes']")).click();
+        List<WebElement> categories = driver.findElements(By.cssSelector("button[data-analytics-title='themes'] + div > div > ul > li > a"));
         List<String> urls = new LinkedList<String>();
         for (WebElement a : categories) {
             urls.add(a.getAttribute("href"));
@@ -75,7 +75,7 @@ public class LEGOShopSelenium implements Closeable {
     private List<Set> allSetsByPagination() {
         List<Set> retval = new LinkedList<Set>();
         retval.addAll(readSetsFromPage());
-        List<WebElement> nextButton = driver.findElements(By.cssSelector("button[data-test='pagination-next']"));
+        List<WebElement> nextButton = driver.findElements(By.cssSelector("a[data-test='pagination-next']"));
         while (!nextButton.isEmpty() && nextButton.get(0).getAttribute("disabled") == null) {
             nextButton.get(0).click();
             new WebDriverWait(driver, 10).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div[data-test='product-leaf']"), 0));
@@ -114,7 +114,7 @@ public class LEGOShopSelenium implements Closeable {
 
     private List<Set> readSetsFromPage() {
         List<Set> retval = new LinkedList<Set>();
-        List<WebElement> products = driver.findElements(By.cssSelector("div[data-test='product-leaf']"));
+        List<WebElement> products = new WebDriverWait(driver, 10).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div[data-test='product-leaf']"), 0));
         for (WebElement product : products) {
             WebElement setNummerE = product.findElement(By.cssSelector("div > div > span[data-test='product-leaf-product-code']"));
             int setNummer = Integer.parseInt(setNummerE.getText());
