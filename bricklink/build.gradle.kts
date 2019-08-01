@@ -56,7 +56,7 @@ tasks.register("info4LEGOarticles", JavaExec::class.java) {
 
 tasks.register("determineSetValues", JavaExec::class.java) {
     main = "org.kleini.bricklink.DetermineSetValues"
-    args(project.properties["appArgs"] ?: emptyList())
+    args(project.properties["appArgs"] ?: emptyList<String>())
 }
 
 tasks.register("listStamps", JavaExec::class.java) {
