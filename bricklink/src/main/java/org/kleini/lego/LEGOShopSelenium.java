@@ -15,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -49,6 +50,8 @@ public class LEGOShopSelenium implements Closeable {
 
     public List<Set> getAvailableSets() throws Exception {
         driver.get(URL);
+        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='age-gate-disclaimer-cta']"))).click();
+        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='age-gate-grown-up-cta']"))).click();
         new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='cookie-banner-normal-button']"))).click();
         driver.findElement(By.cssSelector("button[data-analytics-title='themes']")).click();
         List<WebElement> categories = driver.findElements(By.cssSelector("button[data-analytics-title='themes'] + div > div > ul > li > a"));
