@@ -3,6 +3,7 @@ package org.kleini.lego;
 import static org.kleini.selenium.Utils.headlessChrome;
 import java.io.Closeable;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -77,14 +78,15 @@ public class LEGOShopSelenium implements Closeable {
 
     private List<Set> allSetsByPagination() {
         List<Set> retval = new LinkedList<Set>();
-        retval.addAll(readSetsFromPage());
-        List<WebElement> nextButton = driver.findElements(By.cssSelector("a[data-test='pagination-next']"));
-        while (!nextButton.isEmpty() && nextButton.get(0).getAttribute("disabled") == null) {
-            nextButton.get(0).click();
+        List<WebElement> nextButton = Collections.emptyList();
+        do {
+            if (!nextButton.isEmpty() && nextButton.get(0).getAttribute("disabled") == null) {
+                nextButton.get(0).click();
+            }
             new WebDriverWait(driver, 10).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div[data-test='product-leaf']"), 0));
             retval.addAll(readSetsFromPage());
-            nextButton = driver.findElements(By.cssSelector("button[data-test='pagination-next']"));
-        }
+            nextButton = driver.findElements(By.cssSelector("a[data-test='pagination-next']"));
+        } while (!nextButton.isEmpty() && nextButton.get(0).getAttribute("disabled") == null);
         return retval;
     }
 
