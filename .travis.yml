@@ -26,7 +26,7 @@ jobs:
             - gradle
             - lftp
       install:
-        - wget -N https://chromedriver.storage.googleapis.com/76.0.3809.68/chromedriver_linux64.zip -P /tmp/
+        - wget -N https://chromedriver.storage.googleapis.com/$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip -P /tmp/
         - unzip /tmp/chromedriver_linux64.zip -d "${HOME}/bin/"
         - rm /tmp/chromedriver_linux64.zip
       before_script:
