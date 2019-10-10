@@ -79,14 +79,32 @@ public class Utils {
         return e;
     }
 
-    /**
-     * Requires ChromeDriver 2.33 and Chrome 59.
-     */
-    public static WebDriver headlessChrome() {
+    public static ChromeOptions headlessOptions() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("headless");
         options.addArguments("disable-gpu");
         options.addArguments("no-sandbox");
+        return options;
+    }
+
+    public static WebDriver headlessChrome(String... additionalOptions) {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("headless");
+        options.addArguments("disable-gpu");
+        options.addArguments("no-sandbox");
+        for (String option : additionalOptions) {
+            options.addArguments(additionalOptions);
+        }
+        return new ChromeDriver(headlessOptions());
+    }
+
+    public static WebDriver headlessChrome(boolean userAgentWithoutHeadless) {
+        WebDriver driver = headlessChrome();
+        driver.get("about:blank");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String userAgent = js.executeScript("return navigator.userAgent").toString();
+        ChromeOptions options = headlessOptions();
+        options.addArguments("--user-agent=\"" + userAgent.replace("Headless", "") + "\"");
         return new ChromeDriver(options);
     }
 

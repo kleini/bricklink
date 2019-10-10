@@ -56,7 +56,7 @@ public final class BrickLinkSelenium implements Closeable {
         } else if ("chrome".equals(browser)) {
             driver = new ChromeDriver();
         } else {
-            driver = Utils.headlessChrome();
+            driver = Utils.headlessChrome(true);
         }
         loginPage = new LoginPage(driver, login);
         loginPage.login(password);

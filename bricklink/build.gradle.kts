@@ -26,23 +26,23 @@ tasks.register("fatJar", Jar::class.java) {
 
 tasks.register("partout", JavaExec::class.java) {
     main = "org.kleini.bricklink.PartOut"
-    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList<String>())
 }
 
 tasks.register("pgTabs", JavaExec::class.java) {
     main = "org.kleini.bricklink.PriceGuideTabs"
     systemProperties = mapOf("configurationFile" to "src/main/resources/myconfiguration.properties", "numTabs" to 10, "browser" to "firefox")
-    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList<String>())
 }
 
 tasks.register("setValues", JavaExec::class.java) {
     main = "org.kleini.bricklink.DetermineSetValues"
-    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList<String>())
 }
 
 tasks.register("contained", JavaExec::class.java) {
     main = "org.kleini.bricklink.Contained"
-    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList<String>())
 }
 
 tasks.register("colorsAndCategories", JavaExec::class.java) {
@@ -51,12 +51,19 @@ tasks.register("colorsAndCategories", JavaExec::class.java) {
 
 tasks.register("info4LEGOarticles", JavaExec::class.java) {
     main = "org.kleini.bricklink.Info4LEGOarticles"
-    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList())
+    args(System.getProperty("exec.args")?.toString()?.split(" ") ?: emptyList<String>())
 }
 
 tasks.register("determineSetValues", JavaExec::class.java) {
     main = "org.kleini.bricklink.DetermineSetValues"
     args(project.properties["appArgs"] ?: emptyList<String>())
+}
+
+tasks.register("categoryParts", JavaExec::class.java) {
+    main = "org.kleini.bricklink.CategoryParts"
+    if (project.properties.containsKey("appArgs")) {
+        args(project.properties["appArgs"])
+    }
 }
 
 tasks.register("listStamps", JavaExec::class.java) {
