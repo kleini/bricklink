@@ -7,6 +7,7 @@ package org.kleini.bricklink.selenium;
 import static org.kleini.bricklink.selenium.BrickLinkSelenium.URL;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;

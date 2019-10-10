@@ -34,7 +34,7 @@ jobs:
       script:
         - export DATE=$(date +%Y%m%d)
         - /usr/bin/gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
-        - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
+        - lftp -e "set sftp:auto-confirm yes; open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
     - stage: automation
       name: "List available stamps"
       before_script:
