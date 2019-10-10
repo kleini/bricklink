@@ -1,30 +1,27 @@
-dist: trusty
+dist: bionic
 sudo: false
-
-jdk:
-  - openjdk8
 
 language: java
 
+env:
+  - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+addons:
+  chrome: stable
+  apt:
+    sources:
+      - sourceline: 'ppa:cwchien/gradle'
+    packages:
+      - openjdk-8-jdk-headless
+      - gradle
+      - lftp
+
 jobs:
   include:
-    - addons:
-        apt:
-          sources:
-            - sourceline: 'ppa:cwchien/gradle'
-          packages:
-            - gradle
-      script:
+    - script:
         - /usr/bin/gradle check --stacktrace
     - stage: automation
-      addons:
-        chrome: stable
-        apt:
-          sources:
-            - sourceline: 'ppa:cwchien/gradle'
-          packages:
-            - gradle
-            - lftp
+      name: "Determine set values"
       install:
         - wget -N https://chromedriver.storage.googleapis.com/$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip -P /tmp/
         - unzip /tmp/chromedriver_linux64.zip -d "${HOME}/bin/"
@@ -39,12 +36,7 @@ jobs:
         - /usr/bin/gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
         - lftp -e "open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
     - stage: automation
-      addons:
-        apt:
-          sources:
-            - sourceline: 'ppa:cwchien/gradle'
-          packages:
-            - gradle
+      name: "List available stamps"
       before_script:
         - echo org.kleini.prodws.mandantId=$PRODWS_MANDANTID >bricklink/src/main/resources/myconfiguration.properties
         - echo org.kleini.prodws.login=$PRODWS_LOGIN >>bricklink/src/main/resources/myconfiguration.properties
