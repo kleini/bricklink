@@ -16,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -115,7 +116,7 @@ public class LEGOShopSelenium implements Closeable {
         return readSetsFromPage();
     }
 
-    private static final Pattern pattern = Pattern.compile("([\\d\\,]+) €");
+    private static final Pattern pattern = Pattern.compile("(?:Price\\r?\\n)?([\\d\\,]+) €");
 
     private List<Set> readSetsFromPage() {
         List<Set> retval = new LinkedList<Set>();
@@ -130,7 +131,7 @@ public class LEGOShopSelenium implements Closeable {
             set.setName(name);
 
             final WebElement priceElement;
-            List<WebElement> saleElements = product.findElements(By.cssSelector("div > div > div[data-test='product-leaf-price'] > div > span > span"));
+            List<WebElement> saleElements = product.findElements(By.cssSelector("div > div > div[data-test='product-leaf-price'] > div > span"));
             if (!saleElements.isEmpty()) {
                 priceElement = saleElements.get(0);
             } else {
@@ -142,6 +143,8 @@ public class LEGOShopSelenium implements Closeable {
             if (matcher.matches()) {
                 String value = matcher.group(1).replace(',', '.');
                 set.setRetailPrice(new BigDecimal(value));
+            } else {
+                throw new RuntimeException("Can not parse set retail price \"" + toParse.replace('\n', '_') + "\".");
             }
             retval.add(set);
         }
