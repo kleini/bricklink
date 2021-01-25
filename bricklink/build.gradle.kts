@@ -72,7 +72,9 @@ tasks.register("listStamps", JavaExec::class.java) {
 
 tasks.withType(JavaExec::class.java) {
     classpath = sourceSets["main"].runtimeClasspath
-    systemProperties = mapOf("configurationFile" to "src/main/resources/myconfiguration.properties")
+    systemProperties = mapOf(
+        "configurationFile" to project.file("src/main/resources/myconfiguration.properties").absolutePath
+    )
     if (System.getProperties().containsKey("browser")) {
         systemProperties["browser"] = System.getProperty("browser")
     }
