@@ -24,6 +24,7 @@ jobs:
             google-chrome --version
             chromedriver --version
           name: Check install
+      - checkout
       - run:
           name: Determine set value
           command: |
