@@ -1,17 +1,44 @@
-version: 2.0
-jobs:
-  build:
+version: 2.1
+
+executors:
+  executor:
     docker:
       - image: circleci/openjdk:8-jdk
+
+jobs:
+  build:
+    executor: executor
     steps:
       - checkout
       - run:
           name: Build
           command: |
-            gradle check
+            gradle build
+  setValues:
+    executor: executor
+    steps:
+      - run:
+          name: Determine set value
+          command: |
+            export DATE=$(date +%Y%m%d)
+            gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
+            lftp
 
 workflows:
   version: 2
   build:
+    jobs:
+      - build
+      - setValues:
+          requires:
+            - build
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
     jobs:
       - build
