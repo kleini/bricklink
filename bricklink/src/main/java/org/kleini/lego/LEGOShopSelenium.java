@@ -52,7 +52,6 @@ public class LEGOShopSelenium implements Closeable {
 
     public List<Set> getAvailableSets() throws Exception {
         driver.get(URL);
-        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='age-gate-disclaimer-cta']"))).click();
         new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='age-gate-grown-up-cta']"))).click();
         new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='cookie-banner-normal-button']"))).click();
         driver.findElement(By.cssSelector("button[data-analytics-title='themes']")).click();
@@ -63,6 +62,7 @@ public class LEGOShopSelenium implements Closeable {
         }
         List<Set> retval = new LinkedList<Set>();
         for (String url : urls) {
+            if (url.endsWith("/about")) continue;
             driver.get(url);
             System.out.print("Category: " + (url.substring(url.lastIndexOf('/') + 1)) + " ");
             final List<Set> found;
@@ -122,8 +122,9 @@ public class LEGOShopSelenium implements Closeable {
         List<Set> retval = new LinkedList<Set>();
         List<WebElement> products = new WebDriverWait(driver, 10).until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("div[data-test='product-leaf']"), 0));
         for (WebElement product : products) {
-            WebElement setNummerE = product.findElement(By.cssSelector("div > div > span[data-test='product-leaf-product-code']"));
-            int setNummer = Integer.parseInt(setNummerE.getText());
+            WebElement productLink = product.findElement(By.cssSelector("div > a"));
+            String href = productLink.getAttribute("href");
+            int setNummer = Integer.parseInt(href.substring(href.lastIndexOf('-') + 1));
             Set set = new Set(setNummer);
 
             WebElement spanWithName = product.findElement(By.cssSelector("div > div > a[data-test='product-leaf-title-link'] > h2[data-test='product-leaf-title'] > span"));
