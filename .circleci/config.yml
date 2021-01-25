@@ -39,6 +39,8 @@ jobs:
           name: Determine set value
           command: |
             export DATE=$(date +%Y%m%d)
+            echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
+            echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
             gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
             lftp
 
