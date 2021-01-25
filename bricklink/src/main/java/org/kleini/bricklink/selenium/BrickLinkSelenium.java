@@ -58,8 +58,15 @@ public final class BrickLinkSelenium implements Closeable {
         } else {
             driver = Utils.headlessChrome(true);
         }
-        loginPage = new LoginPage(driver, login);
-        loginPage.login(password);
+        try {
+            driver.get(URL);
+            driver.findElement(By.xpath("//button[contains(text(),'Accept cookies')]")).click();
+            loginPage = new LoginPage(driver, login);
+            loginPage.login(password);
+        } catch (Exception e) {
+            driver.quit();
+            throw new Exception("Login failed.", e);
+        }
     }
 
     public BrickLinkSelenium(Configuration configuration) throws Exception {
