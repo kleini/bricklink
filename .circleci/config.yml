@@ -42,7 +42,9 @@ jobs:
             echo org.kleini.bricklink.login=$BRICKLINK_LOGIN >bricklink/src/main/resources/myconfiguration.properties
             echo org.kleini.bricklink.password=$BRICKLINK_PASSWORD >>bricklink/src/main/resources/myconfiguration.properties
             gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
-            lftp
+            sudo apt-get update
+            sudo apt-get install lftp
+            lftp -e "set sftp:auto-confirm yes; open sftp://${UPLOAD_LOGIN}:${UPLOAD_PASS}@home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
 
 orbs:
   browser-tools: circleci/browser-tools@1.1.1
