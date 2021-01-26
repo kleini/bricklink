@@ -6,14 +6,14 @@ BrickLink, too.
 
 Build status
 ------------
-[![Build Status](https://travis-ci.org/kleini/bricklink.svg?branch=master)](https://travis-ci.org/kleini/bricklink)
+[![CircleCI](https://circleci.com/gh/kleini/bricklink.svg?style=shield)](https://circleci.com/gh/kleini/bricklink)
 
 Requirements
 ------------
 - Gradle
 - PhantomJS, Firefox
-- Chrome 59 for headless mode
-- ChromeDriver 2.33 for headless mode
+- Chrome 88 for headless mode
+- ChromeDriver 88 for headless mode
 
 Compile
 -------
@@ -60,25 +60,4 @@ Support
 -------
 
 Have a question, or found an issue? Just create a issue: https://github.com/kleini/bricklink/issues
-
-Author
-------
-Marcus Klein (<himself@kleini.org>)
-
-Copyright and License
----------------------
-
-Copyright 2016 Marcus Klein
-
-Licensed under the GNU General Public License, Version 3.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.gnu.org/licenses/gpl-3.0.html
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
 
