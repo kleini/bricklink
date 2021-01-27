@@ -65,3 +65,4 @@ workflows:
                 - master
     jobs:
       - build
+      - setValues
