@@ -46,6 +46,7 @@ public class ObjectFactory {
     private final static QName _SortDirection_QNAME = new QName("", "SortDirection");
     private final static QName _ItemTypeID_QNAME = new QName("", "ItemTypeID");
     private final static QName _ColumnWidths_QNAME = new QName("", "ColumnWidths");
+    private final static QName _TotalWeight_QNAME = new QName("", "TotalWeight");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.kleini.brickstore.data
@@ -269,5 +270,10 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "ColumnWidths")
     public JAXBElement<String> createColumnWidths(String value) {
         return new JAXBElement<String>(_ColumnWidths_QNAME, String.class, null, value);
+    }
+
+    @XmlElementDecl(namespace = "", name = "TotalWeight")
+    public JAXBElement<BigDecimal> createTotalWeight(BigDecimal value) {
+        return new JAXBElement<BigDecimal>(_TotalWeight_QNAME, BigDecimal.class, null, value);
     }
 }

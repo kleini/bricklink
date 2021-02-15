@@ -9,11 +9,9 @@ package org.kleini.brickstore.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * {@link Inventory} stores the list of {@link Item}s.
@@ -29,6 +27,10 @@ public class Inventory {
 
     @XmlElement(name = "Item", required = true)
     protected List<Item> item;
+
+    @XmlAttribute(name = "Currency")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    protected String currency;
 
     /**
      * This accessor method returns a reference to the live list,
@@ -51,5 +53,13 @@ public class Inventory {
 
     public void setItem(List<Item> item) {
         this.item = item;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

@@ -29,11 +29,12 @@
       <xs:sequence>
         <xs:element maxOccurs="unbounded" ref="Item"/>
       </xs:sequence>
+      <xs:attribute name="Currency" use="required" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="Item">
     <xs:complexType>
-      <xs:sequence>
+      <xs:all>
         <xs:element ref="ItemID"/>
         <xs:element ref="ItemTypeID"/>
         <xs:element ref="ColorID"/>
@@ -48,13 +49,13 @@
         <xs:element ref="Condition"/>
         <xs:element minOccurs="0" ref="Comments"/>
         <xs:element minOccurs="0" ref="Remarks"/>
-        <xs:choice minOccurs="0">
-          <xs:element ref="Bulk"/>
-          <xs:element ref="OrigPrice"/>
-        </xs:choice>
-        <xs:element ref="OrigQty"/>
+        <xs:element ref="Bulk"/>
+        <xs:element minOccurs="0" ref="OrigPrice"/>
+        <xs:element minOccurs="0" ref="OrigQty"/>
         <xs:element minOccurs="0" ref="LotID"/>
-      </xs:sequence>
+        <xs:element minOccurs="0" ref="TotalWeight"/>
+        <xs:element minOccurs="0" ref="Retain"/>
+      </xs:all>
     </xs:complexType>
   </xs:element>
   <xs:element name="ItemID" type="xs:NMTOKEN"/>
@@ -75,12 +76,17 @@
   <xs:element name="OrigPrice" type="xs:decimal"/>
   <xs:element name="OrigQty" type="xs:integer"/>
   <xs:element name="LotID" type="xs:integer"/>
+  <xs:element name="TotalWeight" type="xs:decimal"/>
+  <xs:element name="Retain">
+    <xs:complexType/>
+  </xs:element>
   <xs:element name="GuiState">
     <xs:complexType>
-      <xs:sequence>
+      <xs:all>
         <xs:element minOccurs="0" ref="DifferenceMode"/>
-        <xs:element ref="ItemView"/>
-      </xs:sequence>
+        <xs:element minOccurs="0" ref="ItemView"/>
+        <xs:element minOccurs="0" ref="ColumnLayout"/>
+      </xs:all>
       <xs:attribute name="Application" use="required" type="xs:NCName"/>
       <xs:attribute name="Version" use="required" type="xs:integer"/>
     </xs:complexType>
@@ -97,6 +103,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="ColumnLayout" type="xs:string"/>
   <xs:element name="ColumnOrder" type="xs:string"/>
   <xs:element name="ColumnWidths" type="xs:string"/>
   <xs:element name="ColumnWidthsHidden" type="xs:string"/>

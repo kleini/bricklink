@@ -1,6 +1,18 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+repositories {
+    mavenCentral()
+}
+
+plugins {
+    kotlin("jvm") version "1.3.72"
+}
+
 version = "0.8.5"
 
 dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+
     compile("com.fasterxml.jackson.core", "jackson-databind", "2.8.1")
     compile("oauth.signpost", "signpost-commonshttp4", "1.2.1.2")
     compile("net.sf.opencsv", "opencsv", "2.3")
@@ -16,6 +28,15 @@ dependencies {
     testRuntime("org.junit.platform", "junit-platform-launcher", "1.4.0")
     testRuntime("org.junit.jupiter", "junit-jupiter-engine", "5.4.0")
     testRuntime("org.junit.vintage", "junit-vintage-engine", "5.4.0")
+}
+
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
 }
 
 tasks.register("fatJar", Jar::class.java) {
@@ -69,6 +90,15 @@ tasks.register("categoryParts", JavaExec::class.java) {
 tasks.register("listStamps", JavaExec::class.java) {
     main = "org.kleini.dpdhl.ListStamps"
 }
+
+tasks {
+    val minifigData by registering(JavaExec::class) {
+        main = "org.kleini.MinifigData"
+        args(project.property("bsx"))
+    }
+}
+
+
 
 tasks.withType(JavaExec::class.java) {
     classpath = sourceSets["main"].runtimeClasspath

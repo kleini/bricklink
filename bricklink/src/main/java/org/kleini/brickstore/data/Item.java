@@ -23,26 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "itemID",
-    "itemTypeID",
-    "colorID",
-    "itemName",
-    "itemTypeName",
-    "colorName",
-    "categoryID",
-    "categoryName",
-    "status",
-    "quantity",
-    "price",
-    "condition",
-    "comments",
-    "remarks",
-    "bulk",
-    "originalPrice",
-    "originalQuantity",
-    "lotID"
-})
+@XmlType(name = "", propOrder = {})
 @XmlRootElement(name = "Item")
 public class Item {
 
@@ -111,11 +92,14 @@ public class Item {
     @XmlElement(name = "OrigPrice")
     protected BigDecimal originalPrice;
 
-    @XmlElement(name = "OrigQty", required = true)
+    @XmlElement(name = "OrigQty")
     protected int originalQuantity;
 
     @XmlElement(name = "LotID")
     protected int lotID;
+
+    @XmlElement(name = "TotalWeight")
+    protected BigDecimal totalWeight;
 
     public Item() {
         super();
@@ -265,6 +249,14 @@ public class Item {
         this.lotID = lotID;
     }
 
+    public BigDecimal getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(BigDecimal totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
     @Override
     public Item clone() {
         Item retval = new Item();
@@ -286,6 +278,7 @@ public class Item {
         retval.quantity = quantity;
         retval.remarks = remarks;
         retval.status = status;
+        retval.totalWeight = totalWeight;
         return retval;
     }
 }
