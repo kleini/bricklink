@@ -94,11 +94,11 @@ tasks.register("listStamps", JavaExec::class.java) {
 tasks {
     val minifigData by registering(JavaExec::class) {
         main = "org.kleini.MinifigData"
-        args(project.property("bsx"))
+        if (project.hasProperty("bsx")) {
+            args(project.property("bsx"))
+        }
     }
 }
-
-
 
 tasks.withType(JavaExec::class.java) {
     classpath = sourceSets["main"].runtimeClasspath
