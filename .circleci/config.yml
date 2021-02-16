@@ -54,7 +54,6 @@ workflows:
   build:
     jobs:
       - build
-      - setValues
   nightly:
     triggers:
       - schedule:
