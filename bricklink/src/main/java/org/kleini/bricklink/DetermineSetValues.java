@@ -9,12 +9,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.apache.commons.io.FileUtils;
 import org.kleini.bricklink.api.Configuration;
 import org.kleini.bricklink.data.ItemType;
 import org.kleini.bricklink.selenium.BrickLinkSelenium;
@@ -39,15 +40,15 @@ public class DetermineSetValues {
         System.out.println("Writing output file to " + of.getAbsolutePath());
         List<Set> sets;
         try (
-            LEGOShopSelenium shopSelenium = new LEGOShopSelenium();
+            LEGOShopSelenium shopSelenium = new LEGOShopSelenium()
         ) {
             sets = shopSelenium.getAvailableSets();
         }
         System.out.println("Number of sets: " + sets.size());
         Configuration configuration = new Configuration();
-        List<Margin> output = new ArrayList<Margin>();
+        List<Margin> output = new ArrayList<>();
         try (
-            BrickLinkSelenium selenium = new BrickLinkSelenium(configuration);
+            BrickLinkSelenium selenium = new BrickLinkSelenium(configuration)
         ) {
             int i = 1;
             for (Set set : sets) {
@@ -77,15 +78,10 @@ public class DetermineSetValues {
                 }
             }
         }
-        output.sort(new Comparator<Margin>() {
-            @Override
-            public int compare(Margin o1, Margin o2) {
-                return o2.getMarge().compareTo(o1.getMarge());
-            }
-        });
+        output.sort((o1, o2) -> o2.getMarge().compareTo(o1.getMarge()));
         try (
             FileOutputStream fos = new FileOutputStream(of);
-            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8)
         ) {
             for (Margin marge : output) {
                 osw.write(marge.toString());

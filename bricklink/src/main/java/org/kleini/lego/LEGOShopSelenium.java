@@ -2,6 +2,7 @@ package org.kleini.lego;
 
 import static org.kleini.selenium.Utils.headlessChrome;
 import java.io.Closeable;
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -11,13 +12,15 @@ import java.util.regex.Pattern;
 import org.kleini.selenium.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.Augmenter;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -50,10 +53,18 @@ public class LEGOShopSelenium implements Closeable {
         driver.close();
     }
 
+    public String getPageSource() {
+        return driver.getPageSource();
+    }
+
+    public File getScreenshot() {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+    }
+
     public List<Set> getAvailableSets() throws Exception {
         driver.get(URL);
         new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='age-gate-grown-up-cta']"))).click();
-        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='cookie-banner-normal-button']"))).click();
+        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[data-test='cookie-accept-all']"))).click();
         driver.findElement(By.cssSelector("button[data-analytics-title='themes']")).click();
         List<WebElement> categories = driver.findElements(By.cssSelector("button[data-analytics-title='themes'] + div > div > ul > li > a"));
         List<String> urls = new LinkedList<String>();
