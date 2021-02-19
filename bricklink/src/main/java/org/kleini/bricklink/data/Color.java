@@ -224,7 +224,18 @@ public enum Color {
     MX_FOIL_RED(217, "Mx Foil Red"),
     MX_FOIL_YELLOW(218, "Mx Foil Yellow"),
     MX_FOIL_ORANGE(219, "Mx Foil Orange"),
-    CORAL(220, "Coral");
+    CORAL(220, "Coral"),
+    TRANS_LIGHT_GREEN(221, "Trans-Light Green"),
+    GLITTER_TRANS_ORANGE(222, "Glitter Trans-Orange"),
+    SATIN_TRANS_LIGHT_BLUE(223, "Satin Trans-Light Blue"),
+    SATIN_TRANS_DARK_PINK(224, "Satin Trans-Dark Pink"),
+    DARK_NOUGAT(225, "Dark Nougat"),
+    TRANS_LIGHT_BRIGHT_GREEN(226, "Trans-Light Bright Green"),
+    CLIKITS_LAVENDER(227, "Clikits Lavender"),
+    SATIN_WHITE(228, "Satin White"),
+    SATIN_TRANS_BLACK(229, "Satin Trans-Black"),
+    SATIN_TRANS_PURPLE(230, "Satin Trans-Purple"),
+    DARK_SALMON(231, "Dark Salmon");
 
     private final int identifier;
 
