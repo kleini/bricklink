@@ -97,7 +97,7 @@ tasks.register("listStamps", JavaExec::class.java) {
 
 tasks {
     val minifigData by registering(JavaExec::class) {
-        main = "org.kleini.MinifigData"
+        main = "org.kleini.CollectItemData"
         if (project.hasProperty("bsx")) {
             args(project.property("bsx"))
         }
