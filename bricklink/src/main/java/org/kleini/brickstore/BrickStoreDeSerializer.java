@@ -41,6 +41,7 @@ public final class BrickStoreDeSerializer {
     private Marshaller getMarshaller() throws JAXBException {
         Marshaller retval = context.createMarshaller();
         retval.setProperty("jaxb.formatted.output", Boolean.TRUE);
+        retval.setProperty("com.sun.xml.internal.bind.xmlHeaders", "\n<!DOCTYPE BrickStoreXML>");
         return retval;
     }
 

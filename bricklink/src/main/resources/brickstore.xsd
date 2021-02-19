@@ -8,14 +8,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="brickStoreXML">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="Inventory"/>
-        <xs:element minOccurs="0" ref="GuiState"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="BrickStockXML">
     <xs:complexType>
       <xs:sequence>
@@ -29,7 +21,7 @@
       <xs:sequence>
         <xs:element maxOccurs="unbounded" ref="Item"/>
       </xs:sequence>
-      <xs:attribute name="Currency" use="required" type="xs:string"/>
+      <xs:attribute name="Currency" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="Item">
@@ -49,12 +41,18 @@
         <xs:element ref="Condition"/>
         <xs:element minOccurs="0" ref="Comments"/>
         <xs:element minOccurs="0" ref="Remarks"/>
-        <xs:element ref="Bulk"/>
+        <xs:element minOccurs="0" ref="Bulk"/>
         <xs:element minOccurs="0" ref="OrigPrice"/>
         <xs:element minOccurs="0" ref="OrigQty"/>
         <xs:element minOccurs="0" ref="LotID"/>
         <xs:element minOccurs="0" ref="TotalWeight"/>
         <xs:element minOccurs="0" ref="Retain"/>
+        <xs:element minOccurs="0" ref="TQ1"/>
+        <xs:element minOccurs="0" ref="TP1"/>
+        <xs:element minOccurs="0" ref="TQ2"/>
+        <xs:element minOccurs="0" ref="TP2"/>
+        <xs:element minOccurs="0" ref="TQ3"/>
+        <xs:element minOccurs="0" ref="TP3"/>
       </xs:all>
     </xs:complexType>
   </xs:element>
@@ -80,6 +78,12 @@
   <xs:element name="Retain">
     <xs:complexType/>
   </xs:element>
+  <xs:element name="TQ1" type="xs:integer"/>
+  <xs:element name="TP1" type="xs:decimal"/>
+  <xs:element name="TQ2" type="xs:integer"/>
+  <xs:element name="TP2" type="xs:decimal"/>
+  <xs:element name="TQ3" type="xs:integer"/>
+  <xs:element name="TP3" type="xs:decimal"/>
   <xs:element name="GuiState">
     <xs:complexType>
       <xs:all>

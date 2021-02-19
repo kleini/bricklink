@@ -19,9 +19,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author <a href="mailto:himself@kleini.org">Marcus Klein</a>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "item"
-})
+@XmlType(name = "", propOrder = {})
 @XmlRootElement(name = "Inventory")
 public class Inventory {
 
