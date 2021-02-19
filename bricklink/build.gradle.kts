@@ -8,7 +8,7 @@ plugins {
     kotlin("jvm") version "1.3.72"
 }
 
-version = "0.8.5"
+version = "0.9.0"
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
@@ -39,10 +39,14 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
-tasks.register("fatJar", Jar::class.java) {
-    archiveClassifier.set("all")
-    from(configurations["runtime"].map { if (it.isDirectory) it else zipTree(it) })
-    with(tasks["jar"] as CopySpec)
+tasks {
+    register<Jar>("fatJar") {
+        group = "application"
+        archiveClassifier.set("all")
+        with(jar.get() as CopySpec)
+        dependsOn(configurations.runtimeClasspath)
+        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    }
 }
 
 tasks.register("partout", JavaExec::class.java) {

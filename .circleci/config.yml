@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Build
           command: |
-            gradle build
+            gradle build bricklink:fatJar
       - run:
           name: Save test results
           command: |
@@ -24,6 +24,8 @@ jobs:
           path: ~/test-results
       - store_artifacts:
           path: ~/test-results/junit
+      - store_artifacts:
+          path: bricklink/build/libs/bricklink-*-all.jar
   setValues:
     executor: executor
     steps:
