@@ -28,6 +28,7 @@ import org.kleini.bricklink.selenium.catalog.PriceGuidePage;
 import org.kleini.bricklink.selenium.data.PartOutData;
 import org.kleini.selenium.Utils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -60,7 +61,9 @@ public final class BrickLinkSelenium implements Closeable {
         }
         try {
             driver.get(URL);
-            driver.findElement(By.xpath("//button[contains(text(),'Accept cookies')]")).click();
+            WebElement button = driver.findElement(By.xpath("//button[contains(text(),'Accept all cookies')]"));
+            // TODO not nice but I can not find a better solution to get the button into a clickable state.
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", button);
             loginPage = new LoginPage(driver, login);
             loginPage.login(password);
         } catch (Exception e) {
