@@ -48,6 +48,7 @@ jobs:
             gradle bricklink:determineSetValues -PappArgs=setValues-${DATE}.txt
             sudo apt-get update
             sudo apt-get install lftp
+            getent hosts home19889699.1and1-data.host
             lftp -e "set sftp:auto-confirm yes; open -u ${UPLOAD_LOGIN} --env-password sftp://home19889699.1and1-data.host; put bricklink/setValues-${DATE}.txt; exit"
 
 orbs:
